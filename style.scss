@@ -6,9 +6,18 @@
   font-family: "Satoshi", sans-serif;
 }
 
-body {
+body,
+html {
   overflow-x: hidden;
+  @media (min-width: 320px) and (max-width: 599px) {
+    overflow-x: hidden;
+  }
+}
+body {
   padding-top: 4cm;
+  @media (min-width: 320px) and (max-width: 599px) {
+    padding-top: 2cm;
+  }
 }
 
 // Animation Styles
@@ -42,18 +51,44 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 15px 3% 5px 3%;
-    width: 100%;
+    width: 100vw;
     position: fixed;
     top: 0;
     right: 0;
     left: 0;
     background-color: white;
     z-index: 20;
+    @media (min-width: 320px) and (max-width: 599px) {
+      padding: 0;
+      padding: 0.25cm 0.5cm;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      @media (min-width: 320px) and (max-width: 599px) {
+        width: 3cm;
+      }
+    }
 
     a {
       text-decoration: none;
       font-size: 1rem;
       color: #000000;
+    }
+    .menu {
+      @media (min-width: 600px) {
+        display: none;
+      }
+      align-self: flex-end;
+      padding: 5px;
+      border-radius: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      &:hover,
+      &:active {
+        background-color: rgba(0, 0, 0, 0.1);
+      }
     }
 
     ul {
@@ -62,6 +97,9 @@ body {
       width: 50%;
       align-items: center;
       justify-content: space-evenly;
+      @media (min-width: 320px) and (max-width: 599px) {
+        display: none;
+      }
 
       li {
         width: 15%;
@@ -98,6 +136,96 @@ body {
     }
   }
 
+  // mobile header
+  .mobile-header {
+    @media (min-width: 600px) {
+      display: none;
+    }
+    width: 100%;
+    margin: 0 0.5cm;
+    position: relative;
+    z-index: 10px;
+    .header-text {
+      display: 100%;
+      flex-direction: column;
+      h1 {
+        font-size: 32px;
+        font-weight: 900;
+        font-size: 32px;
+        line-height: 109%;
+        letter-spacing: 0.02em;
+        margin-top: 0.5cm;
+        .h1-green-accent {
+          color: #226e27;
+        }
+      }
+      p {
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 151%;
+        text-align: center;
+        letter-spacing: 0.02em;
+        width: 85%;
+        margin-top: 0.25cm;
+      }
+      .button-links {
+        display: flex;
+        flex-direction: column;
+        gap: 0.2cm;
+        margin-top: 0.5cm;
+        button {
+          width: 85%;
+          height: 40px;
+          color: white;
+          border: none;
+          a {
+            text-decoration: none;
+            color: white;
+          }
+        }
+        #contact-button {
+          background: #226e27;
+          border-radius: 2px;
+        }
+        #learn-button {
+          background: black;
+          border-radius: 2px;
+        }
+      }
+    }
+    .header-image_box {
+      position: absolute;
+      z-index: -1;
+      top: 0;
+      right: 0;
+      img {
+        width: 216px;
+        height: 229px;
+      }
+    }
+    .pattern-1,
+    .pattern-2,
+    .pattern-3 {
+      position: absolute;
+      width: 2cm;
+      z-index: -2;
+      top: 0;
+      bottom: 0;
+    }
+    .pattern-1 {
+      right: 0.5cm;
+      top: 3.5cm;
+    }
+    .pattern-2 {
+      right: 1cm;
+      top: 0;
+    }
+    .pattern-3 {
+      bottom: 0;
+      left: 0;
+    }
+  }
+
   // Home Page Header Styles
 
   header {
@@ -106,6 +234,9 @@ body {
     flex-wrap: wrap;
     padding: 25px 10% 5px 10%;
     position: relative;
+    @media (min-width: 320px) and (max-width: 480px) {
+      display: none;
+    }
 
     .header-text {
       display: flex;
