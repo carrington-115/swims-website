@@ -8,6 +8,7 @@
 
 body {
   overflow-x: hidden;
+  padding-top: 4cm;
 }
 
 // Animation Styles
@@ -40,8 +41,14 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 8% 5px 8%;
+    padding: 15px 3% 5px 3%;
     width: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    background-color: white;
+    z-index: 20;
 
     a {
       text-decoration: none;
