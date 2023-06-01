@@ -138,7 +138,229 @@ body {
       }
     }
   }
+}
 
- 
-  
+.article-1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1cm;
+  .story-image {
+    @media (min-width: 320px) and (max-width: 599px) {
+      max-width: 100vw;
+    }
+  }
+  h1 {
+    text-align: center;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 49px;
+    letter-spacing: 0.02em;
+    color: #226e27;
+    margin-bottom: 1cm;
+    @media (min-width: 320px) and (max-width: 599px) {
+      font-style: normal;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 100%;
+      letter-spacing: 0.05em;
+    }
+  }
+  .text-section {
+    width: 85%;
+    margin-top: 1cm;
+    p {
+      text-align: center;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 170%;
+      text-align: center;
+      letter-spacing: 0.02em;
+      margin-bottom: 0.5cm;
+    }
+  }
+}
+
+.article-2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  h1 {
+    font-family: "Satoshi";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 49px;
+  }
+  .article-content {
+    display: flex;
+    width: 85%;
+    justify-content: center;
+    align-items: center;
+    .content-img {
+      width: 45%;
+    }
+    .content-text {
+      width: 55%;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5cm;
+      p {
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 170%;
+      }
+      hr {
+        width: 95%;
+        text-align: center;
+      }
+    }
+  }
+}
+
+.article-3 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2cm;
+  gap: 1cm;
+  h1 {
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 49px;
+    letter-spacing: 0.02em;
+    color: #25702a;
+  }
+  .team-container {
+    width: 85%;
+    display: flex;
+    justify-content: space-between;
+    .team-card {
+      display: flex;
+      width: 18%;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      gap: 16px;
+      padding: 0.25cm;
+      border-radius: 20px;
+      cursor: pointer;
+      &:hover {
+        background-color: white;
+        transform: scale(1.1);
+        transition: all 0.25s 250ms ease-in-out;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
+        img {
+          filter: none;
+        }
+      }
+      img {
+        width: 95%;
+        border-radius: 20px;
+        filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.15));
+      }
+      p {
+        text-align: left;
+        font-weight: 700;
+        font-size: 24px;
+        line-height: 32px;
+        letter-spacing: 0.02em;
+        margin-left: 0.25cm;
+        span {
+          font-weight: 300;
+          font-size: 18px;
+          line-height: 24px;
+          letter-spacing: 0.02em;
+          color: #226e27;
+        }
+      }
+    }
+  }
+}
+
+footer {
+  background-color: #226e27;
+  position: relative;
+  width: 100%;
+  overflow-x: hidden;
+  margin-top: 2cm;
+  display: flex;
+  justify-content: space-between;
+  padding: 1.5cm 3cm 5cm 3cm;
+  @media (min-width: 320px) and (max-width: 599px) {
+    flex-wrap: wrap;
+    padding: 1cm;
+    justify-content: flex-start;
+  }
+
+  .logo {
+    width: 25%;
+    padding: 0.5cm;
+    background-color: white;
+    border-radius: 10px;
+    height: fit-content;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+    @media (min-width: 320px) and (max-width: 599px) {
+      width: 80%;
+    }
+  }
+  .useful-links,
+  .help-and-support,
+  .contact {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    padding-left: 1cm;
+    gap: 15px;
+    @media (min-width: 320px) and (max-width: 599px) {
+      margin-top: 0.5cm;
+      padding: 0;
+    }
+    h3 {
+      font-size: 22px;
+      @media (min-width: 320px) and (max-width: 599px) {
+        font-size: 16px;
+      }
+    }
+    a {
+      text-decoration: none;
+      color: white;
+      font-size: 16px;
+      @media (min-width: 320px) and (max-width: 599px) {
+        font-size: 12px;
+      }
+      &:hover {
+        font-weight: bold;
+      }
+    }
+  }
+  .useful-links {
+    @media (min-width: 320px) and (max-width: 599px) {
+      width: 50%;
+    }
+  }
+  .help-and-support {
+    width: 20%;
+    @media (min-width: 320px) and (max-width: 599px) {
+      width: 50%;
+      padding: 0;
+    }
+  }
+  .contact {
+    width: 25%;
+    .social-media-icons {
+      display: flex;
+      justify-content: space-between;
+      width: 80%;
+    }
+    @media (min-width: 320px) and (max-width: 599px) {
+      width: 80%;
+      padding: 0;
+    }
+  }
 }
