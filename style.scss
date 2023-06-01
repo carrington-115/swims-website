@@ -58,6 +58,9 @@ body {
     left: 0;
     background-color: white;
     z-index: 20;
+    a.active {
+      font-weight: bold;
+    }
     @media (min-width: 320px) and (max-width: 599px) {
       padding: 0;
       padding: 0.25cm 0.5cm;
@@ -345,9 +348,19 @@ body {
       justify-content: space-between;
       gap: 5px;
 
+      @media (min-width: 320px) and (max-width: 599px) {
+        flex-wrap: wrap-reverse;
+      }
+
       h3 {
         font-size: 2.25rem;
         color: #236f28;
+        @media (min-width: 320px) and (max-width: 599px) {
+          font-style: normal;
+          font-weight: 700;
+          font-size: 18px;
+          letter-spacing: 0.02em;
+        }
       }
 
       .text-content {
@@ -355,14 +368,29 @@ body {
           display: flex;
           flex-direction: column;
           justify-content: space-between;
+          align-items: center;
           list-style-image: url("assets/images/bullet.png");
           list-style-position: outside;
           height: 460px;
           max-width: 498px;
+          @media (min-width: 320px) and (max-width: 599px) {
+            li::marker {
+              width: 18px;
+              height: 18px;
+            }
+          }
 
           li {
             text-align: left;
             font-size: 18px;
+            align-items: center;
+            @media (min-width: 320px) and (max-width: 599px) {
+              font-style: normal;
+              font-weight: 400;
+              font-size: 12px;
+              line-height: 130%;
+              letter-spacing: 0.02em;
+            }
           }
         }
       }
@@ -372,7 +400,15 @@ body {
       width: 45%;
       height: 600px;
       border-radius: 0.25cm;
+      flex: 1;
       filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+      @media (min-width: 320px) and (max-width: 599px) {
+        position: inherit;
+        width: 100%;
+        height: 354px;
+        border-radius: 5px;
+        // margin-top: 9cm;
+      }
     }
   }
 }
@@ -392,12 +428,34 @@ body {
   box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.1);
   border-radius: 20px;
   width: 75%;
+  @media (min-width: 320px) and (max-width: 599px) {
+    box-shadow: none;
+    border-radius: 0;
+    width: 100%;
+    padding: 0;
+    justify-content: flex-start;
+    gap: 20px;
+    padding: 0 30px;
+    height: fit-content;
+  }
   p {
     font-size: 1.25rem;
+    @media (min-width: 320px) and (max-width: 599px) {
+      font-size: 12px;
+    }
   }
 
   h3 {
     font-size: 2rem;
+    @media (min-width: 320px) and (max-width: 599px) {
+      font-size: 18px;
+    }
+  }
+  img {
+    @media (min-width: 320px) and (max-width: 599px) {
+      width: 300px;
+      height: 116.65px;
+    }
   }
 }
 
@@ -412,18 +470,30 @@ body {
   align-items: center;
   h3 {
     font-size: 2.25rem;
+    @media (min-width: 320px) and (max-width: 599px) {
+      font-size: 18px;
+    }
   }
 
   .text-content {
     display: flex;
     width: 100%;
     justify-content: space-between;
+    @media (min-width: 320px) and (max-width: 599px) {
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      gap: 10px;
+    }
 
     .text-content-left,
     .text-content-right {
       width: 45%;
       padding: 0.25cm;
       position: relative;
+      @media (min-width: 320px) and (max-width: 599px) {
+        width: 100%;
+        font-size: 12px;
+      }
       a {
         position: absolute;
         right: 0;
@@ -431,11 +501,17 @@ body {
         text-decoration: none;
         color: #226e27;
         font-weight: bold;
+        &:hover {
+          color: black;
+        }
       }
       h4 {
         font-size: 2rem;
         color: #246f29;
         text-align: left;
+        @media (min-width: 320px) and (max-width: 599px) {
+          font-size: 18px;
+        }
       }
 
       display: flex;
@@ -446,6 +522,9 @@ body {
       img {
         width: 80%;
         height: 80%;
+        @media (min-width: 320px) and (max-width: 599px) {
+          width: 100%;
+        }
       }
 
       p {
@@ -454,6 +533,9 @@ body {
         font-weight: 400;
         font-size: 18px;
         line-height: 180%;
+        @media (min-width: 320px) and (max-width: 599px) {
+          font-size: 12px;
+        }
       }
     }
   }
@@ -485,12 +567,38 @@ body {
     margin-top: 1cm;
     align-items: center;
     width: 90%;
+    @media (min-width: 320px) and (max-width: 599px) {
+      display: none;
+    }
 
     img {
       filter: drop-shadow(0px 4px 100px rgba(0, 0, 0, 0.25));
       width: 9cm;
       height: fit-content;
       border-radius: 0.25cm;
+    }
+  }
+  .mobile-carousel {
+    @media (min-width: 600px) {
+      display: none;
+    }
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .top {
+      display: flex;
+      justify-content: center;
+      img {
+        width: 150px;
+        height: fit-content;
+      }
+    }
+    .bottom {
+      filter: drop-shadow(0px 4px 100px rgba(0, 0, 0, 0.25));
+      width: 292px;
+      height: fit-content;
+      border-radius: 20px;
     }
   }
 }
@@ -506,6 +614,9 @@ body {
   padding: 0 5%;
   gap: 1cm;
   margin-top: 1cm;
+  @media (min-width: 320px) and (max-width: 599px) {
+    padding: 0;
+  }
 
   h2 {
     font-style: normal;
@@ -514,6 +625,9 @@ body {
     line-height: 49px;
     letter-spacing: 0.02em;
     color: #000000;
+    @media (min-width: 320px) and (max-width: 599px) {
+      font-size: 18px;
+    }
   }
 
   .team-card-container {
@@ -532,6 +646,15 @@ body {
       width: 30%;
       height: fit-content;
       padding: 2%;
+      @media (min-width: 320px) and (max-width: 599px) {
+        min-width: 95%;
+        justify-content: center;
+        gap: 10px;
+        padding: 5% 10%;
+      }
+      img {
+        width: 30%;
+      }
 
       .text-container {
         display: flex;
@@ -544,11 +667,17 @@ body {
           font-size: 1.5rem;
           font-weight: 900;
           color: #fff;
+          @media (min-width: 320px) and (max-width: 599px) {
+            font-size: 12px;
+          }
         }
 
         .card-title {
           font-size: 1.5rem;
           color: #fff;
+          @media (min-width: 320px) and (max-width: 599px) {
+            font-size: 12px;
+          }
         }
       }
     }
@@ -564,6 +693,11 @@ footer {
   display: flex;
   justify-content: space-between;
   padding: 1.5cm 3cm 5cm 3cm;
+  @media (min-width: 320px) and (max-width: 599px) {
+    flex-wrap: wrap;
+    padding: 1cm;
+    justify-content: flex-start;
+  }
 
   .logo {
     width: 25%;
@@ -575,6 +709,9 @@ footer {
       width: 100%;
       height: 100%;
     }
+    @media (min-width: 320px) and (max-width: 599px) {
+      width: 80%;
+    }
   }
   .useful-links,
   .help-and-support,
@@ -585,20 +722,39 @@ footer {
     color: white;
     padding-left: 1cm;
     gap: 15px;
+    @media (min-width: 320px) and (max-width: 599px) {
+      margin-top: 0.5cm;
+      padding: 0;
+    }
     h3 {
       font-size: 22px;
+      @media (min-width: 320px) and (max-width: 599px) {
+        font-size: 16px;
+      }
     }
     a {
       text-decoration: none;
       color: white;
       font-size: 16px;
+      @media (min-width: 320px) and (max-width: 599px) {
+        font-size: 12px;
+      }
       &:hover {
         font-weight: bold;
       }
     }
   }
+  .useful-links {
+    @media (min-width: 320px) and (max-width: 599px) {
+      width: 50%;
+    }
+  }
   .help-and-support {
     width: 20%;
+    @media (min-width: 320px) and (max-width: 599px) {
+      width: 50%;
+      padding: 0;
+    }
   }
   .contact {
     width: 25%;
@@ -606,6 +762,10 @@ footer {
       display: flex;
       justify-content: space-between;
       width: 80%;
+    }
+    @media (min-width: 320px) and (max-width: 599px) {
+      width: 80%;
+      padding: 0;
     }
   }
 }
