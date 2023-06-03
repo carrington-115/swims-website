@@ -1,16 +1,3 @@
 {
-  "rewrites": [
-    {
-      "source": "/",
-      "destination": "/pages/(.*)/index.html"
-    },
-    {
-      "source": "/pages/(.*)/index.html",
-      "destination": "/pages/(.*)/index.html"
-    },
-    {
-      "source": "/pages/(.*)/index.html",
-      "destination": "/"
-    }
-  ]
+  "trailingSlash": true
 }
