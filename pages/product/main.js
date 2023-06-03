@@ -1,5 +1,4 @@
 import "./style.scss";
-
 const the_animation_left = document.querySelectorAll(".animation-left");
 const the_animation_right = document.querysSelectorAll(".animation-right");
 
