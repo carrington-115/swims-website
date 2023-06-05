@@ -1,4 +1,19 @@
 import "./style.scss";
+
+// getting the elements affected by the header menu clicking
+const drawerMenu = document.querySelector(".drawer-menu");
+const menuButton = document.querySelector(".menu-button");
+const closeButton = document.querySelector(".close-button");
+
+function OpenDrawerMenu() {
+  drawerMenu.style.transform = "translateY(0%)";
+}
+function closeDrawerMenu() {
+  drawerMenu.style.transform = "translateY(-100%)";
+}
+
+menuButton.addEventListener("click", OpenDrawerMenu);
+closeButton.addEventListener("click", closeDrawerMenu);
 const the_animation_left = document.querySelectorAll(".animation-left");
 const the_animation_right = document.querysSelectorAll(".animation-right");
 

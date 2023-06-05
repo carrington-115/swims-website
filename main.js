@@ -6,8 +6,6 @@ const menuButton = document.querySelector(".menu-button");
 const closeButton = document.querySelector(".close-button");
 
 function OpenDrawerMenu() {
-  // document.getElementById("hamburger-menu").style.transform =
-  //   "translateY(100%)";
   drawerMenu.style.transform = "translateY(0%)";
 }
 function closeDrawerMenu() {
