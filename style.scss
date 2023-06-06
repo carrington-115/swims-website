@@ -390,9 +390,11 @@ body {
       display: flex;
       justify-content: space-between;
       gap: 5px;
+      position: relative;
 
       @media (min-width: 320px) and (max-width: 599px) {
         flex-wrap: wrap-reverse;
+        position: relative;
       }
 
       h3 {
@@ -472,6 +474,7 @@ body {
   border-radius: 20px;
   width: 75%;
   margin-top: 1cm;
+  position: relative;
   @media (min-width: 320px) and (max-width: 599px) {
     box-shadow: none;
     border-radius: 0;
