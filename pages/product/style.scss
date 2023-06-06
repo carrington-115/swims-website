@@ -246,6 +246,9 @@ body {
         line-height: 76px;
         letter-spacing: 0.02em;
         color: #226e27;
+        @media (min-width: 320px) and (max-width: 599px) {
+          font-size: 30px;
+        }
       }
       p {
         font-style: normal;
