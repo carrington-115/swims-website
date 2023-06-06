@@ -381,7 +381,7 @@ body {
     text-align: center;
     padding: 5% 10% 5px 10%;
     position: relative;
-
+    margin-bottom: 4cm;
     h3 {
       font-size: 2.25rem;
     }
@@ -409,6 +409,7 @@ body {
       }
 
       .text-content {
+        position: relative;
         ul {
           display: flex;
           flex-direction: column;
