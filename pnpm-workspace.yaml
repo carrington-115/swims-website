@@ -1,0 +1,10 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+
+# Hoisted from the per-app pnpm-workspace.yaml files that website/ and
+# blogs-dashboard/ each carried. Those declared no `packages:` key -- they
+# existed only to hold this list -- so they were deleted rather than merged.
+ignoredBuiltDependencies:
+  - sharp
+  - unrs-resolver

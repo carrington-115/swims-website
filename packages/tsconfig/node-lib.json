@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "SWIMS shared library",
+  "extends": "./base.json",
+  "compilerOptions": {
+    "target": "ES2020",
+    // ES2022.Error only, not the whole ES2022 lib: the two-argument Error
+    // constructor (`new Error(msg, { cause })`) is used by BlogsApiError, but
+    // the emit target stays ES2020.
+    "lib": ["ES2020", "ES2022.Error", "dom"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "isolatedModules": true,
+    "declaration": true,
+    "noEmit": true
+  }
+}

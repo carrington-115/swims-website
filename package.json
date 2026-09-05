@@ -1,0 +1,23 @@
+{
+  "name": "swims",
+  "version": "0.0.0",
+  "private": true,
+  "description": "SWIMS monorepo: Blogs API, marketing website, and blogs dashboard",
+  "packageManager": "pnpm@10.27.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "check": "turbo run typecheck lint build",
+    "clean": "turbo run clean && rimraf .turbo node_modules"
+  },
+  "devDependencies": {
+    "rimraf": "^6.0.1",
+    "turbo": "^2.10.12",
+    "typescript": "^5.6.0"
+  }
+}
