@@ -1,0 +1,47 @@
+# Patterns here are deliberately un-anchored: the per-app copies this was merged
+# from used leading slashes (/node_modules), which only match at the file's own
+# level and would stop ignoring apps/*/node_modules once hoisted to the root.
+
+# dependencies
+node_modules
+.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# build output
+.next/
+out/
+build/
+dist/
+*.tsbuildinfo
+next-env.d.ts
+
+# caches
+.turbo/
+.eslintcache
+
+# testing
+coverage/
+
+# env files
+.env
+.env.*
+!.env.example
+
+# logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# vercel
+.vercel
+
+# misc
+.DS_Store
+*.pem
