@@ -135,6 +135,8 @@
   --shadow-card: 0 1px 2px rgb(17 20 17 / 0.06), 0 8px 24px rgb(17 20 17 / 0.08);
   --shadow-float: 0 12px 40px rgb(17 20 17 / 0.18);
   --shadow-header: 0 1px 0 var(--color-line);
+  /* Figma "feature-drop(media)" -- the team profile popup sheet (3138:251). */
+  --shadow-modal: 0 4px 20px 5px rgb(0 0 0 / 0.05);
 
   /* Motion ---------------------------------------------------------------- */
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);

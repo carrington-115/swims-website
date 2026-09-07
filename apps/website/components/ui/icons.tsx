@@ -152,6 +152,32 @@ export function YouTubeIcon(props: IconProps) {
 }
 
 /**
+ * The two marks a team member's profile can carry that the SWIMS accounts do
+ * not (Figma `bxl:github` and `fa6-brands:x-twitter`, node 3138:251). GitHub is
+ * drawn on a 30px grid rather than 24px, so it keeps its own viewBox like the
+ * marks above.
+ */
+export function GitHubIcon(props: IconProps) {
+  return (
+    <svg {...solid} viewBox="0 0 30 30" {...props}>
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M15.0325 2.5C8.14625 2.5 2.565 8.08125 2.565 14.9675C2.565 20.475 6.13625 25.1487 11.0913 26.7987C11.715 26.9112 11.94 26.5275 11.94 26.1975C11.94 25.9013 11.93 25.1162 11.9263 24.0775C8.4575 24.83 7.725 22.405 7.725 22.405C7.16 20.965 6.34125 20.5813 6.34125 20.5813C5.21 19.8075 6.4275 19.825 6.4275 19.825C7.68 19.9125 8.33625 21.11 8.33625 21.11C9.44875 23.015 11.2563 22.465 11.9638 22.1462C12.0775 21.34 12.4025 20.79 12.7575 20.4787C9.99 20.165 7.08 19.095 7.08 14.3163C7.08 12.9575 7.56625 11.8425 8.36 10.9725C8.23375 10.6562 7.8025 9.3875 8.48375 7.6725C8.48375 7.6725 9.53 7.33625 11.9113 8.94875C12.9283 8.67235 13.9773 8.53113 15.0312 8.52875C16.0852 8.53113 17.1342 8.67235 18.1512 8.94875C20.5337 7.335 21.5788 7.6725 21.5788 7.6725C22.26 9.3875 21.8325 10.6562 21.7025 10.9725C22.5025 11.8425 22.9825 12.9563 22.9825 14.3163C22.9825 19.1075 20.07 20.16 17.2925 20.4688C17.7362 20.8537 18.1362 21.6138 18.1362 22.7763C18.1362 24.4438 18.1212 25.7888 18.1212 26.1975C18.1212 26.5313 18.3438 26.9188 18.98 26.7963C23.9325 25.1438 27.5 20.4738 27.5 14.9675C27.5 8.08125 21.9187 2.5 15.0325 2.5Z"
+      />
+    </svg>
+  );
+}
+
+export function XIcon(props: IconProps) {
+  return (
+    <svg {...solid} {...props}>
+      <path d="M18.2438 2.25H21.5531L14.325 10.5094L22.8281 21.75H16.1719L10.9547 14.9344L4.99219 21.75H1.67812L9.40781 12.9141L1.25625 2.25H8.08125L12.7922 8.47969L18.2438 2.25ZM17.0813 19.7719H18.9141L7.08281 4.125H5.11406L17.0813 19.7719Z" />
+    </svg>
+  );
+}
+
+/**
  * Store marks for the DTRACKER download buttons (Figma
  * `famicons:logo-google-playstore` and `fa6-brands:app-store-ios`). Path data
  * is the Figma export verbatim; only the hardcoded fill is dropped so the

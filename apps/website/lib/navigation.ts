@@ -44,6 +44,7 @@ export const mainNav: readonly NavItem[] = [
     ],
   },
   { label: "Our Partners", href: "/partners" },
+  { label: "Our people", href: "/people" },
   { label: "Join our team", href: "/careers" },
   { label: "Contact us", href: "/contact" },
   { label: "Blog", href: "/blog" },
@@ -92,8 +93,17 @@ export const footerNav: readonly NavGroup[] = [
   },
 ];
 
-/** Which glyph `SocialLinks` draws for a profile. */
-export type SocialNetwork = "linkedin" | "facebook" | "instagram" | "youtube";
+/**
+ * Which glyph `SocialLinks` draws for a profile. The last two are only ever
+ * used by a team member (Figma 3138:251); SWIMS itself has no GitHub or X.
+ */
+export type SocialNetwork =
+  | "linkedin"
+  | "facebook"
+  | "instagram"
+  | "youtube"
+  | "github"
+  | "x";
 
 export type SocialLink = {
   network: SocialNetwork;

@@ -1,7 +1,7 @@
 {
   "0": "blogController.ts",
   "1": "icons.tsx",
-  "2": ".next/**",
+  "2": "env",
   "3": "getSupabaseAdmin",
   "4": "devDependencies",
   "5": "blogs-api/package.json",
@@ -17,14 +17,14 @@
   "15": "eslint-config/package.json",
   "16": "compilerOptions",
   "17": "site-image.tsx",
-  "18": "cn.ts",
+  "18": "dtracker-hero.tsx",
   "19": "compilerOptions",
   "20": "compilerOptions",
   "21": "section.tsx",
   "22": "hero-banner.tsx",
   "23": "client.ts",
-  "24": "newsletter-signup.tsx",
-  "25": "dtracker/page.tsx",
+  "24": "backed-by.tsx",
+  "25": "platform/page.tsx",
   "26": "tsconfig/package.json",
   "27": "api-client/tsconfig.json",
   "28": "schemas/tsconfig.json",
@@ -56,9 +56,6 @@
   "54": "dashboard/CLAUDE.md",
   "55": "website/CLAUDE.md",
   "56": "cn",
-  "57": "site-footer.tsx",
-  "58": "hero-slider.tsx",
-  "59": "navigation.ts",
-  "60": "site-menu.tsx",
-  "61": "waste-crisis.tsx"
+  "57": "container.tsx",
+  "58": "partners/page.tsx"
 }

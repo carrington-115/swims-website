@@ -865,8 +865,8 @@
     "semantic_hash": ""
   },
   "apps/website/app/products/dtracker/_sections/dtracker-hero.tsx": {
-    "mtime": 1788748015.6558855,
-    "ast_hash": "1276e3f84c2e4c0959cf29694bec1f8d",
+    "mtime": 1788749330.1043036,
+    "ast_hash": "64d64d418fa57ec22f3ff5d47c5a3f17",
     "semantic_hash": ""
   },
   "apps/website/components/sections/hero/hero-frame.ts": {
@@ -887,6 +887,26 @@
   "apps/website/app/partners/page.tsx": {
     "mtime": 1788747966.8910058,
     "ast_hash": "b1655fda0234c8790717fb3868bc4ca5",
+    "semantic_hash": ""
+  },
+  "apps/website/app/products/platform/_sections/platform-bands.tsx": {
+    "mtime": 1788748883.097022,
+    "ast_hash": "f31fc0a4326440f3a50aa97526256803",
+    "semantic_hash": ""
+  },
+  "apps/website/app/products/platform/_sections/platform-hero.tsx": {
+    "mtime": 1788748766.2791333,
+    "ast_hash": "dbe0ddc3f2e0bbd1c591c5ffe59f7d68",
+    "semantic_hash": ""
+  },
+  "apps/website/app/products/platform/page.tsx": {
+    "mtime": 1788748964.263176,
+    "ast_hash": "767f45d7dc5bb1a90cff76f935b4fc54",
+    "semantic_hash": ""
+  },
+  "apps/website/components/sections/cta-band.tsx": {
+    "mtime": 1788748550.606719,
+    "ast_hash": "fe40a2d7c6667626a66ba760ab494012",
     "semantic_hash": ""
   }
 }

@@ -1,6 +1,7 @@
 import { images } from "@/assets/images";
 import type { CollectorBenefit } from "@/components/sections/collector-pitch";
 import type { Person } from "@/components/ui/person-card";
+import { team as roster } from "@/lib/team";
 
 /**
  * Copy for the Why Us page, transcribed from Figma 3025:4695 (desktop) and
@@ -27,32 +28,13 @@ export const founder = {
   portrait: images.team.ceo,
 };
 
-export const team: readonly Person[] = [
-  {
-    id: "fru-mark-carrington-chei",
-    name: "Fru-Mark Carrington Chei",
-    role: "Founder & CEO",
-    portrait: images.team.ceo,
-  },
-  {
-    id: "ntoh-epotie-alida",
-    name: "Ntoh Epotie Alida",
-    role: "Cofounder & COO",
-    portrait: images.team.coo,
-  },
-  {
-    id: "tardzenyuy-brian-harris",
-    name: "Tardzenyuy Brian Harris",
-    role: "Co-founder & Marketing director",
-    portrait: images.team.cmo,
-  },
-  {
-    id: "arrey-etta-bessong",
-    name: "Arrey-Etta Bessong",
-    role: "Co-founder & technology systems director",
-    portrait: images.team.cto,
-  },
-];
+/**
+ * The same roster the People page lists, minus the profile links: Why Us shows
+ * the team as a credential, and the profiles live on `/people`.
+ */
+export const team: readonly Person[] = roster.map(
+  ({ id, name, role, portrait }) => ({ id, name, role, portrait }),
+);
 
 /**
  * Two of the five logo slots in the Figma frame exported empty, so the row is
