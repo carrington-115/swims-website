@@ -50,6 +50,13 @@ type FeatureBandProps = ComponentPropsWithoutRef<"section"> & {
    */
   mediaFirst?: boolean;
   /**
+   * Which end of the copy column the button sits at *on phones*. Desktop is
+   * always `start`, which is how every frame draws it. The DTRACKER surplus
+   * band is the one mobile frame that pushes it to the right edge instead
+   * (Figma 3143:286).
+   */
+  ctaAlign?: "start" | "end";
+  /**
    * How the media sits against the copy from `lg`.
    *
    * `center` is the home page: a self-contained image, centred on the copy.
@@ -149,6 +156,7 @@ export function FeatureBand({
   copyClassName = "lg:w-165",
   gapClassName = "lg:gap-25",
   mediaFirst = false,
+  ctaAlign = "start",
   mediaAlign = "center",
   mediaSide = "start",
   headingId,
@@ -175,7 +183,7 @@ export function FeatureBand({
       >
         <div
           className={cn(
-            "flex flex-col items-start gap-4 lg:gap-5",
+            "flex flex-col items-start gap-2.5 lg:gap-5",
             mediaSide === "start" ? "lg:order-last" : "lg:order-first",
             // The row is bottom-aligned for the media's sake; the copy opts out
             // and stays centred, which is how every frame draws it.
@@ -183,22 +191,31 @@ export function FeatureBand({
             copyClassName,
           )}
         >
+          {/*
+            Phones run 24/16 and desktop 36/20 -- the sizes the mobile home
+            frames carry (Figma 3070:36918, 3143:286, 3070:36940). The DTRACKER
+            and Platform pages have no mobile frames of their own and inherit
+            this scale.
+          */}
           <h2
             id={headingId}
             className={cn(
-              "font-display text-xl font-semibold lg:text-4xl",
+              "font-display text-2xl font-semibold lg:text-4xl",
               styles.heading,
             )}
           >
             {heading}
           </h2>
-          <p className={cn("text-sm lg:text-xl", styles.body)}>{body}</p>
+          <p className={cn("text-base lg:text-xl", styles.body)}>{body}</p>
           {cta ? (
             <Button
               href={cta.href}
               variant={styles.button}
               shape="square"
-              className="px-3"
+              className={cn(
+                "px-3",
+                ctaAlign === "end" && "self-end lg:self-start",
+              )}
             >
               {cta.label}
             </Button>

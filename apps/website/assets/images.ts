@@ -48,6 +48,8 @@ import dtrackerSecurity from "./figma-images/dtracker/phone-security.png";
 
 import whyUsPhone from "./figma-images/why-us/phone-2.png";
 import whyUsPhones from "./figma-images/why-us/dtracker-phones.webp";
+import whyUsPhonePickup from "./figma-images/why-us/phone-pickup.webp";
+import whyUsPhoneVerification from "./figma-images/why-us/phone-verification.webp";
 import whyUsHero from "./figma-images/why-us/hero.webp";
 
 import platformDrone from "./figma-images/swims-platform/drone.png";
@@ -97,7 +99,8 @@ export type SiteImage = {
   focal?: { base: string; md?: string };
 };
 
-const defineImages = <T extends Record<string, SiteImage>>(group: T): T => group;
+const defineImages = <T extends Record<string, SiteImage>>(group: T): T =>
+  group;
 
 export const brand = defineImages({
   logo: {
@@ -228,6 +231,21 @@ export const whyUs = defineImages({
     alt: "Two phones running DTRACKER, showing a collector's pickups and earnings",
     transparent: true,
   },
+  /*
+   * The same two handsets as `dtrackerPhones`, but cut apart: the mobile
+   * collector-pitch frame tilts them individually and spreads them across the
+   * band, which the single composite cannot do (Figma 3076:37395, 3076:37399).
+   */
+  dtrackerPhonePickup: {
+    src: whyUsPhonePickup,
+    alt: "DTRACKER pickup options, with a collector's monthly earnings underneath",
+    transparent: true,
+  },
+  dtrackerPhoneVerification: {
+    src: whyUsPhoneVerification,
+    alt: "DTRACKER agent verification, listing the three steps to activate a collector account",
+    transparent: true,
+  },
 });
 
 export const platform = defineImages({
@@ -262,7 +280,10 @@ export const products = defineImages({
 });
 
 export const team = defineImages({
-  ceo: { src: teamCeo, alt: "Portrait of Fru-Mark Carrington Chei, SWIMS founder and CEO" },
+  ceo: {
+    src: teamCeo,
+    alt: "Portrait of Fru-Mark Carrington Chei, SWIMS founder and CEO",
+  },
   cto: {
     src: teamCto,
     alt: "Portrait of Arrey-Etta Bessong, SWIMS co-founder and technology systems director",
@@ -287,18 +308,34 @@ export const partners = defineImages({
 
   /* --- Partner and investor marks --------------------------------------- */
   athenaVc: { src: partnerAthena, alt: "Athena VC logo", transparent: true },
-  bv: { src: partnerBv, alt: "BeVisioneers, the Mercedes-Benz Fellowship, logo", transparent: true },
+  bv: {
+    src: partnerBv,
+    alt: "BeVisioneers, the Mercedes-Benz Fellowship, logo",
+    transparent: true,
+  },
   fi: { src: partnerFi, alt: "Founder Institute logo", transparent: true },
   mecitech: { src: partnerMecitech, alt: "Mecitech logo", transparent: true },
-  microsoft: { src: partnerMicrosoft, alt: "Microsoft for Startups Founders Hub logo", transparent: true },
+  microsoft: {
+    src: partnerMicrosoft,
+    alt: "Microsoft for Startups Founders Hub logo",
+    transparent: true,
+  },
   mitSolve: { src: partnerMitSolve, alt: "MIT Solve logo", transparent: true },
   mountainAngelNetwork: {
     src: partnerMountainAngel,
     alt: "Mountain Angel Network logo",
     transparent: true,
   },
-  mountainHub: { src: partnerMountainHub, alt: "Mountain Hub logo", transparent: true },
-  ticSummit: { src: partnerTicSummit, alt: "TIC Summit logo", transparent: true },
+  mountainHub: {
+    src: partnerMountainHub,
+    alt: "Mountain Hub logo",
+    transparent: true,
+  },
+  ticSummit: {
+    src: partnerTicSummit,
+    alt: "TIC Summit logo",
+    transparent: true,
+  },
 });
 
 /**

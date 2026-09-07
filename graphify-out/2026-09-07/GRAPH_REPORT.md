@@ -1,16 +1,16 @@
 # Graph Report - updated-website  (2026-09-07)
 
 ## Corpus Check
-- 140 files · ~187,196 words
+- 148 files · ~194,257 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 947 nodes · 1509 edges · 59 communities (47 shown, 12 thin omitted)
-- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 8 edges (avg confidence: 0.73)
+- 974 nodes · 1590 edges · 61 communities (49 shown, 12 thin omitted)
+- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 10 edges (avg confidence: 0.74)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `f48bcd60`
+- Built from commit: `1e9c6e59`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -32,15 +32,15 @@
 - images.ts
 - eslint-config/package.json
 - compilerOptions
-- site-image.tsx
-- dtracker-hero.tsx
-- compilerOptions
-- compilerOptions
-- section.tsx
-- hero-banner.tsx
-- client.ts
-- backed-by.tsx
 - platform/page.tsx
+- dtracker/page.tsx
+- compilerOptions
+- compilerOptions
+- dashboard/app/layout.tsx
+- cn
+- client.ts
+- newsletter-signup.tsx
+- website/app/page.tsx
 - tsconfig/package.json
 - api-client/tsconfig.json
 - schemas/tsconfig.json
@@ -64,21 +64,21 @@
 - media/README.md
 - ui/README.md
 - CLAUDE.md
-- cn
-- container.tsx
+- blog-card.tsx
+- .next/**
 - partners/page.tsx
 
 ## God Nodes (most connected - your core abstractions)
-1. `cn()` - 74 edges
+1. `cn()` - 76 edges
 2. `getSupabaseAdmin()` - 21 edges
-3. `Section()` - 19 edges
-4. `images` - 18 edges
-5. `Container()` - 18 edges
-6. `SiteImage()` - 18 edges
+3. `Container()` - 20 edges
+4. `Section()` - 20 edges
+5. `images` - 19 edges
+6. `SiteImage()` - 19 edges
 7. `compilerOptions` - 17 edges
 8. `compilerOptions` - 16 edges
 9. `compilerOptions` - 16 edges
-10. `Button()` - 14 edges
+10. `Button()` - 15 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `requireOwnedBlog()` --references--> `Blog`  [EXTRACTED]
@@ -95,23 +95,23 @@
 ## Import Cycles
 - None detected.
 
-## Communities (59 total, 12 thin omitted)
+## Communities (61 total, 12 thin omitted)
 
 ### Community 0 - "blogController.ts"
-Cohesion: 0.08
-Nodes (44): app, server, getSupabaseAuth(), createBlog(), createBlogSchema, createSection(), createSectionSchema, deleteBlog() (+36 more)
+Cohesion: 0.17
+Nodes (27): createBlog(), createBlogSchema, createSection(), createSectionSchema, deleteBlog(), deleteSection(), generateBlogToc(), getBlogById() (+19 more)
 
 ### Community 1 - "icons.tsx"
-Cohesion: 0.06
-Nodes (36): geistMono, geistSans, metadata, poppins, stats, WasteCrisis(), FooterNavColumn(), FooterNavColumnProps (+28 more)
+Cohesion: 0.05
+Nodes (52): geistMono, geistSans, metadata, poppins, InterceptedPersonPage(), PersonProfile(), PersonProfileProps, ProfileModal() (+44 more)
 
 ### Community 2 - "env"
 Cohesion: 0.06
 Nodes (36): ^build, CORS_ORIGINS, .env, **/.env.*local, !.next/cache/**, NEXT_PUBLIC_BLOGS_API_URL, NODE_ENV, PORT (+28 more)
 
 ### Community 3 - "getSupabaseAdmin"
-Cohesion: 0.09
-Nodes (34): clientOptions, getSupabaseAdmin(), getSupabaseEnv(), SupabaseEnv, supabaseEnvSchema, BlogUpdate, create(), findById() (+26 more)
+Cohesion: 0.06
+Nodes (51): app, server, clientOptions, getSupabaseAdmin(), getSupabaseAuth(), getSupabaseEnv(), SupabaseEnv, supabaseEnvSchema (+43 more)
 
 ### Community 4 - "devDependencies"
 Cohesion: 0.05
@@ -165,13 +165,13 @@ Nodes (19): dependencies, eslint-config-next, typescript-eslint, exports, ./next
 Cohesion: 0.11
 Nodes (18): compilerOptions, allowJs, incremental, isolatedModules, jsx, lib, module, moduleResolution (+10 more)
 
-### Community 17 - "site-image.tsx"
-Cohesion: 0.18
-Nodes (12): SiteImage, SiteImage(), SiteImageProps, HeroBackdropProps, defaultProducts, ProductHighlights(), ProductHighlightsProps, LogoWall() (+4 more)
+### Community 17 - "platform/page.tsx"
+Cohesion: 0.43
+Nodes (4): metadata, DashboardBand(), DroneBand(), SensorBand()
 
-### Community 18 - "dtracker-hero.tsx"
-Cohesion: 0.33
-Nodes (5): DtrackerHero(), AppStoreButtons(), AppStoreButtonsProps, AppStoreIcon(), PlayStoreIcon()
+### Community 18 - "dtracker/page.tsx"
+Cohesion: 0.31
+Nodes (7): metadata, DirectPaymentBand(), LiveMapBand(), PickupScheduleBand(), SecureSetupBand(), TrackEarningsBand(), DtrackerHero()
 
 ### Community 19 - "compilerOptions"
 Cohesion: 0.12
@@ -181,25 +181,25 @@ Nodes (15): compilerOptions, lib, module, moduleResolution, noFallthroughCasesIn
 Cohesion: 0.12
 Nodes (15): compilerOptions, declaration, isolatedModules, lib, module, moduleResolution, noEmit, target (+7 more)
 
-### Community 21 - "section.tsx"
-Cohesion: 0.20
-Nodes (9): Section(), SectionProps, spacings, tones, CtaBand(), CtaBandProps, CtaBandTone, FeatureBandProps (+1 more)
+### Community 21 - "dashboard/app/layout.tsx"
+Cohesion: 0.40
+Nodes (3): geistMono, geistSans, metadata
 
-### Community 22 - "hero-banner.tsx"
-Cohesion: 0.10
-Nodes (24): heroSlides, HeroDots(), HeroDotsProps, HeroNavArrow(), HeroNavArrowProps, HeroSlide(), HeroSlideProps, HeroSlider() (+16 more)
+### Community 22 - "cn"
+Cohesion: 0.05
+Nodes (77): ProfileModalProps, DownloadCta(), PlatformHero(), heroSlides, HeroDots(), HeroDotsProps, HeroNavArrow(), HeroNavArrowProps (+69 more)
 
 ### Community 23 - "client.ts"
 Cohesion: 0.31
 Nodes (6): BlogsClient, createBlogsClient(), BlogsApiError, BlogsClientOptions, FetchLike, RequestOptions
 
-### Community 24 - "backed-by.tsx"
-Cohesion: 0.18
-Nodes (11): BackedByCta, BackedByProps, NewsletterForm(), NewsletterFormProps, newsletterInitialState, NewsletterState, NewsletterSignupProps, Button() (+3 more)
+### Community 24 - "newsletter-signup.tsx"
+Cohesion: 0.22
+Nodes (9): NewsletterForm(), NewsletterFormProps, newsletterInitialState, NewsletterState, NewsletterSignupProps, Input(), InputProps, inputVariants (+1 more)
 
-### Community 25 - "platform/page.tsx"
-Cohesion: 0.08
-Nodes (26): geistMono, geistSans, metadata, nextConfig, subscribeToNewsletter(), metadata, DownloadCta(), DirectPaymentBand() (+18 more)
+### Community 25 - "website/app/page.tsx"
+Cohesion: 0.22
+Nodes (8): subscribeToNewsletter(), metadata, DesignChallengeBand(), DtrackerSurplusBand(), PlatformTrackingBand(), LatestBlogs(), NewsletterSignup(), TeamGrid()
 
 ### Community 26 - "tsconfig/package.json"
 Cohesion: 0.20
@@ -223,15 +223,15 @@ Nodes (3): Express, Locals, Request
 
 ### Community 41 - "Component standard"
 Cohesion: 0.06
-Nodes (33): Commands, Layout, Non-negotiables, Read before writing UI code, SWIMS website, This is NOT the Next.js you know, 1. Where things live, 2. Naming and file layout (+25 more)
+Nodes (34): Commands, Layout, Non-negotiables, Read before writing UI code, SWIMS website, This is NOT the Next.js you know, 1. Where things live, 2. Naming and file layout (+26 more)
 
 ### Community 42 - "Authenticated (Requires Bearer token)"
 Cohesion: 0.07
 Nodes (28): API Endpoints, Architecture, Authenticated (Requires Bearer token), Authentication, Build & Production, CORS, Create Blog, Create Section (+20 more)
 
 ### Community 43 - "why-us/page.tsx"
-Cohesion: 0.21
-Nodes (12): latestPosts, backers, collectorBenefits, founder, founderParagraphs, heroHeading, team, metadata (+4 more)
+Cohesion: 0.24
+Nodes (11): backers, collectorBenefits, founder, founderParagraphs, heroHeading, team, metadata, images (+3 more)
 
 ### Community 44 - "SWIMS monorepo"
 Cohesion: 0.33
@@ -245,37 +245,37 @@ Nodes (3): Deploy on Vercel, Getting Started, Learn More
 Cohesion: 0.50
 Nodes (3): Deploy on Vercel, Getting Started, Learn More
 
-### Community 56 - "cn"
-Cohesion: 0.15
-Nodes (19): FounderMessage(), FounderMessageProps, LatestBlogsProps, PartnersStrip(), TeamGrid(), TeamGridProps, BlogCard(), BlogCardPost (+11 more)
+### Community 56 - "blog-card.tsx"
+Cohesion: 0.40
+Nodes (4): latestPosts, BlogCard(), BlogCardPost, BlogCardProps
 
-### Community 57 - "container.tsx"
-Cohesion: 0.23
-Nodes (9): Container(), ContainerProps, SiteLogo(), SiteLogoProps, isActive(), SiteMenu(), defaultLogos, PartnersStripCta (+1 more)
+### Community 57 - ".next/**"
+Cohesion: 0.40
+Nodes (3): nextConfig, nextConfig, .next/**
 
 ### Community 58 - "partners/page.tsx"
-Cohesion: 0.24
-Nodes (8): heroBody, heroHeading, partnerLogos, wallHeading, metadata, BackedBy(), PageHero(), PageHeroProps
+Cohesion: 0.33
+Nodes (6): heroBody, heroHeading, partnerLogos, wallHeading, metadata, PageHero()
 
 ## Knowledge Gaps
-- **484 isolated node(s):** `figma`, `name`, `version`, `private`, `description` (+479 more)
+- **487 isolated node(s):** `figma`, `name`, `version`, `private`, `description` (+482 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **12 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `.next/**` connect `platform/page.tsx` to `env`, `icons.tsx`, `partners/page.tsx`, `why-us/page.tsx`?**
-  _High betweenness centrality (0.027) - this node is a cross-community bridge._
-- **Why does `cn()` connect `cn` to `icons.tsx`, `why-us/page.tsx`, `site-image.tsx`, `dtracker-hero.tsx`, `section.tsx`, `hero-banner.tsx`, `backed-by.tsx`, `container.tsx`, `partners/page.tsx`, `platform/page.tsx`?**
+- **Why does `.next/**` connect `.next/**` to `icons.tsx`, `env`, `why-us/page.tsx`, `platform/page.tsx`, `dtracker/page.tsx`, `dashboard/app/layout.tsx`, `website/app/page.tsx`, `partners/page.tsx`?**
+  _High betweenness centrality (0.028) - this node is a cross-community bridge._
+- **Why does `cn()` connect `cn` to `icons.tsx`, `blog-card.tsx`, `why-us/page.tsx`, `newsletter-signup.tsx`, `website/app/page.tsx`, `partners/page.tsx`?**
   _High betweenness centrality (0.022) - this node is a cross-community bridge._
-- **Why does `outputs` connect `env` to `platform/page.tsx`?**
+- **Why does `outputs` connect `env` to `.next/**`?**
   _High betweenness centrality (0.021) - this node is a cross-community bridge._
 - **What connects `figma`, `name`, `version` to the rest of the system?**
-  _484 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `blogController.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.08220211161387632 - nodes in this community are weakly interconnected._
+  _487 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `icons.tsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.06236786469344609 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.05029838022165388 - nodes in this community are weakly interconnected._
 - **Should `env` be split into smaller, more focused modules?**
   _Cohesion score 0.05855855855855856 - nodes in this community are weakly interconnected._
+- **Should `getSupabaseAdmin` be split into smaller, more focused modules?**
+  _Cohesion score 0.05970149253731343 - nodes in this community are weakly interconnected._

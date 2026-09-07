@@ -16,7 +16,9 @@ apps/website/
       home/                  cmr-map.svg, iot-sensor.png, phone-1.png
       dtracker/              phone-24-7.png, phone-goals.png, phone-payment.png,
                              phone-schedule.png, phone-security.png
-      why-us/                phone-2.png
+      why-us/                phone-2.png, dtracker-phones.webp,
+                             phone-pickup.webp, phone-verification.webp
+                             (hero.webp is the page hero)
       swims-platform/        drone.png, labelled-sensor.png, monitor.png
       product-images/        dtracker.png, swims-design-challenge.png
                              (data-intelligence.png is on disk but no longer

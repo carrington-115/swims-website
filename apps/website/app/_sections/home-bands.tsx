@@ -34,13 +34,15 @@ export function DesignChallengeBand() {
 }
 
 /**
- * "Get 500% surplus on Monthly operations" (Figma 3022:3574 desktop, 3070:36931
+ * "Get 500% surplus on Monthly operations" (Figma 3022:3574 desktop, 3143:286
  * mobile).
  *
- * Figma bleeds the phone off the left edge of the phone frame at roughly 1.6x
- * the screen width. It runs full bleed here instead -- edge to edge, whole --
- * which keeps the same "wider than the copy" reading without a fixed overhang
- * that has to be re-tuned for every screen between 320 and 430px.
+ * On phones the mobile frame centres the mockup in a 330x301 clipping frame
+ * flush with the bottom of the band, so the handset runs off the page rather
+ * than ending in mid-air -- hence the fixed height, the `overflow-hidden` and
+ * the band dropping its own bottom padding. Desktop shows the whole mockup, so
+ * both come back from `lg`. The button sits at the right edge on phones only,
+ * which is the one thing this band does differently from the other two.
  */
 export function DtrackerSurplusBand() {
   return (
@@ -49,9 +51,11 @@ export function DtrackerSurplusBand() {
       heading="Get 500% surplus on Monthly operations"
       body="Turn your work into income you can count on. Set weekly targets. Watch your earnings accumulate in real time. Build a customer base that depends on you, and pays you fairly for it. No middleman. No delays."
       cta={{ label: "Learn more", href: "/products/dtracker" }}
+      ctaAlign="end"
       image={images.home.phone}
-      mediaClassName="-mx-gutter lg:mx-0 lg:w-82.5"
-      sizes="(min-width: 1024px) 330px, 100vw"
+      className="pb-0 lg:pb-24"
+      mediaClassName="mx-auto h-75.25 w-82.5 max-w-full overflow-hidden lg:mx-0 lg:h-auto lg:overflow-visible"
+      sizes="330px"
     />
   );
 }
@@ -59,7 +63,7 @@ export function DtrackerSurplusBand() {
 /**
  * "SWIMS empower organizations with tools to track where and when" (Figma
  * 3024:3608 desktop, 3070:36940 mobile). The only band whose media leads on
- * phones.
+ * phones, where the mobile frame centres the sensor over the copy.
  */
 export function PlatformTrackingBand() {
   return (
@@ -71,7 +75,8 @@ export function PlatformTrackingBand() {
       body="Integrate SWIMS devices, sensors, drones, vision cameras, for smart waste tracking in organizations and communities with big data analytics and AI experience."
       cta={{ label: "Learn more", href: "/products/platform" }}
       image={images.home.iotSensor}
-      mediaClassName="w-66.5 max-w-full self-end lg:w-114 lg:self-auto"
+      gapClassName="gap-5 lg:gap-25"
+      mediaClassName="w-66.5 max-w-full self-center lg:w-114 lg:self-auto"
       sizes="(min-width: 1024px) 456px, 266px"
     />
   );
