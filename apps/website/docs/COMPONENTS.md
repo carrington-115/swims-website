@@ -117,8 +117,9 @@ Through the registry and `SiteImage` only — see [IMAGES.md](./IMAGES.md).
 - Every interactive element is keyboard reachable and keeps a visible focus
   ring (`focus-visible:outline-primary`); never `outline-none` without a
   replacement.
-- Body text meets 4.5:1 contrast. Text over photography needs an overlay plus
-  the `text-on-image` shadow.
+- Body text meets 4.5:1 contrast. Text over photography carries its contrast
+  from the overlay -- `.hero-scrim` or a `bg-overlay-*` plate -- not from a
+  text shadow.
 - Animation respects `prefers-reduced-motion` — the global rule in
   `globals.css` handles CSS transitions; JS-driven motion must check it.
 

@@ -270,14 +270,14 @@
     "semantic_hash": "5a7f85ae65630e4e0c6368e05fd73367"
   },
   "apps/website/components/sections/partners-strip.tsx": {
-    "mtime": 1788747849.3987763,
-    "ast_hash": "8cd7ff574953843ceef455c52c30b69c",
-    "semantic_hash": "8cd7ff574953843ceef455c52c30b69c"
+    "mtime": 1788816723.3737092,
+    "ast_hash": "0d68546305202e0255496639efa4c03c",
+    "semantic_hash": ""
   },
   "apps/website/components/ui/blog-card.tsx": {
-    "mtime": 1788669978.1641212,
-    "ast_hash": "ad92c0728905038e8f4b0a1c67dd07da",
-    "semantic_hash": "ad92c0728905038e8f4b0a1c67dd07da"
+    "mtime": 1788815638.166014,
+    "ast_hash": "8ee26998a851031617cd118a3a09717e",
+    "semantic_hash": ""
   },
   "apps/website/components/ui/button.tsx": {
     "mtime": 1788671920.3274221,
@@ -285,8 +285,8 @@
     "semantic_hash": "55ead1c3a06b2bbf0e8fd82ea8495395"
   },
   "apps/website/components/ui/icons.tsx": {
-    "mtime": 1788763530.7974255,
-    "ast_hash": "157be0775a0cec642db0aff19832206c",
+    "mtime": 1788815556.3861575,
+    "ast_hash": "f8cd4657f3e29a02267206f34abf9702",
     "semantic_hash": ""
   },
   "apps/website/components/ui/input.tsx": {
@@ -310,9 +310,9 @@
     "semantic_hash": "dfa1f5f6a7037bf39dc510f30b180002"
   },
   "apps/website/lib/cn.ts": {
-    "mtime": 1788641815.0179198,
-    "ast_hash": "7a98bcf8fba587e58a29a78f3e4e0568",
-    "semantic_hash": "7a98bcf8fba587e58a29a78f3e4e0568"
+    "mtime": 1788817668.2079985,
+    "ast_hash": "c62cfa12a8f3772c36409eddbd78a263",
+    "semantic_hash": ""
   },
   "apps/website/lib/navigation.ts": {
     "mtime": 1788763544.766492,
@@ -480,8 +480,8 @@
     "semantic_hash": "6873ee1bfba143cadb5ec6919bf1a31a"
   },
   "apps/website/app/products/dtracker/_sections/download-cta.tsx": {
-    "mtime": 1788747344.0239315,
-    "ast_hash": "9aeba576281aedfadfc778a98d6c565d",
+    "mtime": 1788817687.605806,
+    "ast_hash": "eb47710d651c94e0ac601619fa0b1a8f",
     "semantic_hash": ""
   },
   "apps/website/app/products/dtracker/_sections/dtracker-bands.tsx": {
@@ -505,8 +505,8 @@
     "semantic_hash": ""
   },
   "apps/website/components/sections/backed-by.tsx": {
-    "mtime": 1788747886.4294138,
-    "ast_hash": "b7bf15dafcef37efc7f548b5720e5798",
+    "mtime": 1788816708.4033704,
+    "ast_hash": "a9f88e8727b1772e853c0233e1ee4cdd",
     "semantic_hash": ""
   },
   "apps/website/components/sections/collector-pitch.tsx": {
@@ -530,8 +530,8 @@
     "semantic_hash": ""
   },
   "apps/website/components/sections/hero/hero-copy.tsx": {
-    "mtime": 1788745298.565055,
-    "ast_hash": "4356c613b576a3e528890b1cd3203ff2",
+    "mtime": 1788817668.2089937,
+    "ast_hash": "13490a2b4fa3fe6c98587e68a9f2b287",
     "semantic_hash": ""
   },
   "apps/website/components/sections/hero/hero-slide-content.ts": {
@@ -540,8 +540,8 @@
     "semantic_hash": ""
   },
   "apps/website/components/sections/page-hero.tsx": {
-    "mtime": 1788748375.8477929,
-    "ast_hash": "44147ed55524eace62e45e5688f26c0a",
+    "mtime": 1788817668.2105026,
+    "ast_hash": "c9f6a43f03f2022de3910bb97d814250",
     "semantic_hash": ""
   },
   "apps/website/components/sections/product-highlights.tsx": {
@@ -555,13 +555,13 @@
     "semantic_hash": ""
   },
   "apps/website/components/ui/app-store-buttons.tsx": {
-    "mtime": 1788744454.6383574,
-    "ast_hash": "85907b33388d6e95ee942aebd50e7327",
+    "mtime": 1788817687.6042604,
+    "ast_hash": "d7058fd145b4bbb03d4c1fe943720a81",
     "semantic_hash": ""
   },
   "apps/website/components/ui/logo-wall.tsx": {
-    "mtime": 1788747863.7094119,
-    "ast_hash": "8f357c989cd63548778530431ef5f3dd",
+    "mtime": 1788816876.105923,
+    "ast_hash": "0aa86e17b7aae6f29f9d63b5b456a5f2",
     "semantic_hash": ""
   },
   "apps/website/components/ui/person-card.tsx": {
@@ -645,8 +645,8 @@
     "semantic_hash": ""
   },
   "apps/website/docs/COMPONENTS.md": {
-    "mtime": 1788667974.8740528,
-    "ast_hash": "f622d532069ea5fbf3f06e45b5645077",
+    "mtime": 1788817687.6083794,
+    "ast_hash": "7466631e14e8e08694287a89143875f8",
     "semantic_hash": ""
   },
   "apps/website/docs/FIGMA.md": {
@@ -655,8 +655,8 @@
     "semantic_hash": ""
   },
   "apps/website/docs/IMAGES.md": {
-    "mtime": 1788779716.5965445,
-    "ast_hash": "76824b64778fc2e37d513c0612cbde66",
+    "mtime": 1788817687.6095226,
+    "ast_hash": "b013541d77cd04b379b2d5c101e74ddd",
     "semantic_hash": ""
   },
   "pnpm-workspace.yaml": {
@@ -865,8 +865,8 @@
     "semantic_hash": ""
   },
   "apps/website/app/products/dtracker/_sections/dtracker-hero.tsx": {
-    "mtime": 1788779626.4794252,
-    "ast_hash": "cb55a6a481f5cd69aefa564106c110fd",
+    "mtime": 1788817687.6073706,
+    "ast_hash": "38cb9146e2d21000f653822b0dab3068",
     "semantic_hash": ""
   },
   "apps/website/components/sections/hero/hero-frame.ts": {
@@ -885,8 +885,8 @@
     "semantic_hash": ""
   },
   "apps/website/app/partners/page.tsx": {
-    "mtime": 1788747966.8910058,
-    "ast_hash": "b1655fda0234c8790717fb3868bc4ca5",
+    "mtime": 1788816708.4043803,
+    "ast_hash": "c5bc253472cf3b23ebb88a5d7c6142b3",
     "semantic_hash": ""
   },
   "apps/website/app/products/platform/_sections/platform-bands.tsx": {
@@ -977,6 +977,21 @@
   "apps/website/assets/figma-images/dtracker/phone-goals-mobile.png": {
     "mtime": 1788779606.9150379,
     "ast_hash": "055c53f58b1524c9e81cb8db7f4e0f6e",
+    "semantic_hash": ""
+  },
+  "apps/website/app/blog/_content.ts": {
+    "mtime": 1788815590.4240086,
+    "ast_hash": "966d3cb06e7dadce7f231c845f95a0d1",
+    "semantic_hash": ""
+  },
+  "apps/website/app/blog/_sections/blog-index.tsx": {
+    "mtime": 1788815834.3613594,
+    "ast_hash": "c6b437db0dfe84764b20a23701b39ef9",
+    "semantic_hash": ""
+  },
+  "apps/website/app/blog/page.tsx": {
+    "mtime": 1788815623.0910423,
+    "ast_hash": "a6450a81893a81f4490fcc86f9d692a1",
     "semantic_hash": ""
   }
 }

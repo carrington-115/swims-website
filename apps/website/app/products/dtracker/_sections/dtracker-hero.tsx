@@ -68,7 +68,7 @@ export function DtrackerHero() {
             className="h-11.25 w-auto lg:h-15"
           />
 
-          <div className="flex max-w-160 flex-col gap-5 lg:gap-12.5">
+          <div className="flex max-w-160 flex-col items-start gap-5 lg:gap-12.5">
             <div className="flex flex-col">
               <h1
                 id="dtracker-hero-heading"
@@ -99,7 +99,7 @@ export function DtrackerHero() {
               Download the app
             </Button>
 
-            <AppStoreButtons className="hidden lg:flex lg:w-auto" />
+            <AppStoreButtons className="hidden lg:flex" />
           </div>
         </div>
       </div>

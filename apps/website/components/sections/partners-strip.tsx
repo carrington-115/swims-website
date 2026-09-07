@@ -3,8 +3,8 @@ import type { ComponentPropsWithoutRef } from "react";
 import { images, type SiteImage as SiteImageAsset } from "@/assets/images";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
-import { SiteImage } from "@/components/media/site-image";
 import { Button } from "@/components/ui/button";
+import { LogoWall } from "@/components/ui/logo-wall";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { cn } from "@/lib/cn";
 
@@ -50,8 +50,11 @@ const defaultCtas = [
  * pages; everything it draws is a prop, so a page that wants a different set of
  * marks or a single button passes them in.
  *
- * The logo row scrolls sideways on phones -- the Figma frame lays the five marks
- * out well past the 390px frame -- and wraps into a centred row from `lg`.
+ * The row itself is `LogoWall`, the same component the `BackedBy` band uses, so
+ * the marks are drawn one way across the site instead of once per band. It runs
+ * as a marquee here: the Figma frame lays the five marks out well past the
+ * 390px frame, and sliding them past is how the whole set is seen without
+ * anyone scrolling. Only the Partners page opts into the still grid.
  */
 export function PartnersStrip({
   heading = "Backed by",
@@ -80,24 +83,7 @@ export function PartnersStrip({
           <p className="max-w-177 text-xs text-ink-muted lg:text-xl">{body}</p>
         </div>
 
-        {/*
-         * `tabIndex` keeps the row operable by keyboard while it is a scroller
-         * on phones; from `lg` it wraps and there is nothing left to scroll.
-         */}
-        <ul
-          tabIndex={0}
-          aria-label="Partner and investor logos"
-          className="flex w-full items-center gap-10 overflow-x-auto focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary lg:flex-wrap lg:justify-center lg:overflow-visible"
-        >
-          {logos.map((logo) => (
-            <li key={logo.src.src} className="shrink-0">
-              <SiteImage
-                image={logo}
-                className="h-10 w-auto object-contain opacity-60 lg:h-16"
-              />
-            </li>
-          ))}
-        </ul>
+        <LogoWall logos={logos} />
 
         <div className="flex flex-wrap items-center justify-center gap-4.5">
           {ctas.map((cta) => (

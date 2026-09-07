@@ -144,9 +144,9 @@ Use the overlay tokens rather than ad-hoc rgba:
 | `--color-overlay-secondary` | `bg-overlay-secondary` | secondary `#38A176` @ 25% |
 | `--color-overlay-neutral` | `bg-overlay-neutral` | black @ 35% |
 
-Headline over a photo: 48–64px desktop, bold, white. Subheading 18–24px.
-Add the `text-on-image` class for the text shadow — do not invent per-page
-shadows.
+Headline over a photo: 48–64px desktop, bold, white. Subheading 18–24px. The
+overlay is what makes it readable — the site draws no text shadows, so do not
+invent a per-page one.
 
 ## Budget
 

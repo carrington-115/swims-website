@@ -50,7 +50,7 @@ export function HeroCopy({
        * headline would size to its own max-content width and run off a phone
        * screen instead of wrapping.
        */}
-      <div className={cn("flex w-full flex-col", !isBrand && "text-on-image")}>
+      <div className="flex w-full flex-col">
         <Heading
           className={cn(
             "text-3xl leading-normal font-semibold text-white lg:text-5xl",

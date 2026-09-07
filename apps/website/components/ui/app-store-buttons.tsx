@@ -19,8 +19,11 @@ type AppStoreButtonsProps = ComponentPropsWithoutRef<"div"> & {
 /**
  * The pair of app download buttons (Figma 3046:4907).
  *
- * Full width and stacked on phones, side by side from `lg` -- both frames draw
- * it that way, and a store button is the primary action wherever it appears.
+ * Stacked on phones, side by side from `lg`. Each button is as wide as its own
+ * label: `items-start` on the row is what holds that, because a flex column
+ * stretches its children and would otherwise run both buttons out to the full
+ * width of whatever band they sit in. A band that centres its copy passes
+ * `items-center` to centre them instead.
  */
 export function AppStoreButtons({
   playStoreHref = "https://play.google.com/store/apps/details?id=africa.swims.dtracker",
@@ -33,13 +36,16 @@ export function AppStoreButtons({
 }: AppStoreButtonsProps) {
   const variant = tone === "onBrand" ? "onImageSolid" : "primary";
   const buttonClassName = cn(
-    "w-full gap-3 px-3 lg:w-auto",
+    "gap-3 px-3",
     tone === "onBrand" && "text-secondary",
   );
 
   return (
     <div
-      className={cn("flex w-full flex-col gap-2.5 lg:flex-row lg:gap-2.5", className)}
+      className={cn(
+        "flex flex-col items-start gap-2.5 lg:flex-row lg:items-center",
+        className,
+      )}
       {...props}
     >
       <Button

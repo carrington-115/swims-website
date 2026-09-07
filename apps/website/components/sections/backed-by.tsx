@@ -22,6 +22,12 @@ type BackedByProps = ComponentPropsWithoutRef<"section"> & {
   body?: string | null;
   /** Buttons under the wall, in order. */
   ctas?: readonly BackedByCta[];
+  /**
+   * Layout for the wall itself -- see `LogoWall`. The band scrolls its marks by
+   * default; the Partners page, where the marks are the section rather than a
+   * credential in passing, asks for the still grid instead.
+   */
+  logoLayout?: "marquee" | "grid";
 };
 
 const defaultCtas = [
@@ -46,6 +52,7 @@ export function BackedBy({
   heading = "Backed by",
   body = "Customers and partners trusting SWIMS as a to transform the smart waste management industry in Africa",
   ctas = defaultCtas,
+  logoLayout = "marquee",
   className,
   ...props
 }: BackedByProps) {
@@ -66,7 +73,7 @@ export function BackedBy({
           ) : null}
         </div>
 
-        <LogoWall logos={logos} />
+        <LogoWall logos={logos} layout={logoLayout} />
 
         <div className="flex flex-wrap items-start justify-center gap-4.5">
           {ctas.map((cta) => (

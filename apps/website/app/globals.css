@@ -191,12 +191,6 @@
 }
 
 @layer components {
-  /* Text sitting on top of photography -- see docs/IMAGES.md. */
-  .text-on-image {
-    color: #fff;
-    text-shadow: 0 2px 8px rgb(0 0 0 / 0.5);
-  }
-
   /*
    * Scrim over a hero slide photograph (Figma 3011:83 desktop, 3070:36671
    * mobile). The design darkens the frame from the bottom on phones, where the
@@ -277,6 +271,48 @@
     animation: menu-media-in 520ms var(--ease-out-soft) both;
     animation-delay: 80ms;
   }
+
+  /*
+   * Continuous logo marquee (components/ui/logo-wall.tsx).
+   *
+   * The track holds the same list several times over and slides left by exactly
+   * one copy, which lands the next copy where the first started, so the loop has
+   * no seam. Each copy carries its own trailing gap rather than the track
+   * carrying a gap between them -- that is what keeps the shift a whole copy
+   * rather than half a gap short of one.
+   *
+   * Both custom properties are set by the component: `--logo-marquee-shift` is
+   * one copy's share of the track, and `--logo-marquee-duration` scales with the
+   * number of marks so a wall of nine travels at the same speed as a strip of
+   * five. Enough copies are rendered that the ones left behind the shift still
+   * fill the row, which is why a five-mark strip cannot simply run at -50%: one
+   * copy of it is narrower than the 1320px content shell, so the reset would
+   * show a hole at the right-hand edge.
+   *
+   * Pausing on hover and on focus is the WCAG 2.2.2 escape hatch for content
+   * that moves on its own; the wall takes a tab stop so a keyboard reaches it.
+   */
+  .logo-marquee {
+    overflow: hidden;
+  }
+
+  .logo-marquee-track {
+    animation: logo-marquee var(--logo-marquee-duration, 40s) linear infinite;
+  }
+
+  .logo-marquee:hover .logo-marquee-track,
+  .logo-marquee:focus-within .logo-marquee-track {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes logo-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(var(--logo-marquee-shift, -50%));
+  }
 }
 
 @keyframes hero-progress {
@@ -307,6 +343,19 @@ body[data-scroll-locked="true"] {
   .menu-panel .menu-item,
   .menu-panel .menu-media {
     animation-delay: 0ms !important;
+  }
+
+  /*
+   * The blanket rule below stops the marquee dead on its first frame, with the
+   * rest of the row still clipped. Hand it back as a plain scroller instead and
+   * drop the duplicate copy, which only exists to make the loop seamless.
+   */
+  .logo-marquee {
+    overflow-x: auto;
+  }
+
+  .logo-marquee [data-marquee-clone] {
+    display: none;
   }
 
   *,

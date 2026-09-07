@@ -45,6 +45,7 @@ export default function Partners() {
         heading={wallHeading}
         body={null}
         logos={partnerLogos}
+        logoLayout="grid"
         ctas={[{ label: "Become a partner", href: "/contact" }]}
       />
 

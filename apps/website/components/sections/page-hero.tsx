@@ -63,13 +63,18 @@ export function PageHero({
         <div
           className={cn(
             heroFrameCopy,
-            "items-start text-on-image",
+            "items-start",
             body ? "gap-2.5 lg:justify-center lg:pb-0" : "gap-5",
           )}
         >
+          {/*
+            `items-start` so `action` -- an inline-flex button -- keeps its own
+            width. A flex column stretches its children by default, which sized
+            every hero button to the whole copy column.
+          */}
           <div
             className={cn(
-              "flex flex-col",
+              "flex flex-col items-start",
               body ? "gap-2.5 lg:max-w-140" : "gap-5 lg:max-w-252",
             )}
           >

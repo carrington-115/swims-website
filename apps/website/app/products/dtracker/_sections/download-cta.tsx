@@ -29,7 +29,7 @@ export function DownloadCta() {
           building their business.
         </p>
 
-        <AppStoreButtons className="lg:w-auto lg:justify-center" />
+        <AppStoreButtons className="items-center" />
       </Container>
     </Section>
   );
