@@ -12,28 +12,70 @@ export type BlogCardPost = {
   excerpt: string;
   href: string;
   cover: SiteImageAsset;
+  /**
+   * Byline drawn above the title. Only the listing frame carries one -- the
+   * "Latest blogs" band leaves both this and `date` unset.
+   */
+  author?: { name: string; avatar: SiteImageAsset };
+  /**
+   * Already formatted for display, with the machine-readable value beside it.
+   * The card neither parses nor localises a date.
+   */
+  date?: { label: string; dateTime: string };
 };
+
+/**
+ * Which frame the card is drawn for. They are the same card with two type
+ * scales, because the grids around them are not the same size.
+ *
+ * `band` is the "Latest blogs" strip (Figma 3024:3672): two-up on phones, so
+ * the type drops a long way down there and six lines of excerpt fit.
+ * `listing` is the blog index (3070:35957): one card per row on a phone, so it
+ * keeps the desktop scale throughout and clamps the excerpt to the three lines
+ * the frame's fixed 88px box shows.
+ */
+type BlogCardVariant = "band" | "listing";
 
 type BlogCardProps = Omit<ComponentPropsWithoutRef<"article">, "id"> & {
   post: BlogCardPost;
+  variant?: BlogCardVariant;
   /** `sizes` for the cover, since the card is always narrower than the viewport. */
   sizes?: string;
 };
 
+const variants = {
+  band: {
+    title:
+      "truncate text-xs lg:overflow-visible lg:text-lg lg:whitespace-normal",
+    excerpt: "line-clamp-6 text-2xs lg:text-base",
+  },
+  listing: {
+    title: "text-lg",
+    excerpt: "line-clamp-3 text-base",
+  },
+} as const satisfies Record<
+  BlogCardVariant,
+  { title: string; excerpt: string }
+>;
+
 /**
  * A post in a listing (Figma 3024:3672 desktop, 3070:36977 mobile): cover on
- * top, then title and excerpt.
+ * top, then an optional byline, then title and excerpt.
  *
  * The title is the only link, but it is stretched over the whole card so the
  * cover is clickable too and screen readers still announce one link with the
- * post's name.
+ * post's name. That is also why the byline is plain text: a second link inside
+ * the stretched one would not be reachable.
  */
 export function BlogCard({
   post,
+  variant = "band",
   sizes = "(min-width: 1024px) 25vw, 50vw",
   className,
   ...props
 }: BlogCardProps) {
+  const styles = variants[variant];
+
   return (
     <article
       className={cn("group relative flex flex-col gap-3.25", className)}
@@ -43,8 +85,36 @@ export function BlogCard({
         <SiteImage image={post.cover} alt="" cover sizes={sizes} />
       </div>
 
+      {post.author || post.date ? (
+        <div className="flex items-center justify-between gap-2 text-base text-ink-strong">
+          {post.author ? (
+            <span className="flex min-w-0 items-center gap-1.25">
+              <span className="relative size-7.5 shrink-0 overflow-hidden rounded-full">
+                <SiteImage
+                  image={post.author.avatar}
+                  alt=""
+                  cover
+                  sizes="30px"
+                />
+              </span>
+              <span className="truncate">{post.author.name}</span>
+            </span>
+          ) : null}
+          {post.date ? (
+            <time dateTime={post.date.dateTime} className="shrink-0">
+              {post.date.label}
+            </time>
+          ) : null}
+        </div>
+      ) : null}
+
       <div className="flex flex-col">
-        <h3 className="truncate font-display text-xs font-medium text-ink-strong lg:overflow-visible lg:text-lg lg:whitespace-normal">
+        <h3
+          className={cn(
+            "font-display font-medium text-ink-strong",
+            styles.title,
+          )}
+        >
           <Link
             href={post.href}
             className="rounded-sm before:absolute before:inset-0 before:content-[''] group-hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
@@ -52,9 +122,7 @@ export function BlogCard({
             {post.title}
           </Link>
         </h3>
-        <p className="line-clamp-6 text-2xs text-ink-muted lg:text-base">
-          {post.excerpt}
-        </p>
+        <p className={cn("text-ink-muted", styles.excerpt)}>{post.excerpt}</p>
       </div>
     </article>
   );

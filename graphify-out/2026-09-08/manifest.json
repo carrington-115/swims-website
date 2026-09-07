@@ -275,9 +275,9 @@
     "semantic_hash": "8cd7ff574953843ceef455c52c30b69c"
   },
   "apps/website/components/ui/blog-card.tsx": {
-    "mtime": 1788815638.166014,
-    "ast_hash": "8ee26998a851031617cd118a3a09717e",
-    "semantic_hash": ""
+    "mtime": 1788669978.1641212,
+    "ast_hash": "ad92c0728905038e8f4b0a1c67dd07da",
+    "semantic_hash": "ad92c0728905038e8f4b0a1c67dd07da"
   },
   "apps/website/components/ui/button.tsx": {
     "mtime": 1788671920.3274221,
@@ -285,8 +285,8 @@
     "semantic_hash": "55ead1c3a06b2bbf0e8fd82ea8495395"
   },
   "apps/website/components/ui/icons.tsx": {
-    "mtime": 1788815556.3861575,
-    "ast_hash": "f8cd4657f3e29a02267206f34abf9702",
+    "mtime": 1788763530.7974255,
+    "ast_hash": "157be0775a0cec642db0aff19832206c",
     "semantic_hash": ""
   },
   "apps/website/components/ui/input.tsx": {
@@ -977,21 +977,6 @@
   "apps/website/assets/figma-images/dtracker/phone-goals-mobile.png": {
     "mtime": 1788779606.9150379,
     "ast_hash": "055c53f58b1524c9e81cb8db7f4e0f6e",
-    "semantic_hash": ""
-  },
-  "apps/website/app/blog/_content.ts": {
-    "mtime": 1788815590.4240086,
-    "ast_hash": "966d3cb06e7dadce7f231c845f95a0d1",
-    "semantic_hash": ""
-  },
-  "apps/website/app/blog/_sections/blog-index.tsx": {
-    "mtime": 1788815834.3613594,
-    "ast_hash": "c6b437db0dfe84764b20a23701b39ef9",
-    "semantic_hash": ""
-  },
-  "apps/website/app/blog/page.tsx": {
-    "mtime": 1788815623.0910423,
-    "ast_hash": "a6450a81893a81f4490fcc86f9d692a1",
     "semantic_hash": ""
   }
 }
