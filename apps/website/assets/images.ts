@@ -40,8 +40,10 @@ import heroPhone from "./figma-images/home/hero/dtracker-phone.webp";
 import heroPlatform from "./figma-images/home/hero/platform.webp";
 import heroStory from "./figma-images/home/hero/story.webp";
 
+import dtrackerHeroPhone from "./figma-images/dtracker/hero-phone.webp";
 import dtracker247 from "./figma-images/dtracker/phone-24-7.png";
 import dtrackerGoals from "./figma-images/dtracker/phone-goals.png";
+import dtrackerGoalsMobile from "./figma-images/dtracker/phone-goals-mobile.png";
 import dtrackerPayment from "./figma-images/dtracker/phone-payment.png";
 import dtrackerSchedule from "./figma-images/dtracker/phone-schedule.png";
 import dtrackerSecurity from "./figma-images/dtracker/phone-security.png";
@@ -187,6 +189,18 @@ export const home = defineImages({
 });
 
 export const dtracker = defineImages({
+  /*
+   * The single handset the DTRACKER hero tilts into its top-right corner on
+   * phones (Figma 3076:37779). Close to `home.heroPhone`, which the home
+   * carousel's DTRACKER slide uses for the same shot, but that one is a
+   * tighter, opaque crop on a green plate; this is the frame's own 325x679
+   * export with its alpha, which the rotation needs.
+   */
+  heroPhone: {
+    src: dtrackerHeroPhone,
+    alt: "DTRACKER pickup options and a collector's January earnings",
+    transparent: true,
+  },
   availability: {
     src: dtracker247,
     alt: "DTRACKER screen showing 24/7 pickup availability",
@@ -194,6 +208,16 @@ export const dtracker = defineImages({
   },
   goals: {
     src: dtrackerGoals,
+    alt: "DTRACKER screen showing a collector's monthly collection goals and progress",
+    transparent: true,
+  },
+  /*
+   * The same band on phones (Figma 3076:37854). The desktop render is two
+   * tilted handsets 692px wide; at 358px the numbers on it are unreadable, so
+   * the mobile frame draws a single upright earnings screen instead.
+   */
+  goalsMobile: {
+    src: dtrackerGoalsMobile,
     alt: "DTRACKER screen showing a collector's monthly collection goals and progress",
     transparent: true,
   },

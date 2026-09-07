@@ -14,7 +14,8 @@ apps/website/
       phones-mobile-hero.png
       menu/                  collectors-dumpsite.webp  (collapse-menu feature art)
       home/                  cmr-map.svg, iot-sensor.png, phone-1.png
-      dtracker/              phone-24-7.png, phone-goals.png, phone-payment.png,
+      dtracker/              hero-phone.webp, phone-24-7.png, phone-goals.png,
+                             phone-goals-mobile.png, phone-payment.png,
                              phone-schedule.png, phone-security.png
       why-us/                phone-2.png, dtracker-phones.webp,
                              phone-pickup.webp, phone-verification.webp

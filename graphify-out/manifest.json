@@ -205,8 +205,8 @@
     "semantic_hash": "78eb648745f5ec93c0b5d611f95c3e6e"
   },
   "apps/website/assets/images.ts": {
-    "mtime": 1788777337.4923165,
-    "ast_hash": "cd7738678b7b9dbcc91d83f0d612359e",
+    "mtime": 1788779617.9862027,
+    "ast_hash": "a31f3f6d73904843343e4721f657ab07",
     "semantic_hash": ""
   },
   "apps/website/components/layout/container.tsx": {
@@ -250,8 +250,8 @@
     "semantic_hash": ""
   },
   "apps/website/components/sections/feature-band.tsx": {
-    "mtime": 1788776702.609183,
-    "ast_hash": "31177b8a6128587bb3bad2d71a67f335",
+    "mtime": 1788779716.5975633,
+    "ast_hash": "f63cef480d8b20d6cb5cddf8ad77e1f3",
     "semantic_hash": ""
   },
   "apps/website/components/sections/latest-blogs.tsx": {
@@ -485,8 +485,8 @@
     "semantic_hash": ""
   },
   "apps/website/app/products/dtracker/_sections/dtracker-bands.tsx": {
-    "mtime": 1788748100.711605,
-    "ast_hash": "3af836335ffd6d4be6c2dcb4ff1ab9cb",
+    "mtime": 1788779685.1071067,
+    "ast_hash": "9d3227ff526a657534905f996c289497",
     "semantic_hash": ""
   },
   "apps/website/app/products/dtracker/page.tsx": {
@@ -655,8 +655,8 @@
     "semantic_hash": ""
   },
   "apps/website/docs/IMAGES.md": {
-    "mtime": 1788777571.0303314,
-    "ast_hash": "25ff070fc683b9574e466c043033879f",
+    "mtime": 1788779716.5965445,
+    "ast_hash": "76824b64778fc2e37d513c0612cbde66",
     "semantic_hash": ""
   },
   "pnpm-workspace.yaml": {
@@ -865,8 +865,8 @@
     "semantic_hash": ""
   },
   "apps/website/app/products/dtracker/_sections/dtracker-hero.tsx": {
-    "mtime": 1788749330.1043036,
-    "ast_hash": "64d64d418fa57ec22f3ff5d47c5a3f17",
+    "mtime": 1788779626.4794252,
+    "ast_hash": "cb55a6a481f5cd69aefa564106c110fd",
     "semantic_hash": ""
   },
   "apps/website/components/sections/hero/hero-frame.ts": {
@@ -967,6 +967,16 @@
   "apps/website/assets/figma-images/why-us/phone-verification.webp": {
     "mtime": 1788777287.6275551,
     "ast_hash": "34714bdcdb2550a0838d1f57be4b7087",
+    "semantic_hash": ""
+  },
+  "apps/website/assets/figma-images/dtracker/hero-phone.webp": {
+    "mtime": 1788779416.034063,
+    "ast_hash": "2745e5908ddb7fd5c9158a5b20d37fc4",
+    "semantic_hash": ""
+  },
+  "apps/website/assets/figma-images/dtracker/phone-goals-mobile.png": {
+    "mtime": 1788779606.9150379,
+    "ast_hash": "055c53f58b1524c9e81cb8db7f4e0f6e",
     "semantic_hash": ""
   }
 }

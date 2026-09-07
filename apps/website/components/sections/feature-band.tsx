@@ -27,10 +27,20 @@ type FeatureBandProps = ComponentPropsWithoutRef<"section"> & {
   /** Omit for a band that is copy only -- the DTRACKER feature bands have no button. */
   cta?: { label: string; href: string };
   image: SiteImageAsset;
+  /**
+   * A second crop of the same media for phones, shown below `lg` in place of
+   * `image`. Only for bands whose desktop render does not survive the phone
+   * width -- the DTRACKER earnings band is two tilted handsets on desktop and
+   * one upright screen on mobile (Figma 3076:37854). Omit it and `image` is
+   * used at every width.
+   */
+  mobileImage?: SiteImageAsset;
   /** Sizing for the media column; the image fills whatever width it is given. */
   mediaClassName?: string;
   /** `sizes` for the image, since it is never the full viewport on desktop. */
   sizes?: string;
+  /** `sizes` for `mobileImage`, which is never rendered above `lg`. */
+  mobileSizes?: string;
   /**
    * Width of the copy column from `lg`. The Figma bands do not share one --
    * they run 490px or 559px depending on the band -- so each caller sets its
@@ -66,6 +76,13 @@ type FeatureBandProps = ComponentPropsWithoutRef<"section"> & {
    * beside it.
    */
   mediaAlign?: "center" | "bottom";
+  /**
+   * Type scale for the copy *on phones*. `base` is 24/16, the size the mobile
+   * home frames carry (Figma 3070:36918, 3143:286). `lg` is 30/18, which the
+   * DTRACKER mobile frames use (Figma 3076:37807 and its four siblings).
+   * Desktop is 36/20 either way.
+   */
+  typeScale?: "base" | "lg";
   /**
    * Which side the media takes from `lg`. `start` is every home and DTRACKER
    * band; `end` is the SWIMS Platform sensor band and its hero, which lead with
@@ -139,8 +156,8 @@ const tones = {
  * optional call to action.
  *
  * The home page repeats it three times, each with a button (Figma 3020:3539,
- * 3022:3574, 3024:3608); the DTRACKER page repeats it four times without one
- * (3049:5210, 3049:5238, 3049:35466, 3049:35465).
+ * 3022:3574, 3024:3608); the DTRACKER page repeats it five times without one
+ * (3049:5210, 3049:5238, 3049:5244, 3049:35466, 3049:35465).
  *
  * Copy comes before the media in the DOM so a heading always introduces its own
  * image; `mediaFirst` only reorders them visually.
@@ -150,8 +167,10 @@ export function FeatureBand({
   body,
   cta,
   image,
+  mobileImage,
   mediaClassName,
   sizes,
+  mobileSizes,
   tone = "surface",
   copyClassName = "lg:w-165",
   gapClassName = "lg:gap-25",
@@ -159,6 +178,7 @@ export function FeatureBand({
   ctaAlign = "start",
   mediaAlign = "center",
   mediaSide = "start",
+  typeScale = "base",
   headingId,
   className,
   ...props
@@ -171,7 +191,7 @@ export function FeatureBand({
       tone={styles.section}
       spacing="md"
       aria-labelledby={headingId}
-      className={cn(bottomAligned && "lg:pb-0", className)}
+      className={cn(bottomAligned && "pb-0 lg:pb-0", className)}
       {...props}
     >
       <Container
@@ -183,7 +203,8 @@ export function FeatureBand({
       >
         <div
           className={cn(
-            "flex flex-col items-start gap-2.5 lg:gap-5",
+            "flex flex-col items-start",
+            typeScale === "lg" ? "gap-3 lg:gap-5" : "gap-2.5 lg:gap-5",
             mediaSide === "start" ? "lg:order-last" : "lg:order-first",
             // The row is bottom-aligned for the media's sake; the copy opts out
             // and stays centred, which is how every frame draws it.
@@ -192,21 +213,31 @@ export function FeatureBand({
           )}
         >
           {/*
-            Phones run 24/16 and desktop 36/20 -- the sizes the mobile home
-            frames carry (Figma 3070:36918, 3143:286, 3070:36940). The DTRACKER
-            and Platform pages have no mobile frames of their own and inherit
-            this scale.
+            Desktop is 36/20 everywhere. Phones run 24/16 -- the sizes the
+            mobile home frames carry (Figma 3070:36918, 3143:286, 3070:36940) --
+            except where `typeScale="lg"` asks for the DTRACKER mobile frames'
+            30/18. The Platform page has no mobile frames of its own and
+            inherits the 24/16 default.
           */}
           <h2
             id={headingId}
             className={cn(
-              "font-display text-2xl font-semibold lg:text-4xl",
+              "font-display font-semibold lg:text-4xl",
+              typeScale === "lg" ? "text-3xl" : "text-2xl",
               styles.heading,
             )}
           >
             {heading}
           </h2>
-          <p className={cn("text-base lg:text-xl", styles.body)}>{body}</p>
+          <p
+            className={cn(
+              "lg:text-xl",
+              typeScale === "lg" ? "text-lg" : "text-base",
+              styles.body,
+            )}
+          >
+            {body}
+          </p>
           {cta ? (
             <Button
               href={cta.href}
@@ -232,10 +263,20 @@ export function FeatureBand({
             mediaClassName,
           )}
         >
+          {mobileImage ? (
+            <SiteImage
+              image={mobileImage}
+              sizes={mobileSizes}
+              className="block h-auto w-full lg:hidden"
+            />
+          ) : null}
           <SiteImage
             image={image}
             sizes={sizes}
-            className="block h-auto w-full"
+            className={cn(
+              "h-auto w-full",
+              mobileImage ? "hidden lg:block" : "block",
+            )}
           />
         </div>
       </Container>

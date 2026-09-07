@@ -205,8 +205,8 @@
     "semantic_hash": "78eb648745f5ec93c0b5d611f95c3e6e"
   },
   "apps/website/assets/images.ts": {
-    "mtime": 1788750323.5757515,
-    "ast_hash": "a74fa098d1a0667f9c9dce35a7706d94",
+    "mtime": 1788777337.4923165,
+    "ast_hash": "cd7738678b7b9dbcc91d83f0d612359e",
     "semantic_hash": ""
   },
   "apps/website/components/layout/container.tsx": {
@@ -510,8 +510,8 @@
     "semantic_hash": ""
   },
   "apps/website/components/sections/collector-pitch.tsx": {
-    "mtime": 1788746531.2631552,
-    "ast_hash": "d1ec279c5dd60f3d9ee54dcb171495b0",
+    "mtime": 1788777325.5916028,
+    "ast_hash": "eba16f5ff30b43f7b80b574a6bc82542",
     "semantic_hash": ""
   },
   "apps/website/components/sections/founder-message.tsx": {
@@ -655,8 +655,8 @@
     "semantic_hash": ""
   },
   "apps/website/docs/IMAGES.md": {
-    "mtime": 1788750390.1283612,
-    "ast_hash": "20f9413329d638f7fa9b69689754b121",
+    "mtime": 1788777571.0303314,
+    "ast_hash": "25ff070fc683b9574e466c043033879f",
     "semantic_hash": ""
   },
   "pnpm-workspace.yaml": {
@@ -957,6 +957,16 @@
   "apps/website/app/icon.png": {
     "mtime": 1788515980.2488475,
     "ast_hash": "69445ce62d74ef566bc920d61dd104f4",
+    "semantic_hash": ""
+  },
+  "apps/website/assets/figma-images/why-us/phone-pickup.webp": {
+    "mtime": 1788777287.5505266,
+    "ast_hash": "3d389130d97ef4c4b8ec30d152dbfa6a",
+    "semantic_hash": ""
+  },
+  "apps/website/assets/figma-images/why-us/phone-verification.webp": {
+    "mtime": 1788777287.6275551,
+    "ast_hash": "34714bdcdb2550a0838d1f57be4b7087",
     "semantic_hash": ""
   }
 }
