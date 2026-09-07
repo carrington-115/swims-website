@@ -7,3 +7,47 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+# SWIMS website
+
+Marketing site: Next.js 16 App Router, React 19, Tailwind CSS v4, TypeScript strict.
+
+## Read before writing UI code
+
+- [docs/COMPONENTS.md](./docs/COMPONENTS.md) — the component standard: folder
+  ladder, naming, props, styling with tokens, server/client split, definition of
+  done. Follow it; do not improvise a second pattern.
+- [docs/IMAGES.md](./docs/IMAGES.md) — every image the site ships, the registry
+  that exposes them, alt text, overlays and the size budget.
+- [docs/FIGMA.md](./docs/FIGMA.md) — Figma MCP setup and how a frame becomes
+  components.
+
+## Layout
+
+```
+app/          routes only (page.tsx, layout.tsx); globals.css holds the tokens
+components/   ui/ layout/ sections/ media/   (see docs/COMPONENTS.md)
+lib/          cn() and other framework-free helpers
+assets/       images + images.ts registry    (see docs/IMAGES.md)
+docs/         the three docs above
+```
+
+## Non-negotiables
+
+- Images: `import { images } from "@/assets/images"` and render them with
+  `<SiteImage>`. Never a raw path, never an inline `alt`.
+- Colours, radii, shadows and gutters come from `@theme` in `app/globals.css`.
+  No raw hex, no arbitrary `bg-[#...]`.
+- Server components by default; `"use client"` only on the leaf that needs it.
+- Merge an incoming `className` through `cn` from `@/lib/cn`.
+- Named exports, kebab-case filenames, `@/` imports, no barrel files.
+- Nav links live in `lib/navigation.ts`. Edit that file, not the header, the
+  collapse menu or the footer.
+
+## Commands
+
+```sh
+pnpm --filter website dev
+pnpm --filter website build
+pnpm --filter website lint
+```

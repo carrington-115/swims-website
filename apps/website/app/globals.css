@@ -1,26 +1,318 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ---------------------------------------------------------------------------
+ * SWIMS design tokens
+ *
+ * Every colour, radius, shadow and breakpoint used by a component MUST come
+ * from a token defined here. Components never hardcode hex values or pixel
+ * media queries -- see docs/COMPONENTS.md.
+ *
+ * Figma variable names map 1:1 onto the token names below, so a Figma variable
+ * called `primary/500` is `--color-primary-500` here and `bg-primary-500` in
+ * markup.
+ * ------------------------------------------------------------------------- */
+
+@theme {
+  /* Breakpoints -----------------------------------------------------------
+   * Mobile first: write the phone layout unprefixed, then layer these on.
+   * `lg` is the phone/tablet -> desktop switch the header and menu use.
+   */
+  --breakpoint-sm: 40rem; /*  640px  large phone            */
+  --breakpoint-md: 48rem; /*  768px  tablet                 */
+  --breakpoint-lg: 64rem; /* 1024px  desktop -- nav switches here */
+  --breakpoint-xl: 80rem; /* 1280px  wide desktop           */
+  --breakpoint-2xl: 90rem; /* 1440px  Figma desktop frame width */
+
+  /* Brand -----------------------------------------------------------------
+   * primary   #1E952E  (primary-500)
+   * secondary #38A176  (secondary-500)
+   * tertiary  #333333  (tertiary-600)
+   */
+  --color-primary-50: #eaf7ec;
+  --color-primary-100: #cbecd2;
+  --color-primary-200: #9bdaa9;
+  --color-primary-300: #63c47a;
+  --color-primary-400: #35ab50;
+  --color-primary-500: #1e952e;
+  --color-primary-600: #187a26;
+  --color-primary-700: #14611f;
+  --color-primary-800: #114e1a;
+  --color-primary-900: #0b3311;
+
+  --color-secondary-50: #eef8f4;
+  --color-secondary-100: #d3ede2;
+  --color-secondary-200: #a6dbc5;
+  --color-secondary-300: #71c3a3;
+  --color-secondary-400: #4bb08c;
+  --color-secondary-500: #38a176;
+  --color-secondary-600: #2c8460;
+  --color-secondary-700: #24694d;
+  --color-secondary-800: #1d523d;
+  --color-secondary-900: #133628;
+
+  --color-tertiary-50: #f5f5f5;
+  --color-tertiary-100: #e6e6e6;
+  --color-tertiary-200: #cccccc;
+  --color-tertiary-300: #b3b3b3;
+  --color-tertiary-400: #808080;
+  --color-tertiary-500: #4d4d4d;
+  --color-tertiary-600: #333333;
+  --color-tertiary-700: #2b2b2b;
+  --color-tertiary-800: #1f1f1f;
+  --color-tertiary-900: #141414;
+
+  /* Semantic aliases -- prefer these in components ------------------------ */
+  --color-primary: var(--color-primary-500);
+  --color-primary-fg: #ffffff;
+  --color-secondary: var(--color-secondary-500);
+  --color-secondary-fg: #ffffff;
+  --color-tertiary: var(--color-tertiary-600);
+  --color-tertiary-fg: #ffffff;
+
+  --color-surface: #ffffff;
+  --color-surface-muted: #f5f7f5;
+  --color-on-surface: #1a1c18; /* Figma "on surface" -- menu + header ink */
+  --color-ink: var(--color-tertiary-600); /* body copy */
+  --color-ink-strong: #111411; /* headings      */
+  --color-ink-muted: #6b716b; /* captions      */
+  --color-line: #e4e7e4;
+  /* Figma "outline" -- placeholder text and hairlines inside form controls. */
+  --color-outline: #999999;
+
+  /* Image overlays (see docs/IMAGES.md) ----------------------------------- */
+  --color-overlay-primary: color-mix(
+    in srgb,
+    var(--color-primary-900) 45%,
+    transparent
+  );
+  --color-overlay-secondary: color-mix(
+    in srgb,
+    var(--color-secondary-500) 25%,
+    transparent
+  );
+  --color-overlay-neutral: rgb(0 0 0 / 0.35);
+
+  /* Typography ------------------------------------------------------------ */
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  /* Poppins -- the Figma display face, used by the collapse menu. */
+  --font-display: var(--font-poppins), var(--font-sans);
+
+  /* 10px -- the blog card excerpt on phones (Figma 3070:36981). */
+  --text-2xs: 0.625rem;
+  --text-2xs--line-height: 1.5;
+
+  /* Collapse-menu link sizes (Figma: 36px mobile, 57px desktop, 1.5 leading) */
+  --text-menu: 2.25rem;
+  --text-menu--line-height: 1.5;
+  --text-menu-lg: 3.5625rem;
+  --text-menu-lg--line-height: 1.5;
+
+  /* Layout ---------------------------------------------------------------- */
+  --spacing-gutter: 1rem; /* 16px  page padding, mobile   (390 frame -> 358 content) */
+  --spacing-gutter-lg: 3.75rem; /* 60px  page padding, desktop (1440 frame -> 1320 content) */
+  --spacing-header: 4.5rem; /* 72px  header height, mobile  (the Figma frame) */
+  --spacing-header-lg: 4.875rem; /* 78px  header height, desktop (half the frame) */
+  --container-content: 90rem; /* 1440px page shell -- the Figma desktop frame */
+  --spacing-hero: 90vh; /* hero height -- carousel and standing heroes alike */
+
+  /*
+   * Header furniture. Mobile is the Figma frame as drawn. Desktop is that
+   * frame halved -- 155px of bar was more than the page needed -- so the
+   * wordmark and the icons come down with it, and the two breakpoints now sit
+   * at almost the same height. `SiteMenu` restores a 44px touch target on the
+   * desktop button, which falls under the guideline at 40px.
+   */
+  --spacing-logo: 2.375rem; /* 38px  wordmark height, mobile  */
+  --spacing-logo-lg: 2.75rem; /* 44px  wordmark height, desktop */
+  --spacing-menu-icon: 3rem; /* 48px  menu / close glyph, mobile  */
+  --spacing-menu-icon-lg: 2.5rem; /* 40px  menu / close glyph, desktop */
+
+  --radius-card: 0.75rem;
+  --radius-media: 1.25rem; /* 20px -- editorial imagery (Figma 3024:4580) */
+  --radius-pill: 9999px;
+
+  --shadow-card: 0 1px 2px rgb(17 20 17 / 0.06), 0 8px 24px rgb(17 20 17 / 0.08);
+  --shadow-float: 0 12px 40px rgb(17 20 17 / 0.18);
+  --shadow-header: 0 1px 0 var(--color-line);
+
+  /* Motion ---------------------------------------------------------------- */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-soft: cubic-bezier(0.4, 0, 1, 1);
+
+  /* Collapse-menu choreography. The panel unrolls from under the header, then
+   * the links and the feature image settle in behind it. Consumed by the
+   * `.menu-panel` rules below, not by utilities. */
+  @keyframes menu-panel-in {
+    from {
+      opacity: 0;
+      clip-path: inset(0 0 100% 0);
+    }
+    to {
+      opacity: 1;
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  @keyframes menu-panel-out {
+    from {
+      opacity: 1;
+      clip-path: inset(0 0 0 0);
+    }
+    to {
+      opacity: 0;
+      clip-path: inset(0 0 100% 0);
+    }
+  }
+
+  @keyframes menu-item-in {
+    from {
+      opacity: 0;
+      transform: translateY(1.25rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes menu-media-in {
+    from {
+      opacity: 0;
+      transform: scale(1.04);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@layer components {
+  /* Text sitting on top of photography -- see docs/IMAGES.md. */
+  .text-on-image {
+    color: #fff;
+    text-shadow: 0 2px 8px rgb(0 0 0 / 0.5);
+  }
+
+  /*
+   * Scrim over a hero slide photograph (Figma 3011:83 desktop, 3070:36671
+   * mobile). The design darkens the frame from the bottom on phones, where the
+   * copy sits low, and from the left on desktop, where it sits against the
+   * gutter. Both stops are the same three colours, so only the angle changes.
+   */
+  .hero-scrim {
+    background-image: linear-gradient(
+      to top,
+      rgb(0 0 0 / 0.6) 16.35%,
+      rgb(7 7 7 / 0.57) 40.87%,
+      rgb(102 102 102 / 0.12) 100%
+    );
+  }
+
+  @media (min-width: 64rem) {
+    .hero-scrim {
+      background-image: linear-gradient(
+        to right,
+        rgb(0 0 0 / 0.6) 16.35%,
+        rgb(7 7 7 / 0.57) 40.87%,
+        rgb(102 102 102 / 0.12) 100%
+      );
+    }
+  }
+
+  /*
+   * Fill of the active hero slide indicator, which doubles as the autoplay
+   * countdown. The slider sets --hero-progress-duration to its interval; the
+   * reduced-motion rule below collapses the animation so the pill just reads
+   * as full.
+   */
+  .hero-progress {
+    animation: hero-progress var(--hero-progress-duration, 7s) linear forwards;
+  }
+
+  /*
+   * Responsive crop point for cover images. <SiteImage> sets --focal-base and
+   * --focal-md from the focal recorded in the image registry.
+   */
+  .object-focal {
+    object-position: var(--focal-base, center);
+  }
+
+  @media (min-width: 48rem) {
+    .object-focal {
+      object-position: var(--focal-md, var(--focal-base, center));
+    }
+  }
+
+  /*
+   * Collapse menu (components/layout/site-menu.tsx).
+   *
+   * The choreography lives here rather than in utilities because it is a
+   * sequence: the panel state drives the children, and the links stagger off
+   * a `--enter-delay` the component sets per item. `data-state` is written by
+   * the component -- "open" on entry, "closed" while it plays the exit and
+   * waits for `animationend` before unmounting.
+   *
+   * The global `prefers-reduced-motion` rule collapses every duration below to
+   * 0.01ms, so the panel still opens and closes instantly and `animationend`
+   * still fires.
+   */
+  .menu-panel[data-state="open"] {
+    animation: menu-panel-in 280ms var(--ease-out-soft) both;
+  }
+
+  .menu-panel[data-state="closed"] {
+    animation: menu-panel-out 200ms var(--ease-in-soft) both;
+  }
+
+  .menu-panel[data-state="open"] .menu-item {
+    animation: menu-item-in 380ms var(--ease-out-soft) both;
+    animation-delay: var(--enter-delay, 0ms);
+  }
+
+  .menu-panel[data-state="open"] .menu-media {
+    animation: menu-media-in 520ms var(--ease-out-soft) both;
+    animation-delay: 80ms;
+  }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes hero-progress {
+  from {
+    inline-size: 0;
+  }
+  to {
+    inline-size: 100%;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+/* Locks background scrolling while the mobile menu is open. */
+body[data-scroll-locked="true"] {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /*
+   * The rule below flattens every duration, but not the stagger delays -- left
+   * alone they would still drip the menu links in over a third of a second.
+   */
+  .menu-panel .menu-item,
+  .menu-panel .menu-media {
+    animation-delay: 0ms !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
