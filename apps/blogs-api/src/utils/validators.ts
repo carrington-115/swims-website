@@ -1,4 +1,5 @@
-import { z, ZodError, ZodType } from 'zod';
+import { z, ZodError } from 'zod';
+import type { ZodType } from 'zod';
 import type { Request, Response, NextFunction } from 'express';
 import { AppError } from '../middleware/errorHandler';
 

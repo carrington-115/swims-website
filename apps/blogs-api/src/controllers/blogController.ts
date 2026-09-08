@@ -1,10 +1,18 @@
-import { randomUUID } from 'crypto';
 import type { Request, Response, NextFunction } from 'express';
-import { z } from 'zod';
+import {
+  createBlogSchema,
+  createSectionSchema,
+  listBlogsQuerySchema,
+  listMyBlogsQuerySchema,
+  reorderSectionsSchema,
+  updateBlogSchema,
+  updateSectionSchema,
+} from '@swims/schemas';
+import * as Author from '../models/Author';
 import * as Blog from '../models/Blog';
 import * as Section from '../models/Section';
-import * as TableOfContents from '../models/TableOfContents';
 import { generateSlug } from '../utils/validators';
+import { buildToc } from '../utils/toc';
 import { AppError } from '../middleware/errorHandler';
 import type {
   ApiResponse,
@@ -12,59 +20,8 @@ import type {
   PaginatedResponse,
   Blog as BlogEntity,
   Section as SectionEntity,
-  TableOfContents as TocEntity,
+  TableOfContentsItem,
 } from '../types';
-
-// Exported so the routes validate against exactly these schemas. The routes
-// previously declared their own near-copies; the list schema in particular
-// lacked the limit cap, so limit=5000 passed route validation and then failed
-// the controller's own parse.
-export const createBlogSchema = z.object({
-  title: z.string().min(1),
-  timeToRead: z.number().int().positive(),
-  author: z.string().min(1),
-  profileImage: z.string().optional(),
-  name: z.string().min(1),
-  description: z.string().optional(),
-  slug: z.string().optional(),
-});
-
-export const updateBlogSchema = z.object({
-  title: z.string().min(1).optional(),
-  timeToRead: z.number().int().positive().optional(),
-  author: z.string().min(1).optional(),
-  profileImage: z.string().optional(),
-  name: z.string().min(1).optional(),
-  description: z.string().optional(),
-  slug: z.string().optional(),
-});
-
-export const listBlogsSchema = z.object({
-  limit: z.coerce.number().int().min(1).max(100).default(10),
-  offset: z.coerce.number().int().nonnegative().default(0),
-});
-
-const sectionImageSchema = z.object({
-  url: z.string().url(),
-  alt: z.string(),
-  caption: z.string().optional(),
-});
-
-export const createSectionSchema = z.object({
-  title: z.string().min(1),
-  content: z.string().optional(),
-  images: z.array(sectionImageSchema).optional(),
-  imageOnly: z.string().url().optional(),
-  orderIndex: z.number().int().nonnegative().optional(),
-});
-
-export const updateSectionSchema = z.object({
-  title: z.string().min(1).optional(),
-  content: z.string().optional(),
-  images: z.array(sectionImageSchema).optional(),
-  imageOnly: z.string().url().optional(),
-  orderIndex: z.number().int().nonnegative().optional(),
-});
 
 type IdParams = { id: string };
 type SlugParams = { slug: string };
@@ -85,10 +42,76 @@ async function requireOwnedBlog(id: string, userId: string | undefined): Promise
   return blog;
 }
 
+/**
+ * A draft is readable only by its author. Public reads are otherwise
+ * unauthenticated, so an unowned draft has to look like it does not exist
+ * rather than like something being withheld.
+ */
+function assertReadable(blog: BlogEntity, userId: string | undefined) {
+  if (blog.status !== 'published' && blog.userId !== userId) {
+    throw new AppError(404, 'Blog not found');
+  }
+}
+
+/** Assembles the detail payload: the blog, its sections, and the derived contents. */
+async function withSections(blog: BlogEntity): Promise<BlogResponse> {
+  const sections = await Section.findByBlogId(blog.id);
+  return { ...blog, sections, tableOfContents: buildToc(sections) };
+}
+
+/**
+ * Resolves a free slug. Bounded: the original `while` loop could spin forever
+ * against a failing database. A slug taken between this check and the insert
+ * surfaces as a 409 via the unique-violation mapping in errorHandler.
+ */
+async function resolveSlug(requested: string | undefined, title: string): Promise<string> {
+  const baseSlug = requested || generateSlug(title);
+  let slug = baseSlug;
+
+  for (let counter = 1; counter <= 50 && (await Blog.slugExists(slug)); counter++) {
+    slug = `${baseSlug}-${counter}`;
+  }
+
+  return slug;
+}
+
 export async function listBlogs(req: Request, res: Response, next: NextFunction) {
   try {
-    const { limit, offset } = listBlogsSchema.parse(req.query);
-    const { rows, total } = await Blog.findPublished({ limit, offset });
+    const { limit, offset, category, q } = listBlogsQuerySchema.parse(req.query);
+
+    // Published only, and not negotiable from the query string: this route is
+    // unauthenticated, so a `?status=draft` on it would hand every unfinished
+    // post to anyone who asked. Drafts are reachable through /blogs/mine.
+    const { rows, total } = await Blog.findMany({
+      limit,
+      offset,
+      category,
+      q,
+      status: 'published',
+    });
+
+    const payload: PaginatedResponse<BlogEntity> = { data: rows, total, limit, offset };
+    res.json(ok(payload));
+  } catch (err) {
+    next(err);
+  }
+}
+
+/** The caller's own blogs, drafts included. */
+export async function listMyBlogs(req: Request, res: Response, next: NextFunction) {
+  try {
+    const userId = req.userId;
+    if (!userId) throw new AppError(401, 'Unauthorized');
+
+    const { limit, offset, category, q, status } = listMyBlogsQuerySchema.parse(req.query);
+    const { rows, total } = await Blog.findMany({
+      limit,
+      offset,
+      category,
+      q,
+      status,
+      userId,
+    });
 
     const payload: PaginatedResponse<BlogEntity> = { data: rows, total, limit, offset };
     res.json(ok(payload));
@@ -99,18 +122,11 @@ export async function listBlogs(req: Request, res: Response, next: NextFunction)
 
 export async function getBlogById(req: Request<IdParams>, res: Response, next: NextFunction) {
   try {
-    const { id } = req.params;
-
-    const blog = await Blog.findById(id);
+    const blog = await Blog.findById(req.params.id);
     if (!blog) throw new AppError(404, 'Blog not found');
+    assertReadable(blog, req.userId);
 
-    const [sections, toc] = await Promise.all([
-      Section.findByBlogId(id),
-      TableOfContents.findByBlogId(id),
-    ]);
-
-    const payload: BlogResponse = { ...blog, sections, tableOfContents: toc };
-    res.json(ok(payload));
+    res.json(ok(await withSections(blog)));
   } catch (err) {
     next(err);
   }
@@ -118,18 +134,11 @@ export async function getBlogById(req: Request<IdParams>, res: Response, next: N
 
 export async function getBlogBySlug(req: Request<SlugParams>, res: Response, next: NextFunction) {
   try {
-    const { slug } = req.params;
-
-    const blog = await Blog.findBySlug(slug);
+    const blog = await Blog.findBySlug(req.params.slug);
     if (!blog) throw new AppError(404, 'Blog not found');
+    assertReadable(blog, req.userId);
 
-    const [sections, toc] = await Promise.all([
-      Section.findByBlogId(blog.id),
-      TableOfContents.findByBlogId(blog.id),
-    ]);
-
-    const payload: BlogResponse = { ...blog, sections, tableOfContents: toc };
-    res.json(ok(payload));
+    res.json(ok(await withSections(blog)));
   } catch (err) {
     next(err);
   }
@@ -137,51 +146,68 @@ export async function getBlogBySlug(req: Request<SlugParams>, res: Response, nex
 
 export async function getBlogSections(req: Request<IdParams>, res: Response, next: NextFunction) {
   try {
-    const { id } = req.params;
-
-    const blog = await Blog.findById(id);
+    const blog = await Blog.findById(req.params.id);
     if (!blog) throw new AppError(404, 'Blog not found');
+    assertReadable(blog, req.userId);
 
-    const sections: SectionEntity[] = await Section.findByBlogId(id);
+    const sections: SectionEntity[] = await Section.findByBlogId(blog.id);
     res.json(ok(sections));
   } catch (err) {
     next(err);
   }
 }
 
+/**
+ * The table of contents, derived from the sections on the way out. There is no
+ * stored copy to fetch and none to keep in step; the entries are whatever the
+ * sections currently are.
+ */
 export async function getBlogToc(req: Request<IdParams>, res: Response, next: NextFunction) {
   try {
-    const { id } = req.params;
-
-    const blog = await Blog.findById(id);
+    const blog = await Blog.findById(req.params.id);
     if (!blog) throw new AppError(404, 'Blog not found');
+    assertReadable(blog, req.userId);
 
-    const toc: TocEntity | null = await TableOfContents.findByBlogId(id);
+    const sections = await Section.findByBlogId(blog.id);
+    const toc: TableOfContentsItem[] = buildToc(sections);
     res.json(ok(toc));
   } catch (err) {
     next(err);
   }
 }
 
+/**
+ * Creates a blog and, optionally, all of its sections in one request.
+ *
+ * The byline is not taken from the body -- it is the account on the access
+ * token, written through `Author.upsertFromUser`. That upsert also has to
+ * happen before the insert, because `blogs.user_id` is a foreign key onto the
+ * author row.
+ */
 export async function createBlog(req: Request, res: Response, next: NextFunction) {
   try {
     const body = createBlogSchema.parse(req.body);
-    const userId = req.userId;
+    const user = req.user;
 
-    if (!userId) throw new AppError(401, 'Unauthorized');
+    if (!user) throw new AppError(401, 'Unauthorized');
 
-    const baseSlug = body.slug || generateSlug(body.title);
-    let slug = baseSlug;
+    await Author.upsertFromUser(user);
 
-    // Bounded: the original `while` loop could spin forever against a failing
-    // database. A slug taken between this check and the insert now surfaces as
-    // a 409 via the unique-violation mapping in errorHandler.
-    for (let counter = 1; counter <= 50 && (await Blog.slugExists(slug)); counter++) {
-      slug = `${baseSlug}-${counter}`;
-    }
+    const slug = await resolveSlug(body.slug, body.title);
+    const id = await Blog.createWithSections({
+      ...body,
+      // `name` is an internal label the frame carried separately from the
+      // title. Defaulted rather than demanded, so a caller need not send the
+      // same string twice.
+      name: body.name ?? body.title,
+      slug,
+      userId: user.id,
+    });
 
-    const blog = await Blog.create({ ...body, slug, userId });
-    res.status(201).json(ok(blog));
+    const blog = await Blog.findById(id);
+    if (!blog) throw new AppError(500, 'Blog was created but could not be read back');
+
+    res.status(201).json(ok(await withSections(blog)));
   } catch (err) {
     next(err);
   }
@@ -198,7 +224,7 @@ export async function updateBlog(req: Request<IdParams>, res: Response, next: Ne
       if (await Blog.slugExists(body.slug)) throw new AppError(409, 'Slug already taken');
     }
 
-    const updated = await Blog.update(id, body);
+    const updated = await Blog.update(id, body, blog);
     res.json(ok(updated));
   } catch (err) {
     next(err);
@@ -275,22 +301,29 @@ export async function deleteSection(
   }
 }
 
-export async function generateBlogToc(req: Request<IdParams>, res: Response, next: NextFunction) {
+/**
+ * Reorders a blog's sections from the complete list of its section ids, and
+ * returns them in their new order along with the contents that follow from it.
+ */
+export async function reorderSections(
+  req: Request<IdParams>,
+  res: Response,
+  next: NextFunction,
+) {
   try {
     const { id } = req.params;
+    const { sectionIds } = reorderSectionsSchema.parse(req.body);
 
     await requireOwnedBlog(id, req.userId);
 
-    const sections = await Section.findByBlogId(id);
-    const items = sections.map(s => ({
-      id: randomUUID(),
-      title: s.title,
-      sectionId: s.id,
-      level: 1,
-    }));
+    if (new Set(sectionIds).size !== sectionIds.length) {
+      throw new AppError(400, 'sectionIds contains duplicates');
+    }
 
-    const toc = await TableOfContents.upsertForBlog(id, items);
-    res.json(ok(toc));
+    await Section.reorder(id, sectionIds);
+
+    const sections = await Section.findByBlogId(id);
+    res.json(ok({ sections, tableOfContents: buildToc(sections) }));
   } catch (err) {
     next(err);
   }

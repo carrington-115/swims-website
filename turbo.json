@@ -10,6 +10,8 @@
       "env": [
         "NEXT_PUBLIC_BLOGS_API_URL",
         "SUPABASE_URL",
+        "SUPABASE_PUBLISHABLE_KEY",
+        "SUPABASE_SECRET_KEY",
         "SUPABASE_ANON_KEY",
         "SUPABASE_SERVICE_ROLE_KEY",
         "CORS_ORIGINS",

@@ -1,12 +1,18 @@
 import { z } from "zod";
 import { blogSchema } from "./blog";
 import { sectionSchema } from "./section";
-import { tableOfContentsSchema } from "./toc";
+import { tableOfContentsItemSchema } from "./toc";
 
-/** A blog with its sections and table of contents, as returned by the detail routes. */
+/**
+ * A blog with its sections and table of contents, as returned by the detail
+ * routes and by a successful create.
+ *
+ * `tableOfContents` is an array rather than a nullable stored row: it is built
+ * from `sections` on the way out, so it is never missing and never stale.
+ */
 export const blogResponseSchema = blogSchema.extend({
   sections: z.array(sectionSchema),
-  tableOfContents: tableOfContentsSchema.nullable(),
+  tableOfContents: z.array(tableOfContentsItemSchema),
 });
 
 export type BlogResponse = z.infer<typeof blogResponseSchema>;

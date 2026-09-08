@@ -11,6 +11,10 @@
   "scripts": {
     "dev": "tsx watch src/app.ts",
     "build": "tsc -p tsconfig.json",
+    "lint": "eslint .",
+    "check:db": "tsx src/scripts/check-supabase.ts",
+    "schema": "tsx src/scripts/show-schema.ts",
+    "db:apply": "tsx src/scripts/apply-schema.ts",
     "start": "node dist/app.js",
     "typecheck": "tsc --noEmit"
   },
@@ -24,6 +28,8 @@
     "express-rate-limit": "^7.4.0"
   },
   "devDependencies": {
+    "@swims/eslint-config": "workspace:*",
+    "eslint": "^9",
     "typescript": "^5.6.0",
     "tsx": "^4.19.0",
     "@types/express": "^5.0.0",

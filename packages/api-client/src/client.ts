@@ -5,6 +5,7 @@ import type {
   CreateBlogRequest,
   CreateSectionRequest,
   ListBlogsQuery,
+  ListMyBlogsQuery,
   PaginatedResponse,
   Section,
   TableOfContents,
@@ -14,7 +15,9 @@ import type {
 import { BlogsApiError } from "./errors";
 import type { BlogsClientOptions, FetchLike, RequestOptions } from "./types";
 
-function buildQuery(params: Record<string, string | number | undefined>): string {
+function buildQuery(
+  params: Record<string, string | number | undefined>,
+): string {
   const search = new URLSearchParams();
   for (const [key, value] of Object.entries(params)) {
     if (value !== undefined) search.set(key, String(value));
@@ -85,9 +88,28 @@ export function createBlogsClient(options: BlogsClientOptions) {
     },
 
     blogs: {
+      /** Published blogs only. Drafts are reachable through `listMine`. */
       list(query: Partial<ListBlogsQuery> = {}, opts?: RequestOptions) {
         return request<PaginatedResponse<Blog>>(
-          `/api/blogs${buildQuery({ limit: query.limit, offset: query.offset })}`,
+          `/api/blogs${buildQuery({
+            limit: query.limit,
+            offset: query.offset,
+            category: query.category,
+            q: query.q,
+          })}`,
+          opts,
+        );
+      },
+      /** The signed-in author's own blogs, drafts included. Needs a token. */
+      listMine(query: Partial<ListMyBlogsQuery> = {}, opts?: RequestOptions) {
+        return request<PaginatedResponse<Blog>>(
+          `/api/blogs/mine${buildQuery({
+            limit: query.limit,
+            offset: query.offset,
+            category: query.category,
+            q: query.q,
+            status: query.status,
+          })}`,
           opts,
         );
       },
@@ -100,8 +122,20 @@ export function createBlogsClient(options: BlogsClientOptions) {
           opts,
         );
       },
+      /**
+       * Creates a blog and, with `input.sections`, its whole body in one
+       * request. Returns the blog with its sections and table of contents, so
+       * there is nothing to fetch back afterwards.
+       *
+       * The byline is not part of `input`: the API credits the account on the
+       * access token.
+       */
       create(input: CreateBlogRequest, opts?: RequestOptions) {
-        return request<Blog>("/api/blogs", { ...opts, method: "POST", body: input });
+        return request<BlogResponse>("/api/blogs", {
+          ...opts,
+          method: "POST",
+          body: input,
+        });
       },
       update(id: string, input: UpdateBlogRequest, opts?: RequestOptions) {
         return request<Blog>(`/api/blogs/${id}`, { ...opts, method: "PUT", body: input });
@@ -140,21 +174,34 @@ export function createBlogsClient(options: BlogsClientOptions) {
           method: "DELETE",
         });
       },
+      /**
+       * Sets a new order from the complete list of the blog's section ids, and
+       * returns the sections in it with the contents that follow.
+       *
+       * A whole list rather than one section at a time because `orderIndex` is
+       * unique per blog: moving one section past another collides with it.
+       */
+      reorder(blogId: string, sectionIds: string[], opts?: RequestOptions) {
+        return request<{ sections: Section[]; tableOfContents: TableOfContents }>(
+          `/api/blogs/${blogId}/sections/order`,
+          { ...opts, method: "PUT", body: { sectionIds } },
+        );
+      },
     },
 
     toc: {
+      /**
+       * The blog's table of contents.
+       *
+       * There is no `rebuild`: the contents are derived from the sections on
+       * every read, so they are always current and there is nothing to
+       * regenerate. `blogs.get` already carries them.
+       */
       get(blogId: string, opts?: RequestOptions) {
-        return request<TableOfContents | null>(
+        return request<TableOfContents>(
           `/api/blogs/${blogId}/table-of-contents`,
           opts,
         );
-      },
-      /** Regenerates the table of contents from the blog's current sections. */
-      rebuild(blogId: string, opts?: RequestOptions) {
-        return request<TableOfContents>(`/api/blogs/${blogId}/table-of-contents`, {
-          ...opts,
-          method: "POST",
-        });
       },
     },
   };

@@ -107,3 +107,21 @@ export async function remove(id: string): Promise<void> {
 
   if (error) throw error;
 }
+
+/**
+ * Rewrites the order of a blog's sections from the complete list of its ids.
+ *
+ * Goes through the `reorder_sections` Postgres function: `order_index` is
+ * unique per blog, so any sequence of single-row updates collides with a row it
+ * is trying to trade places with. The function does it in one statement against
+ * a deferred constraint, and rejects a list that is not exactly the blog's
+ * sections (a partial one would leave holes or duplicate an index).
+ */
+export async function reorder(blogId: string, sectionIds: string[]): Promise<void> {
+  const { error } = await getSupabaseAdmin().rpc('reorder_sections', {
+    p_blog_id: blogId,
+    p_section_ids: sectionIds,
+  });
+
+  if (error) throw error;
+}

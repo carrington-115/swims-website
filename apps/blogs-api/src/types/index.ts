@@ -5,12 +5,16 @@
  */
 export type {
   ApiResponse,
+  Author,
   Blog,
   BlogResponse,
+  BlogStatus,
   CreateBlogRequest,
   CreateSectionRequest,
   ListBlogsQuery,
+  ListMyBlogsQuery,
   PaginatedResponse,
+  ReorderSectionsRequest,
   Section,
   SectionImage,
   TableOfContents,

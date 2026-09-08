@@ -4,10 +4,23 @@
  */
 export {};
 
+/**
+ * The parts of the Supabase user a write needs. `requireAuth` puts the whole
+ * thing on the request, not just the id, because the byline on a blog is
+ * derived from the account rather than sent by the client.
+ */
+export type AuthedUser = {
+  id: string;
+  email: string | null;
+  /** Supabase `user_metadata` -- whatever the sign-up flow or provider set. */
+  metadata: Record<string, unknown>;
+};
+
 declare global {
   namespace Express {
     interface Request {
       userId?: string;
+      user?: AuthedUser;
     }
     interface Locals {
       // Validated/coerced query params. Express 5 defines req.query as a

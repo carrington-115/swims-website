@@ -1,0 +1,319 @@
+###############################################################################
+# Blogs API -- end-to-end walkthrough
+#
+# Run top to bottom against a real Supabase project. Every step says what it is
+# proving; the ones marked EXPECT are the ones worth reading the response for.
+#
+# Works in the VS Code REST Client extension and in JetBrains' HTTP client. If
+# you would rather use curl, each request maps to one directly -- the `@name`
+# lines are only how those clients carry a value into the next request.
+#
+# ---------------------------------------------------------------------------
+# Setup, once
+#
+#  1. Supabase SQL editor: run `supabase/schema.sql` on a new database, or
+#     `supabase/migrations/0002_authors_and_derived_toc.sql` and then
+#     `schema.sql` on one that predates authors. Both are re-runnable.
+#  2. Supabase Auth: create two users, so the ownership checks in step 12 have
+#     someone to be refused. Set a `full_name` in the first one's user metadata
+#     to see it come back as the byline.
+#  3. `cp .env.example .env` and fill in the three Supabase values.
+#  4. `pnpm --filter swims-blogs-api check:db` -- confirms the connection, the
+#     keys, and that the schema above actually landed. Do this before step 5;
+#     every request below assumes it passed.
+#  5. `pnpm --filter swims-blogs-api dev`
+###############################################################################
+
+@api = http://localhost:3002
+@supabaseUrl = {{$dotenv SUPABASE_URL}}
+# The publishable key (sb_publishable_...). On a project still on the legacy
+# keys, point this at SUPABASE_ANON_KEY instead.
+@supabaseKey = {{$dotenv SUPABASE_PUBLISHABLE_KEY}}
+
+@email = author-one@example.com
+@password = replace-me
+@otherEmail = author-two@example.com
+@otherPassword = replace-me
+
+
+### 1. The API is up. Does not touch Supabase, so it answers even when the
+### database credentials are wrong -- which is the case it exists to report.
+# EXPECT 200, { "status": "ok" }
+GET {{api}}/health
+
+
+### 2. Sign in, to get a bearer token.
+# EXPECT 200 with an access_token.
+# @name signIn
+POST {{supabaseUrl}}/auth/v1/token?grant_type=password
+apikey: {{supabaseKey}}
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+###
+@token = {{signIn.response.body.access_token}}
+
+
+### 3. Sign in as the second author, for the ownership check later.
+# @name signInOther
+POST {{supabaseUrl}}/auth/v1/token?grant_type=password
+apikey: {{supabaseKey}}
+Content-Type: application/json
+
+{
+  "email": "{{otherEmail}}",
+  "password": "{{otherPassword}}"
+}
+
+###
+@otherToken = {{signInOther.response.body.access_token}}
+
+
+### 4. THE MAIN EVENT -- one POST creates the blog and its three sections.
+#
+# EXPECT 201, and in the body:
+#   - `author` is an OBJECT built from the token: the id, name and avatar of the
+#     signed-in account. Nothing in this request said who wrote it.
+#   - `sections` has three entries, orderIndex 0/1/2, in the order sent.
+#   - `tableOfContents` has three entries whose `sectionId`s are exactly those
+#     three sections, with slug anchors.
+#   - `status` is "draft" and `publishedAt` is null.
+#   - `slug` was derived from the title.
+# If this fails partway there is no half-written blog: the insert runs inside
+# `create_blog_with_sections`, one transaction.
+# @name createBlog
+POST {{api}}/api/blogs
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Lessons from Bangalore's MWM ecosystem",
+  "timeToRead": 8,
+  "description": "What three-way separation at home taught us about collection routes.",
+  "category": "waste-management-in-africa",
+  "coverImage": "https://example.com/covers/bangalore.jpg",
+  "sections": [
+    {
+      "title": "Where the waste actually goes",
+      "content": "Bangalore separates at source, which changes what a collector picks up."
+    },
+    {
+      "title": "What collectors are paid for",
+      "content": "Dry waste has a market. Wet waste has a route.",
+      "images": [
+        {
+          "url": "https://example.com/photos/dry-waste.jpg",
+          "alt": "Sorted dry waste at a collection centre",
+          "caption": "A dry waste collection centre in Bangalore"
+        }
+      ]
+    },
+    {
+      "title": "What we are taking back",
+      "content": "Three things translate directly to how DTRACKER schedules pickups."
+    }
+  ]
+}
+
+###
+@blogId = {{createBlog.response.body.data.id}}
+@blogSlug = {{createBlog.response.body.data.slug}}
+
+
+### 5. A draft is not public. No token, so this is what an anonymous reader sees.
+# EXPECT 404 -- withheld, and indistinguishable from not existing.
+GET {{api}}/api/blogs/{{blogId}}
+
+
+### 6. The same draft, read by its own author.
+# EXPECT 200. Same blog, same three-entry table of contents.
+GET {{api}}/api/blogs/{{blogId}}
+Authorization: Bearer {{token}}
+
+
+### 7. Publish it.
+# EXPECT 200, status "published", and `publishedAt` now stamped.
+PUT {{api}}/api/blogs/{{blogId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "status": "published"
+}
+
+
+### 8. Read it by slug, anonymously.
+# EXPECT 200 now that it is published, with sections and contents.
+GET {{api}}/api/blogs/slug/{{blogSlug}}
+
+
+### 9. THE DRIFT TEST -- rename a section heading.
+# Copy a sectionId from step 4's `tableOfContents` into the URL.
+# EXPECT 200.
+PUT {{api}}/api/blogs/{{blogId}}/sections/PASTE_SECTION_ID_HERE
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Where the waste actually ends up"
+}
+
+
+### 10. ...and read the blog back.
+# EXPECT the table of contents entry to have changed WITH the section -- new
+# title, new anchor, same sectionId. The old stored contents could not do this:
+# it kept the previous heading until someone remembered to regenerate it.
+GET {{api}}/api/blogs/{{blogId}}
+
+
+### 11. Reorder the sections. Paste the three ids in reverse.
+# EXPECT 200, sections back with orderIndex 0/1/2 in the new order and the
+# contents following them. No unique-constraint error: the whole order is
+# rewritten in one statement against a deferred constraint. Moving them one at
+# a time through step 9 could not work at all -- the first write would collide
+# with the row it was trading places with.
+PUT {{api}}/api/blogs/{{blogId}}/sections/order
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "sectionIds": ["PASTE_THIRD_ID", "PASTE_SECOND_ID", "PASTE_FIRST_ID"]
+}
+
+
+### 12. A partial list is refused, because it would leave holes in the order.
+# EXPECT 400.
+PUT {{api}}/api/blogs/{{blogId}}/sections/order
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "sectionIds": ["PASTE_FIRST_ID"]
+}
+
+
+### 13. Append a fourth section to the published blog.
+# EXPECT 201, orderIndex 3.
+POST {{api}}/api/blogs/{{blogId}}/sections
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Further reading",
+  "content": "Where to look next."
+}
+
+
+### 14. Delete it again.
+# EXPECT 200, and no orphan left behind: re-run step 15 and the contents have
+# three entries, not four pointing at a section that is gone.
+DELETE {{api}}/api/blogs/{{blogId}}/sections/PASTE_FOURTH_SECTION_ID
+Authorization: Bearer {{token}}
+
+
+### 15. The contents on their own.
+# EXPECT one entry per current section, in order.
+GET {{api}}/api/blogs/{{blogId}}/table-of-contents
+
+
+### 16. The public listing.
+# EXPECT the published blog. Any draft is absent -- this route serves published
+# blogs only and takes no `status`, because it is unauthenticated and a
+# `?status=draft` on it would hand out everyone's unfinished work.
+GET {{api}}/api/blogs?limit=10&offset=0
+
+
+### 17. Filter by category.
+# EXPECT the blog. Try a category nothing carries and expect an empty `data`.
+GET {{api}}/api/blogs?category=waste-management-in-africa
+
+
+### 18. Free-text search over title and description.
+# EXPECT the blog.
+GET {{api}}/api/blogs?q=Bangalore
+
+
+### 19. The author's own listing, which is where drafts live.
+# EXPECT drafts and published alike; add `?status=draft` to narrow.
+GET {{api}}/api/blogs/mine
+Authorization: Bearer {{token}}
+
+
+###############################################################################
+# Negative paths
+###############################################################################
+
+### 20. No token on a write.
+# EXPECT 401.
+POST {{api}}/api/blogs
+Content-Type: application/json
+
+{ "title": "No token", "timeToRead": 1 }
+
+
+### 21. Somebody else's blog.
+# EXPECT 403 -- found, but not yours.
+PUT {{api}}/api/blogs/{{blogId}}
+Authorization: Bearer {{otherToken}}
+Content-Type: application/json
+
+{ "title": "Not mine to rename" }
+
+
+### 22. Choosing your own byline.
+# EXPECT 400: `author` is not a field. The credit comes from the token, so the
+# request is rejected rather than quietly ignoring what was sent.
+POST {{api}}/api/blogs
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Someone else's name",
+  "timeToRead": 3,
+  "author": "Somebody Important",
+  "profileImage": "https://example.com/not-me.jpg"
+}
+
+
+### 23. A slug that is taken.
+# EXPECT 409.
+POST {{api}}/api/blogs
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Another post",
+  "timeToRead": 2,
+  "slug": "{{blogSlug}}"
+}
+
+
+### 24. A slug NOT supplied, on a duplicate title.
+# EXPECT 201 with a `-1` suffix on the slug rather than a 409.
+POST {{api}}/api/blogs
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Lessons from Bangalore's MWM ecosystem",
+  "timeToRead": 8
+}
+
+
+### 25. Validation.
+# EXPECT 400: timeToRead must be a positive integer.
+POST {{api}}/api/blogs
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "title": "Bad input", "timeToRead": 0 }
+
+
+### 26. Clean up. Sections go with the blog (on delete cascade).
+# EXPECT 200.
+DELETE {{api}}/api/blogs/{{blogId}}
+Authorization: Bearer {{token}}

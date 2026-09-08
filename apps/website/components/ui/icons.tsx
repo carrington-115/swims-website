@@ -103,6 +103,27 @@ export function SearchIcon(props: IconProps) {
   );
 }
 
+/**
+ * Material `discover_tune` -- four sliders, the filter glyph at the trailing
+ * end of the blog listing's search field (Figma 3082:38903).
+ */
+export function TuneIcon(props: IconProps) {
+  return (
+    <svg {...solid} {...props}>
+      <path d="M13 9V7H16V3H18V7H21V9H13ZM16 21V11H18V21H16ZM6 21V17H3V15H11V17H8V21H6ZM6 13V3H8V13H6Z" />
+    </svg>
+  );
+}
+
+/** Material `check` -- the tick beside the selected option in a menu. */
+export function CheckIcon(props: IconProps) {
+  return (
+    <svg {...solid} {...props}>
+      <path d="M9.55 17.65L4.25 12.35L5.675 10.925L9.55 14.8L18.325 6.025L19.75 7.45L9.55 17.65Z" />
+    </svg>
+  );
+}
+
 export function ArrowLeftSolidIcon(props: IconProps) {
   return (
     <svg {...solid} {...props}>

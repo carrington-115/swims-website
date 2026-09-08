@@ -1,26 +1,56 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/*
+ * The dashboard's own tokens. It deliberately does not import the marketing
+ * site's design system: the monorepo rule is that nothing crosses an apps/
+ * boundary, and the two have different jobs anyway -- one is a brochure, this
+ * is a tool that people look at for an hour at a time.
+ *
+ * The brand greens are the same values as the website's, so a screenshot of one
+ * next to the other still reads as one product.
+ */
+@theme {
+  --color-brand-50: #eef8f4;
+  --color-brand-100: #d3ede2;
+  --color-brand-200: #a6dbc5;
+  --color-brand-500: #38a176;
+  --color-brand-600: #2c8460;
+  --color-brand-700: #24694d;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-ink: #1a1c18;
+  --color-ink-muted: #6b716b;
+  --color-line: #e4e7e4;
+  --color-surface: #ffffff;
+  --color-canvas: #f7f8f7;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-danger-50: #fef2f2;
+  --color-danger-200: #fecaca;
+  --color-danger-600: #dc2626;
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  --radius-field: 0.5rem;
+  --radius-card: 0.75rem;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+/*
+ * One focus treatment for everything interactive, so a keyboard user gets the
+ * same ring on a button, a field and a link.
+ */
+@layer components {
+  .focus-ring {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+  }
+
+  .focus-ring:focus-visible {
+    outline-color: var(--color-brand-500);
+  }
 }

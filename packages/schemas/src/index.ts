@@ -10,6 +10,7 @@
  * augmentation and the Supabase `Database` row types. Both are API-internal;
  * re-exporting them would leak Express and Postgres types into the Next apps.
  */
+export * from "./author";
 export * from "./blog";
 export * from "./section";
 export * from "./toc";

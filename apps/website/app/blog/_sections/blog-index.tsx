@@ -4,11 +4,12 @@ import type { ComponentPropsWithoutRef } from "react";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { BlogCard } from "@/components/ui/blog-card";
-import { SearchIcon } from "@/components/ui/icons";
+import { SearchIcon, TuneIcon } from "@/components/ui/icons";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { cn } from "@/lib/cn";
 
 import type { BlogCategory, BlogPost } from "../_content";
+import { CategoryFilter } from "./category-filter";
 
 type BlogIndexProps = ComponentPropsWithoutRef<"section"> & {
   posts: readonly BlogPost[];
@@ -34,8 +35,10 @@ const coverSizes =
  * none is needed, because Enter submits it.
  *
  * Below `lg` the frame gives no layout, so the rail stops being a rail: it
- * loses its divider and sits above the grid with the categories wrapping in a
- * row, and the grid drops to two columns and then one.
+ * loses its divider and its category list, keeping only the search field above
+ * the grid, and the grid drops to two columns and then one. The categories move
+ * behind the field's filter glyph as a dropdown -- see `CategoryFilter` -- so
+ * the phone spends its width on posts rather than on a wrapped filter row.
  */
 export function BlogIndex({
   posts,
@@ -57,7 +60,9 @@ export function BlogIndex({
     <Section
       spacing="md"
       aria-labelledby="blog-index-heading"
-      className={cn(className)}
+      // The listing opens on the search field rather than a heading, so the
+      // section's usual phone top padding leaves it stranded under the header.
+      className={cn("pt-8 lg:pt-24", className)}
       {...props}
     >
       <Container className="flex flex-col gap-8 lg:flex-row lg:gap-6.75">
@@ -65,27 +70,43 @@ export function BlogIndex({
           <form
             action="/blog"
             role="search"
-            className="flex items-center gap-3 rounded-pill bg-tertiary-100 px-5 py-3 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-primary"
+            className="flex items-center justify-between gap-2.5 rounded-pill bg-tertiary-100 px-5 py-3 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-primary"
           >
-            <SearchIcon className="size-6 shrink-0 text-ink" />
-            <label htmlFor="blog-search" className="sr-only">
-              Search blog posts
-            </label>
-            <input
-              id="blog-search"
-              type="search"
-              name="q"
-              defaultValue={query ?? ""}
-              placeholder="Search"
-              className="w-full min-w-0 bg-transparent text-base text-ink placeholder:text-ink focus-visible:outline-none"
+            <span className="flex min-w-0 flex-1 items-center gap-2.5">
+              <SearchIcon className="size-6 shrink-0 text-ink" />
+              <label htmlFor="blog-search" className="sr-only">
+                Search blog posts
+              </label>
+              <input
+                id="blog-search"
+                type="search"
+                name="q"
+                defaultValue={query ?? ""}
+                placeholder="Search"
+                className="w-full min-w-0 bg-transparent text-base text-ink placeholder:text-ink focus-visible:outline-none"
+              />
+            </span>
+
+            {/*
+             * The filter glyph the frame ends the field with. Below `lg` it
+             * opens the categories; from `lg` up the rail already lists them
+             * underneath, so there it stays the decorative glyph Figma draws.
+             */}
+            <CategoryFilter
+              categories={categories}
+              activeCategory={activeCategory}
+              query={query}
+              className="lg:hidden"
             />
+            <TuneIcon className="hidden size-6 shrink-0 text-on-surface lg:block" />
+
             {/* Searching inside a category stays inside it. */}
             {activeCategory ? (
               <input type="hidden" name="category" value={activeCategory} />
             ) : null}
           </form>
 
-          <nav aria-label="Filter posts by category">
+          <nav aria-label="Filter posts by category" className="hidden lg:block">
             <ul className="flex flex-wrap gap-x-4 gap-y-2.5 text-base lg:flex-col">
               {[{ id: undefined, label: "All" }, ...categories].map(
                 ({ id, label }) => {
