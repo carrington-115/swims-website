@@ -196,10 +196,13 @@ does not depend on the repository. Fix forward afterwards.
 **"No Output Directory named 'public' found after the Build completed".** A
 project with its own build command is expected to leave static output behind,
 and an API leaves none -- the deployment is a function, not a site. That is why
-`apps/blogs-api/vercel.json` ends its build with `mkdir -p apps/blogs-api/public`
-and declares `outputDirectory: "public"`: an empty directory satisfies the
-check, and because it holds no files every path still falls through the rewrite
-to the function.
+`apps/blogs-api` carries a `public/` directory holding one `robots.txt`, and
+`vercel.json` declares `outputDirectory: "public"`. An empty directory is not
+enough -- Vercel rejects that too, with `The Output Directory "public" is
+empty` -- so the file has to be real. `robots.txt` is the one worth having,
+since an API is not something to crawl. It is also the only static file there,
+so every other path still falls through the rewrite to the function and `/`
+answers with the API's own JSON 404.
 
 **"Unexpected token '<' ... is not valid JSON" while uploading, then `Upload
 aborted` over and over.** The upload endpoint answered one of the file requests

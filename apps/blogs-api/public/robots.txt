@@ -1,0 +1,10 @@
+# Vercel will not finish a build whose output directory is missing or empty,
+# and an API produces no static output -- so this directory has to hold
+# something. This is the file worth having: the Blogs API is not a site, and
+# nothing under it should be crawled.
+#
+# It is also the only static file here, so every other path still falls through
+# the rewrite in vercel.json to the function. `/` answers with the API's own
+# JSON 404, not a web page.
+User-agent: *
+Disallow: /

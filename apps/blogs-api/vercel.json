@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "installCommand": "cd ../.. && pnpm install --frozen-lockfile",
-  "buildCommand": "cd ../.. && pnpm turbo run build --filter=swims-blogs-api && mkdir -p apps/blogs-api/public",
+  "buildCommand": "cd ../.. && pnpm turbo run build --filter=swims-blogs-api",
   "outputDirectory": "public",
   "framework": null,
   "rewrites": [
