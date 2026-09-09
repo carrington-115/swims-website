@@ -138,10 +138,15 @@ jobs:
       - name: Build
         run: vercel build $PROD_FLAG --token="$VERCEL_TOKEN"
 
+      # `--archive=tgz` uploads one tarball instead of a request per file. The
+      # website is ~9.7MB across a few hundred images, and uploading those
+      # individually got an HTML error page back from the upload endpoint
+      # partway through -- which the CLI reports as
+      # `Unexpected token '<' ... is not valid JSON`, then aborts every retry.
       - name: Deploy
         id: deploy
         run: |
-          url=$(vercel deploy --prebuilt $PROD_FLAG --token="$VERCEL_TOKEN")
+          url=$(vercel deploy --prebuilt --archive=tgz $PROD_FLAG --token="$VERCEL_TOKEN")
           echo "url=$url" >> "$GITHUB_OUTPUT"
 
       - name: Report

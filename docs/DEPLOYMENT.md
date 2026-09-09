@@ -193,9 +193,20 @@ does not depend on the repository. Fix forward afterwards.
 
 ## Troubleshooting
 
-**The API build ends with "No Output Directory named 'public'".** The Framework
-Preset is set to something that expects static output. Set it to **Other**: the
-deployment is a function, not a site.
+**"No Output Directory named 'public' found after the Build completed".** A
+project with its own build command is expected to leave static output behind,
+and an API leaves none -- the deployment is a function, not a site. That is why
+`apps/blogs-api/vercel.json` ends its build with `mkdir -p apps/blogs-api/public`
+and declares `outputDirectory: "public"`: an empty directory satisfies the
+check, and because it holds no files every path still falls through the rewrite
+to the function.
+
+**"Unexpected token '<' ... is not valid JSON" while uploading, then `Upload
+aborted` over and over.** The upload endpoint answered one of the file requests
+with an HTML error page, and the CLI cannot parse it. It shows up on the website
+rather than the other two because it uploads a few hundred image files. The
+deploy step passes `--archive=tgz`, which sends one tarball instead of a request
+per file.
 
 **`Module not found: @swims/schemas`.** Either the Root Directory is wrong or
 "Include files outside the root directory" is off. All three builds run
