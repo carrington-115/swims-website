@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { findBlogCategory } from "@swims/schemas";
 
 import { NewsletterSignup } from "@/components/sections/newsletter-signup";
 
 import { subscribeToNewsletter } from "../../_actions/newsletter";
-import { blogPosts, findCategory, findPost } from "../_content";
+import { blogPosts, findPost } from "../_content";
 import { BlogArticle } from "../_sections/blog-article";
 
 /** One route per post, prerendered at build time. */
@@ -39,7 +40,7 @@ export default async function BlogPostPage({
 
   return (
     <>
-      <BlogArticle post={post} category={findCategory(post.category)} />
+      <BlogArticle post={post} category={findBlogCategory(post.category)} />
 
       <NewsletterSignup action={subscribeToNewsletter} />
     </>

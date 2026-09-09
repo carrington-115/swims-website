@@ -7,6 +7,8 @@ export type {
   ApiResponse,
   Author,
   Blog,
+  BlogCategory,
+  BlogCategoryId,
   BlogResponse,
   BlogStatus,
   CreateBlogRequest,

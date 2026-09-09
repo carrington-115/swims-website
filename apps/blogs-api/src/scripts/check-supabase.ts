@@ -17,6 +17,7 @@
  * It never prints a key. Run with `pnpm --filter swims-blogs-api check:db`.
  */
 import 'dotenv/config';
+import { isBlogCategory } from '@swims/schemas';
 import { getSupabaseAdmin, getSupabaseAuth } from '../config/supabase';
 import { getSupabaseEnv } from '../env';
 
@@ -195,6 +196,47 @@ async function main() {
         'The schema was applied partway. Re-run schema.sql and read the SQL ' +
           'editor output for the statement that failed.',
       );
+    }
+  }
+
+  // Categories are a closed set (`packages/schemas/src/category.ts`), enforced
+  // in the database by `blogs_category_check`. A stored value outside it means
+  // migration 0003 has not been applied here: such a post is reachable by slug
+  // and invisible in every listing, because no filter on the site selects it.
+  if (blogsExists) {
+    const { data, error } = await admin
+      .from('blogs')
+      .select('category')
+      .not('category', 'is', null);
+
+    if (error) {
+      fail('Blog categories', `could not be read -- ${error.message}`);
+    } else {
+      // Widened back to `string` on purpose: `BlogRow` types the column as one
+      // of the known ids, and this check exists precisely for a database that
+      // does not hold to that yet.
+      const stored: readonly (string | null)[] = (data ?? []).map(row => row.category);
+
+      const unknown = [
+        ...new Set(
+          stored.filter(
+            (category): category is string =>
+              category !== null && !isBlogCategory(category),
+          ),
+        ),
+      ];
+
+      if (unknown.length === 0) {
+        pass('Blog categories', 'every stored category is one the app knows');
+      } else {
+        fail(
+          'Blog categories',
+          `stored but unknown to the app: ${unknown.join(', ')}`,
+          'Run supabase/migrations/0003_blog_category_check.sql, which clears ' +
+            'them to NULL and constrains the column. Re-assign the posts ' +
+            'afterwards if any of these was a real category under an old name.',
+        );
+      }
     }
   }
 

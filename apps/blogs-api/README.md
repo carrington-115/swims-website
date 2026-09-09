@@ -141,6 +141,33 @@ authors ──< blogs ──< sections
 - **table of contents** — one entry per section, built on the way out. There is
   no table and no route that writes one.
 
+### Categories are a closed set
+
+A blog's `category` is one of five ids, or null. They are defined once, in
+`packages/schemas/src/category.ts`:
+
+| id | label |
+| --- | --- |
+| `company` | Company |
+| `waste-management-in-africa` | Waste management in Africa |
+| `global-waste-management` | Global waste management |
+| `technology-in-waste-management` | Technology in waste management |
+| `case-study` | Case study |
+
+That one definition reaches every layer: the API validates writes and
+`?category=` against it, `blogs_category_check` enforces it in the database, the
+dashboard builds its picker from it, and the website builds its filter rail from
+it. A category that existed on only one of those is a post that can be filed and
+never found, which is what happened while the list was written out separately in
+each frontend.
+
+An id is stored and appears in `?category=` URLs, so renaming one needs a
+migration that rewrites the rows; a label is display text and can change freely.
+**Adding one is a two-sided change**: extend `BLOG_CATEGORY_IDS` *and*
+drop-and-recreate `blogs_category_check` (see
+`supabase/migrations/0003_blog_category_check.sql`). `pnpm --filter
+swims-blogs-api check:db` reports any stored category the app does not know.
+
 ### Authorship is not something a client can set
 
 `author` and `profileImage` used to be strings in the request body, which meant
@@ -195,6 +222,9 @@ without one you see published blogs only.
 | `GET` | `/api/blogs/slug/:slug` | Same, by slug. |
 | `GET` | `/api/blogs/:id/sections` | Sections in order. |
 | `GET` | `/api/blogs/:id/table-of-contents` | The derived contents. |
+
+`?category` is one of a fixed set, not free text — see **Categories** below; an
+unknown one is a 400 rather than an empty page.
 
 `GET /api/blogs` takes no `status`. It is unauthenticated, and a `?status=draft`
 on it would hand every unfinished post to anyone who asked; drafts are reachable

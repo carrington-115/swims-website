@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import type { Blog } from '@swims/schemas';
+import { blogCategoryLabel, type Blog } from '@swims/schemas';
 
 import { Alert } from '@/components/alert';
 import { Button, ButtonLink } from '@/components/button';
@@ -98,7 +98,8 @@ export default async function BlogsPage({ searchParams }: PageProps<'/'>) {
                 </div>
                 <p className="mt-1 text-sm text-ink-muted">
                   {formatDate(blog.dateCreated)} · {blog.timeToRead} min read
-                  {blog.category ? ` · ${blog.category}` : ''} · /{blog.slug}
+                  {blog.category ? ` · ${blogCategoryLabel(blog.category)}` : ''}
+                  {` · /${blog.slug}`}
                 </p>
               </div>
 

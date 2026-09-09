@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { isBlogCategory } from "@swims/schemas";
 
 import { NewsletterSignup } from "@/components/sections/newsletter-signup";
 
@@ -31,9 +32,9 @@ export default async function BlogPage({ searchParams }: PageProps<"/blog">) {
   const query = Array.isArray(q) ? q[0] : q;
 
   // An unknown `?category=` filters nothing rather than emptying the page.
-  const known = blogCategories.some(({ id }) => id === activeCategory)
-    ? activeCategory
-    : undefined;
+  // `isBlogCategory` is the same check the API applies to its own
+  // `?category=`, so the rail, the URL and the listing agree on what exists.
+  const known = isBlogCategory(activeCategory) ? activeCategory : undefined;
 
   const posts = filterPosts(blogPosts, { category: known, query });
 

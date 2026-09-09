@@ -1,4 +1,4 @@
-import type { SectionImage } from './index';
+import type { BlogCategoryId, SectionImage } from './index';
 
 // Declared as type aliases (not interfaces) so they carry an implicit index
 // signature and therefore satisfy postgrest-js's `Record<string, unknown>`
@@ -19,7 +19,7 @@ export type BlogRow = {
   time_to_read: number;
   name: string;
   description: string | null;
-  category: string | null;
+  category: BlogCategoryId | null;
   cover_image: string | null;
   status: 'draft' | 'published';
   published_at: string | null;

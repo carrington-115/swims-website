@@ -2,6 +2,7 @@
 
 import { useActionState, useState } from 'react';
 import { useFormStatus } from 'react-dom';
+import { BLOG_CATEGORIES } from '@swims/schemas';
 
 import { Alert } from '@/components/alert';
 import { Button, ButtonLink } from '@/components/button';
@@ -10,16 +11,6 @@ import { ImagePicker } from '@/components/image-picker';
 import { MAX_SECTION_IMAGES } from '@/lib/limits';
 
 import { createBlog, type ActionState } from '../../actions';
-
-/** The categories the marketing site's blog index filters by. */
-const CATEGORIES = [
-  { value: '', label: 'None' },
-  { value: 'company', label: 'Company' },
-  { value: 'waste-management-in-africa', label: 'Waste management in Africa' },
-  { value: 'global-waste-management', label: 'Global waste management' },
-  { value: 'technology-in-waste-management', label: 'Technology in waste management' },
-  { value: 'case-study', label: 'Case study' },
-] as const;
 
 function SubmitButton() {
   // `useFormStatus` has to live in a child of the <form>, not in the component
@@ -89,9 +80,16 @@ export function BlogForm() {
           </Field>
 
           <Field label="Category" htmlFor="category">
+            {/*
+              Options come from `@swims/schemas`, which is the same set the API
+              validates against and the marketing site filters by -- this list
+              was previously written out here as well, and a category offered
+              here but unknown there is a post no reader can find.
+             */}
             <Select id="category" name="category" defaultValue="">
-              {CATEGORIES.map(category => (
-                <option key={category.value} value={category.value}>
+              <option value="">None</option>
+              {BLOG_CATEGORIES.map(category => (
+                <option key={category.id} value={category.id}>
                   {category.label}
                 </option>
               ))}

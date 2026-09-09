@@ -1,3 +1,5 @@
+import { BLOG_CATEGORIES, type BlogCategoryId } from "@swims/schemas";
+
 import { images } from "@/assets/images";
 import type { BlogCardPost } from "@/components/ui/blog-card";
 
@@ -15,26 +17,23 @@ import type { BlogCardPost } from "@/components/ui/blog-card";
  * table of contents is derived from the sections rather than stored twice.
  *
  * The "Latest blogs" band has its own stand-ins in `app/_sections`; both go at
- * the same time.
+ * the same time. The categories below are the exception: they come from
+ * `@swims/schemas` and stay when the posts go.
  */
 
 /** One entry in the sidebar filter. `id` is what `?category=` carries. */
-export type BlogCategory = { id: string; label: string };
+export type { BlogCategory, BlogCategoryId } from "@swims/schemas";
 
 /**
- * The five categories the frame lists, in its order. "All" is not one of them
- * -- it is the absence of a filter, so it carries no id and no query.
+ * The categories the frame lists, in its order. "All" is not one of them -- it
+ * is the absence of a filter, so it carries no id and no query.
+ *
+ * Re-exported from `@swims/schemas` rather than written out here: it is the
+ * same set the dashboard's picker offers and the API validates `?category=`
+ * against, so a category cannot exist in the rail with nothing able to be
+ * filed under it, or on a post with no way to filter to it.
  */
-export const blogCategories: readonly BlogCategory[] = [
-  { id: "company", label: "Company" },
-  { id: "waste-management-in-africa", label: "Waste management in Africa" },
-  { id: "global-waste-management", label: "Global waste management" },
-  {
-    id: "technology-in-waste-management",
-    label: "Technology in waste management",
-  },
-  { id: "case-study", label: "Case study" },
-];
+export const blogCategories = BLOG_CATEGORIES;
 
 /**
  * One section of a post: the heading the table of contents lists, and the
@@ -48,7 +47,7 @@ export type BlogSection = {
 };
 
 export type BlogPost = BlogCardPost & {
-  category: BlogCategory["id"];
+  category: BlogCategoryId;
   /** Long form of `date`, for the post page's chip. */
   publishedLabel: string;
   /** As the chip prints it, e.g. "20 min". */
@@ -167,10 +166,6 @@ export const blogPosts: readonly BlogPost[] = Array.from(
 
 export function findPost(id: string): BlogPost | undefined {
   return blogPosts.find((post) => post.id === id);
-}
-
-export function findCategory(id: string): BlogCategory | undefined {
-  return blogCategories.find((category) => category.id === id);
 }
 
 /**

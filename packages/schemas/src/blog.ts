@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { authorSchema } from "./author";
+import { blogCategorySchema } from "./category";
 import { createSectionSchema } from "./section";
 
 /**
@@ -27,7 +28,7 @@ export const blogSchema = z.object({
   author: authorSchema,
   name: z.string(),
   description: z.string().nullable(),
-  category: z.string().nullable(),
+  category: blogCategorySchema.nullable(),
   coverImage: z.string().nullable(),
   status: blogStatusSchema,
   publishedAt: z.string().nullable(),
@@ -55,7 +56,8 @@ export const createBlogSchema = z
     /** Internal label. Defaults to `title`. */
     name: z.string().min(1).optional(),
     description: z.string().optional(),
-    category: z.string().min(1).optional(),
+    /** One of `BLOG_CATEGORY_IDS`; omit for an uncategorised post. */
+    category: blogCategorySchema.optional(),
     coverImage: z.string().url().optional(),
     /** Defaults to `draft`; publishing stamps `publishedAt`. */
     status: blogStatusSchema.optional(),
@@ -69,8 +71,15 @@ export const createBlogSchema = z
  * Every create field except the nested sections, optional, with the same inner
  * constraints. Sections are managed through their own routes once the blog
  * exists, so that a partial update cannot be read as "replace them all".
+ *
+ * `category` is the one field widened here: null clears it, which an editor
+ * needs in order to take a post back out of a category. Omitting the field
+ * still leaves whatever is stored alone -- the two are different requests.
  */
-export const updateBlogSchema = createBlogSchema.omit({ sections: true }).partial();
+export const updateBlogSchema = createBlogSchema
+  .omit({ sections: true })
+  .partial()
+  .extend({ category: blogCategorySchema.nullable().optional() });
 
 export type CreateBlogRequest = z.infer<typeof createBlogSchema>;
 export type UpdateBlogRequest = z.infer<typeof updateBlogSchema>;
@@ -79,11 +88,15 @@ export type UpdateBlogRequest = z.infer<typeof updateBlogSchema>;
  * The public listing. It has no `status`: it only ever returns published
  * blogs, because the route is unauthenticated and a `?status=draft` on it would
  * hand every unfinished post to anyone who asked.
+ *
+ * `?category=` is checked against the known set rather than passed through as
+ * free text, so a category that does not exist is a 400 naming the ones that
+ * do, instead of an empty page that looks like a listing with nothing in it.
  */
 export const listBlogsQuerySchema = z.object({
   limit: z.coerce.number().int().min(1).max(100).default(10),
   offset: z.coerce.number().int().nonnegative().default(0),
-  category: z.string().min(1).optional(),
+  category: blogCategorySchema.optional(),
   /** Free-text match over the title and description. */
   q: z.string().min(1).optional(),
 });

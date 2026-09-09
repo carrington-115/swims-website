@@ -1,5 +1,11 @@
 import { getSupabaseAdmin } from '../config/supabase';
-import type { Blog, BlogStatus, CreateBlogRequest, UpdateBlogRequest } from '../types';
+import type {
+  Blog,
+  BlogCategoryId,
+  BlogStatus,
+  CreateBlogRequest,
+  UpdateBlogRequest,
+} from '../types';
 import type { BlogRowWithAuthor } from '../types/supabase';
 import { mapAuthorRow } from './Author';
 
@@ -65,7 +71,8 @@ function toUpdateRow(input: UpdateBlogRequest, current: Blog): BlogUpdate {
 export type FindManyOptions = {
   limit: number;
   offset: number;
-  category?: string;
+  /** Filters to exactly one category. Validated against the known set upstream. */
+  category?: BlogCategoryId;
   q?: string;
   /** Omit for every status. The public listing always passes `published`. */
   status?: BlogStatus;

@@ -26,7 +26,16 @@ create table if not exists blogs (
   time_to_read integer not null check (time_to_read > 0),
   name text not null,
   description text,
-  category text,
+  -- Constrained to the set in `packages/schemas/src/category.ts`; NULL is an
+  -- uncategorised post. Both sides have to change together -- see
+  -- migrations/0003_blog_category_check.sql.
+  category text check (category is null or category in (
+    'company',
+    'waste-management-in-africa',
+    'global-waste-management',
+    'technology-in-waste-management',
+    'case-study'
+  )),
   cover_image text,
   status text not null default 'draft' check (status in ('draft', 'published')),
   published_at timestamptz,
