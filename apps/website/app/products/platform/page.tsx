@@ -1,10 +1,9 @@
-import type { Metadata } from "next";
-
 import { CtaBand } from "@/components/sections/cta-band";
 import { LatestBlogsBand } from "@/components/sections/latest-blogs-band";
 import { NewsletterSignup } from "@/components/sections/newsletter-signup";
 import { Button } from "@/components/ui/button";
 import { PhoneIncomingIcon } from "@/components/ui/icons";
+import { pageMetadata } from "@/lib/seo";
 
 import { subscribeToNewsletter } from "../../_actions/newsletter";
 import {
@@ -14,11 +13,12 @@ import {
 } from "./_sections/platform-bands";
 import { PlatformHero } from "./_sections/platform-hero";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "SWIMS Platform",
   description:
     "Bin-level IoT sensors, drone and satellite monitoring, and one dashboard that turns a city's waste flows into decisions its institutions can act on.",
-};
+  path: "/products/platform",
+});
 
 /*
  * ISR, because of the "Latest blogs" band: it fetches during the render, so

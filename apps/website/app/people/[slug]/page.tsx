@@ -5,6 +5,8 @@ import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { Button } from "@/components/ui/button";
 import { ArrowLeftSolidIcon } from "@/components/ui/icons";
+import { JsonLd, breadcrumbJsonLd, personJsonLd } from "@/lib/json-ld";
+import { pageMetadata } from "@/lib/seo";
 import { findTeamMember, team } from "@/lib/team";
 
 import { PersonProfile } from "../_sections/person-profile";
@@ -21,10 +23,19 @@ export async function generateMetadata({
   const member = findTeamMember(slug);
   if (!member) return {};
 
-  return {
+  return pageMetadata({
     title: member.name,
     description: member.bio[0] ?? `${member.name}, ${member.role} at SWIMS.`,
-  };
+    /*
+     * This standalone page is the canonical address for a person, not the
+     * intercepted popup at `@modal/(.)[slug]`. Both answer on `/people/<slug>`;
+     * only this one is what a crawler or a pasted link resolves to.
+     */
+    path: `/people/${member.id}`,
+    type: "profile",
+    // Same: `opengraph-image.tsx` here draws this member's own card.
+    hasOwnCard: true,
+  });
 }
 
 /**
@@ -43,6 +54,15 @@ export default async function PersonPage({
 
   return (
     <Section spacing="md">
+      <JsonLd data={personJsonLd(member)} />
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Our people", path: "/people" },
+          { name: member.name, path: `/people/${member.id}` },
+        ])}
+      />
+
       <Container className="flex flex-col gap-8 lg:gap-14">
         <PersonProfile member={member} />
 

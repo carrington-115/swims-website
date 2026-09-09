@@ -103,6 +103,14 @@ where both real domains are known.
 | Variable | Value |
 | --- | --- |
 | `NEXT_PUBLIC_BLOGS_API_URL` | `https://<api-domain>` |
+| `NEXT_PUBLIC_SITE_URL` | `https://<website-domain>` — optional; see below |
+
+`NEXT_PUBLIC_SITE_URL` is what canonical links, the sitemap and the share
+previews are built from. Left unset it falls back to the Vercel project's
+production domain, which is correct as soon as a custom domain is assigned to
+the project — so set it only when the site answers on a domain the project does
+not know it owns. Set it wrong and every preview card points at a hostname that
+does not serve the page.
 
 Both `NEXT_PUBLIC_` values are inlined into the browser bundle at build time, so
 changing one needs a redeploy, not a restart. Neither is a secret: the website

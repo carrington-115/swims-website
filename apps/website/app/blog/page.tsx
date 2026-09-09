@@ -1,19 +1,20 @@
-import type { Metadata } from "next";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { isBlogCategory } from "@swims/schemas";
 
 import { NewsletterSignup } from "@/components/sections/newsletter-signup";
 import { blogListQuery } from "@/lib/blog-queries";
 import { getQueryClient } from "@/lib/query-client";
+import { pageMetadata } from "@/lib/seo";
 
 import { subscribeToNewsletter } from "../_actions/newsletter";
 import { BlogList } from "./_sections/blog-list";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Blog",
   description:
     "Waste policy, DTRACKER releases, and field notes from the collectors and cities building formal waste systems across Africa.",
-};
+  path: "/blog",
+});
 
 /**
  * Blog index (Figma 3146:301).

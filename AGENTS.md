@@ -89,6 +89,7 @@ The marketing site has a written standard. Follow it rather than improvising:
 | `apps/website/docs/COMPONENTS.md` | Component architecture, props, styling, server/client split, definition of done |
 | `apps/website/docs/IMAGES.md` | Image catalogue, the registry, alt text, overlays, size budget |
 | `apps/website/docs/FIGMA.md` | Figma MCP setup and how designs become components |
+| `apps/website/docs/SEO.md` | Page metadata, share-preview cards, sitemap, robots, structured data |
 
 Image assets live in `apps/website/assets/` and are always used through the
 registry at `apps/website/assets/images.ts` — see `apps/website/docs/IMAGES.md`.

@@ -1,5 +1,3 @@
-import type { Metadata } from "next";
-
 import { images } from "@/assets/images";
 import { BackedBy } from "@/components/sections/backed-by";
 import { CollectorPitch } from "@/components/sections/collector-pitch";
@@ -11,6 +9,7 @@ import { ProductHighlights } from "@/components/sections/product-highlights";
 import { TeamGrid } from "@/components/sections/team-grid";
 import { Button } from "@/components/ui/button";
 import { ArrowDownIcon } from "@/components/ui/icons";
+import { pageMetadata } from "@/lib/seo";
 
 import { subscribeToNewsletter } from "../_actions/newsletter";
 import {
@@ -22,11 +21,12 @@ import {
   team,
 } from "./_content";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Why SWIMS",
   description:
     "Informal waste systems are not a problem to replace, they are infrastructure to formalize. The team, the products and the case behind SWIMS.",
-};
+  path: "/why-us",
+});
 
 /*
  * ISR, because of the "Latest blogs" band: it fetches during the render, so

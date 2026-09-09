@@ -2,11 +2,15 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import type { BlogResponse } from "@swims/schemas";
+import { blogCategoryLabel } from "@swims/schemas";
 
 import { NewsletterSignup } from "@/components/sections/newsletter-signup";
 import { blogKeys, isNotFound } from "@/lib/blog-queries";
 import { blogsApi } from "@/lib/blogs-api";
+import { JsonLd, blogPostingJsonLd, breadcrumbJsonLd } from "@/lib/json-ld";
 import { getQueryClient } from "@/lib/query-client";
+import { pageMetadata } from "@/lib/seo";
 
 import { subscribeToNewsletter } from "../../_actions/newsletter";
 import { BlogArticleView } from "../_sections/blog-article-view";
@@ -28,10 +32,33 @@ export async function generateMetadata({
 
   try {
     const post = await getPost(slug);
-    return {
+
+    /*
+     * A post with no description still has to say something: the description is
+     * what a scraper prints under the title, and an empty one leaves the card
+     * with a headline and a blank line. The title is a poor summary but an
+     * honest one, and it beats the site-wide fallback, which would describe
+     * SWIMS rather than the post.
+     */
+    const description =
+      post.description ?? `${post.title} — from the SWIMS blog.`;
+
+    return pageMetadata({
       title: post.title,
-      description: post.description ?? undefined,
-    };
+      description,
+      path: `/blog/${post.slug}`,
+      type: "article",
+      // The card is drawn from this post by `opengraph-image.tsx` next door.
+      hasOwnCard: true,
+      article: {
+        // `publishedAt` is null on a draft; a draft is not reachable here, but
+        // the type says it can be, so it is omitted rather than invented.
+        publishedTime: post.publishedAt ?? undefined,
+        modifiedTime: post.updatedAt,
+        authors: [post.author.name],
+        section: post.category ? blogCategoryLabel(post.category) : undefined,
+      },
+    });
   } catch {
     // Including a genuine 404. The page below turns that into a 404 response;
     // metadata's only job is not to break the render on the way there.
@@ -62,8 +89,16 @@ export default async function BlogPostPage({
   const { slug } = await params;
   const queryClient = getQueryClient();
 
+  /*
+   * Kept rather than only seeded into the cache: the structured data below is
+   * built from it, and a crawler reads that from the server-rendered markup.
+   * Same call either way -- `getPost` is memoised for the request.
+   */
+  let post: BlogResponse | null = null;
+
   try {
-    queryClient.setQueryData(blogKeys.detail(slug), await getPost(slug));
+    post = await getPost(slug);
+    queryClient.setQueryData(blogKeys.detail(slug), post);
   } catch (error) {
     if (isNotFound(error)) notFound();
     // Anything else falls through with an empty cache on purpose.
@@ -71,6 +106,24 @@ export default async function BlogPostPage({
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
+      {/*
+       * Only when the post is in hand. Markup describing a post the page could
+       * not fetch would claim a headline and a date the reader never sees,
+       * which is the one thing structured data must never do.
+       */}
+      {post ? (
+        <>
+          <JsonLd data={blogPostingJsonLd(post)} />
+          <JsonLd
+            data={breadcrumbJsonLd([
+              { name: "Home", path: "/" },
+              { name: "Blog", path: "/blog" },
+              { name: post.title, path: `/blog/${post.slug}` },
+            ])}
+          />
+        </>
+      ) : null}
+
       <BlogArticleView slug={slug} />
 
       <NewsletterSignup action={subscribeToNewsletter} />

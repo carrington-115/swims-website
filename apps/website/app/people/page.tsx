@@ -1,17 +1,17 @@
-import type { Metadata } from "next";
-
 import { LatestBlogsBand } from "@/components/sections/latest-blogs-band";
 import { NewsletterSignup } from "@/components/sections/newsletter-signup";
 import { TeamGrid } from "@/components/sections/team-grid";
+import { pageMetadata } from "@/lib/seo";
 import { team } from "@/lib/team";
 
 import { subscribeToNewsletter } from "../_actions/newsletter";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Our people",
   description:
     "The people building SWIMS: the founders and directors behind DTRACKER and the platform that makes Africa's waste visible.",
-};
+  path: "/people",
+});
 
 /*
  * ISR, because of the "Latest blogs" band: it fetches during the render, so

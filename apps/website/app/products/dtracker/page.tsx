@@ -1,7 +1,6 @@
-import type { Metadata } from "next";
-
 import { LatestBlogsBand } from "@/components/sections/latest-blogs-band";
 import { NewsletterSignup } from "@/components/sections/newsletter-signup";
+import { pageMetadata } from "@/lib/seo";
 
 import { subscribeToNewsletter } from "../../_actions/newsletter";
 import {
@@ -14,11 +13,12 @@ import {
 import { DownloadCta } from "./_sections/download-cta";
 import { DtrackerHero } from "./_sections/dtracker-hero";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "DTRACKER",
   description:
     "DTRACKER gives waste collectors verified standing, pickups on their own schedule, earnings they can track, and same-day mobile money payment with no middleman.",
-};
+  path: "/products/dtracker",
+});
 
 /*
  * ISR, because of the "Latest blogs" band: it fetches during the render, so

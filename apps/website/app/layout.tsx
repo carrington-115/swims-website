@@ -4,6 +4,12 @@ import { Geist, Geist_Mono, Poppins } from "next/font/google";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { QueryProvider } from "@/components/query-provider";
+import {
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  isProductionDeployment,
+  siteUrl,
+} from "@/lib/site";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -24,13 +30,58 @@ const poppins = Poppins({
   display: "swap",
 });
 
+/**
+ * The defaults every route inherits.
+ *
+ * `metadataBase` is the load-bearing line: without it Next emits relative
+ * `og:image` and `canonical` URLs, which a scraper cannot resolve -- it has no
+ * page to resolve them against -- so the card falls back to a bare link. With
+ * it, pages pass plain paths to `pageMetadata` and Next makes them absolute.
+ *
+ * The `openGraph` and `twitter` blocks here are the floor, not the ceiling:
+ * each page overrides title, description and url through `pageMetadata`, and
+ * the image comes from the `opengraph-image` files down the route tree.
+ */
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl()),
   title: {
     default: "SWIMS",
     template: "%s | SWIMS",
   },
-  description:
-    "SWIMS formalises waste management in Africa: DTRACKER for collectors, and a data platform that makes every tonne visible.",
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    locale: "en_US",
+    url: "/",
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+  },
+  robots: {
+    /*
+     * Preview deployments serve the same markup on a real, reachable URL, so
+     * left alone they compete with production for the same queries. Vercel
+     * already sends `x-robots-tag: noindex` on previews; this says the same
+     * thing in the markup, where it survives being fetched by anything else.
+     */
+    index: isProductionDeployment(),
+    follow: isProductionDeployment(),
+    googleBot: {
+      index: isProductionDeployment(),
+      follow: isProductionDeployment(),
+      // Without this Google shows a thumbnail at best, and often nothing.
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

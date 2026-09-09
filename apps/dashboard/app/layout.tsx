@@ -20,6 +20,13 @@ export const metadata: Metadata = {
     template: "%s · SWIMS Blogs",
   },
   description: "Write and publish posts for the SWIMS blog.",
+  /*
+   * Never in search results. Everything behind the proxy needs a session, but
+   * `/login` and `/signup` answer to anyone -- so without this the dashboard's
+   * sign-in form is indexable, and it competes with the marketing site for the
+   * SWIMS name while offering a visitor nothing they can use.
+   */
+  robots: { index: false, follow: false, nocache: true },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
