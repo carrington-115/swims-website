@@ -1,0 +1,18 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    /*
+     * Typechecking a Next app depends on that app having been built.
+     * `next build` writes `.next/types/routes.d.ts`, and the generated
+     * `validator.ts` imports it -- so with only `^build` here, `turbo run
+     * typecheck build` runs the two in parallel and tsc reads a types
+     * directory that the build is halfway through rewriting. It passed
+     * whenever a previous build had left one behind and failed on a clean
+     * checkout, which is to say it failed in CI and nowhere else.
+     */
+    "typecheck": {
+      "dependsOn": ["^build", "build"]
+    }
+  }
+}

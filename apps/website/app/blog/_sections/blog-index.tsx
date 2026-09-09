@@ -1,28 +1,40 @@
 import Link from "next/link";
 import type { ComponentPropsWithoutRef } from "react";
+import type { BlogCategory } from "@swims/schemas";
 
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
-import { BlogCard } from "@/components/ui/blog-card";
+import { BlogCard, type BlogCardPost } from "@/components/ui/blog-card";
+import { BlogCardSkeleton } from "@/components/ui/blog-card-skeleton";
 import { SearchIcon, TuneIcon } from "@/components/ui/icons";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { cn } from "@/lib/cn";
 
-import type { BlogCategory, BlogPost } from "../_content";
 import { CategoryFilter } from "./category-filter";
 
 type BlogIndexProps = ComponentPropsWithoutRef<"section"> & {
-  posts: readonly BlogPost[];
+  posts: readonly BlogCardPost[];
   categories: readonly BlogCategory[];
   /** The category currently filtered on; unset is "All". */
   activeCategory?: string;
   /** What the search field is filtering on, so it survives a category change. */
   query?: string;
+  /** Draws the grid as placeholders. `posts` is ignored while this is set. */
+  isLoading?: boolean;
+  /** Shown in place of the grid when the listing could not be read at all. */
+  error?: string | null;
 };
 
 /** Cover widths: 270px in the frame, half the viewport at `sm`, all of it below. */
 const coverSizes =
   "(min-width: 1024px) 270px, (min-width: 640px) calc(50vw - 2rem), calc(100vw - 2rem)";
+
+/**
+ * Placeholders drawn while a listing loads. One full three-column row plus
+ * three, which is enough to fill the fold on a laptop without promising a
+ * second screenful of posts that may not exist.
+ */
+const PLACEHOLDER_COUNT = 6;
 
 /**
  * The blog index (Figma 3146:301): a filter rail down the left, the "Blogs"
@@ -39,12 +51,19 @@ const coverSizes =
  * the grid, and the grid drops to two columns and then one. The categories move
  * behind the field's filter glyph as a dropdown -- see `CategoryFilter` -- so
  * the phone spends its width on posts rather than on a wrapped filter row.
+ *
+ * Presentational: posts, the loading flag and any error come in as props, and
+ * `BlogList` beside this file is the half that fetches them. The rail and the
+ * search field stay outside that -- they are the controls, and they must not
+ * blink out while the results they control are being refetched.
  */
 export function BlogIndex({
   posts,
   categories,
   activeCategory,
   query,
+  isLoading = false,
+  error = null,
   className,
   ...props
 }: BlogIndexProps) {
@@ -144,7 +163,30 @@ export function BlogIndex({
             Blogs
           </SectionHeading>
 
-          {posts.length === 0 ? (
+          {isLoading ? (
+            <div
+              role="status"
+              aria-label="Loading posts"
+              className="grid grid-cols-1 gap-x-8.25 gap-y-5.75 sm:grid-cols-2 lg:grid-cols-3"
+            >
+              {Array.from({ length: PLACEHOLDER_COUNT }, (_, index) => (
+                <BlogCardSkeleton
+                  key={index}
+                  variant="listing"
+                  className="w-full p-3"
+                />
+              ))}
+            </div>
+          ) : error ? (
+            /*
+             * A failed listing says so rather than claiming there is nothing to
+             * read -- "no posts match" would be a lie about the archive, and
+             * would send the reader off looking for a different search.
+             */
+            <p role="alert" className="py-10 text-base text-ink-muted">
+              {error}
+            </p>
+          ) : posts.length === 0 ? (
             <p className="py-10 text-base text-ink-muted">
               No posts match that search yet.{" "}
               <Link

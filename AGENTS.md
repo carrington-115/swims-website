@@ -60,6 +60,20 @@ pnpm check                    # typecheck + lint + build
 
 Add a dependency to one app: `pnpm --filter website add <pkg>`.
 
+## Deployment
+
+Three Vercel projects, one per app, deployed by `.github/workflows/deploy.yml`:
+one `pnpm check` across the workspace, then a build and upload per app. `main`
+releases, a pull request previews.
+
+The steps to connect a fresh Vercel account -- root directories, environment
+variables, the CORS and domain wiring between the three, Supabase Auth -- are in
+`docs/DEPLOYMENT.md`.
+
+The API runs as a function there rather than a process: `src/app.ts` is the
+Express wiring, `src/server.ts` binds a port for every other host, and
+`api/index.ts` is Vercel's entry. Only one of the last two runs.
+
 ## Conventions
 
 - TypeScript strict everywhere; app tsconfigs extend `packages/tsconfig`.

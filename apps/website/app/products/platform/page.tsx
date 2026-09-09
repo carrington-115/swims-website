@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 
 import { CtaBand } from "@/components/sections/cta-band";
-import { LatestBlogs } from "@/components/sections/latest-blogs";
+import { LatestBlogsBand } from "@/components/sections/latest-blogs-band";
 import { NewsletterSignup } from "@/components/sections/newsletter-signup";
 import { Button } from "@/components/ui/button";
 import { PhoneIncomingIcon } from "@/components/ui/icons";
 
 import { subscribeToNewsletter } from "../../_actions/newsletter";
-import { latestPosts } from "../../_sections/latest-posts";
 import {
   DashboardBand,
   DroneBand,
@@ -20,6 +19,15 @@ export const metadata: Metadata = {
   description:
     "Bin-level IoT sensors, drone and satellite monitoring, and one dashboard that turns a city's waste flows into decisions its institutions can act on.",
 };
+
+/*
+ * ISR, because of the "Latest blogs" band: it fetches during the render, so
+ * without this the page is baked at build time and the band shows whatever had
+ * been published at deploy until the next one. Sixty seconds is the window a
+ * new post can take to appear here; the band's own React Query cache refreshes
+ * it in the browser sooner than that on a client-side navigation.
+ */
+export const revalidate = 60;
 
 /**
  * SWIMS Platform page (Figma 3049:35583, 3063:35618, 3063:35617, 3063:35623,
@@ -61,7 +69,7 @@ export default function PlatformPage() {
         }
       />
 
-      <LatestBlogs posts={latestPosts} />
+      <LatestBlogsBand />
       <NewsletterSignup action={subscribeToNewsletter} />
     </>
   );

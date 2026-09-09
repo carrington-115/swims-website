@@ -2,11 +2,10 @@
 
 import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
+import type { BlogCategory } from "@swims/schemas";
 
 import { CheckIcon, TuneIcon } from "@/components/ui/icons";
 import { cn } from "@/lib/cn";
-
-import type { BlogCategory } from "../_content";
 
 type CategoryFilterProps = {
   categories: readonly BlogCategory[];

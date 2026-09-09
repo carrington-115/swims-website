@@ -310,6 +310,20 @@ Returns the reordered sections and the contents that follow from them.
 | `409` | Slug already taken. |
 | `500` | Server error (logged in full, never echoed). |
 
+## Deploying
+
+On Vercel this is a single function: `api/index.ts` builds the app once per cold
+start and Vercel hands it each request, so nothing here binds a port. Every
+other host runs `pnpm build && pnpm start`, which is `src/server.ts` -- the port
+bind, the EADDRINUSE message and the clean shutdown.
+
+That split is why `app.ts` exports `createApp()` instead of a listening server:
+calling `listen()` at module scope would hang a cold start on a socket nothing
+connects to.
+
+Environment variables, the CORS allowlist for the deployed frontends, and the
+rest of the setup: `docs/DEPLOYMENT.md` at the repository root.
+
 ## Validating a deployment
 
 `requests.http` walks the whole surface top to bottom — create with sections,
@@ -321,8 +335,11 @@ calls. Each request says what it is proving.
 ## Architecture
 
 ```
+api/
+  index.ts           vercel entry -- hands the request straight to the app
 src/
-  app.ts             express wiring, CORS allowlist, health, error handler
+  app.ts             createApp(): express wiring, CORS allowlist, health, errors
+  server.ts          the listening host: port bind, EADDRINUSE, SIGTERM
   env.ts             config, split by failure mode (see the file's own note)
   config/supabase.ts lazily memoised admin + anon clients
   routes/            endpoint definitions, validation middleware

@@ -55,6 +55,15 @@ export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const isAuthRoute = pathname === '/login' || pathname === '/signup';
 
+  // The route handlers under /api are called by fetch, not followed by a
+  // browser. Redirecting one to /login would be answered with 200 and the HTML
+  // of a sign-in form, which the caller would try to read as JSON; a status is
+  // the only honest answer, and it is what lets the dashboard tell "your
+  // session expired" apart from "that request failed".
+  if (!user && pathname.startsWith('/api/')) {
+    return NextResponse.json({ error: 'Your session has expired. Sign in again.' }, { status: 401 });
+  }
+
   if (!user && !isAuthRoute) {
     const url = request.nextUrl.clone();
     url.pathname = '/login';

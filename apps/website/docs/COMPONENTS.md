@@ -67,7 +67,9 @@ export function Card({ title, eyebrow, className, ...props }: CardProps) {
   multiply (`isMuted`, `isDark`).
 - No `React.FC`. Destructure props in the signature with defaults.
 - Content comes in as props. A component never reaches for global state or
-  fetches its own data.
+  fetches its own data — see [§4.1](#41-sections-backed-by-the-blogs-api) for
+  the one shape that fetches, and note that even there the component doing the
+  drawing still only takes props.
 
 ## 4. Server and client
 
@@ -78,7 +80,47 @@ menus, forms.
 - Push `"use client"` to the smallest leaf. A client carousel receives its
   slides as already-rendered `children` from a server section.
 - Never mark `layout.tsx` or `page.tsx` as a client component.
-- Data fetching happens in the route (`page.tsx`) and flows down as props.
+- Data fetching happens in the route (`page.tsx`) and flows down as props —
+  except for the Blogs API, below.
+
+### 4.1 Sections backed by the Blogs API
+
+Blog content is the only live data the site reads, and it is read with
+[TanStack Query](https://tanstack.com/query) so a listing can be cached,
+refetched and shown loading. That needs a hook, and a hook needs a client
+component — which would otherwise collide with every rule above.
+
+It is split three ways instead, and every data-backed section follows the same
+shape:
+
+| Piece | Kind | Job |
+| --- | --- | --- |
+| `<thing>.tsx` | server | Draws it. Takes `posts`, `isLoading`, `error` as props. Fetches nothing, exactly as §3 requires. |
+| `<thing>-feed.tsx` | `"use client"` | One `useQuery`, maps the result onto view models, renders the presentational half. Holds no markup of its own. |
+| `<thing>-band.tsx` | server | `prefetchQuery` + `HydrationBoundary` around the feed, so the section is server-rendered and the browser does not refetch it. |
+
+Worked example: `components/sections/latest-blogs.tsx` (draws),
+`latest-blogs-feed.tsx` (fetches), `latest-blogs-band.tsx` (prefetches). A route
+renders `<LatestBlogsBand />` and knows nothing about any of it.
+
+The rest of the rules:
+
+- **Queries are declared once**, in `lib/blog-queries.ts`, and both halves use
+  the same `queryOptions`. A prefetch under a different key than the one the
+  hook subscribes to is invisible — it just quietly refetches.
+- **Never export a query from a `"use client"` file.** Next turns every export
+  of one into a client reference, so a server component importing it gets a
+  proxy rather than the object.
+- **Prefetch with `await`.** Unawaited, the state is dehydrated while the query
+  is still pending and the section ships empty.
+- **A route that renders a prefetching section needs `export const revalidate`**,
+  or the fetch is baked into the static build and the section shows whatever was
+  published at deploy time.
+- **Skeletons come from `components/ui/blog-card-skeleton.tsx`** and match the
+  height of what they stand in for. A placeholder of the wrong height moves the
+  page under the reader at the moment they start looking at it.
+- **Drive the skeleton from `isPending`, not `isFetching`**, so a background
+  refresh does not throw placeholders over content that is already correct.
 
 ## 5. Styling
 
@@ -143,6 +185,8 @@ Before a component is considered finished:
 | `components/layout/container.tsx` | polymorphic `as` prop, layout tokens |
 | `components/layout/section.tsx` | string-union variants without `cva` |
 | `components/media/site-image.tsx` | registry-driven images, focal crops |
+| `components/sections/latest-blogs-band.tsx` | §4.1: prefetch + hydrate around a client feed |
+| `components/sections/latest-blogs.tsx` | §4.1: the presentational half, props only |
 | `components/layout/site-header.tsx` | server shell delegating all state to one client leaf |
 | `components/layout/site-menu.tsx` | dialog semantics, focus trap, scroll lock, enter/exit animation |
 

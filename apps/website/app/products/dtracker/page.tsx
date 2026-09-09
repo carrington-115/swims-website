@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 
-import { LatestBlogs } from "@/components/sections/latest-blogs";
+import { LatestBlogsBand } from "@/components/sections/latest-blogs-band";
 import { NewsletterSignup } from "@/components/sections/newsletter-signup";
 
 import { subscribeToNewsletter } from "../../_actions/newsletter";
-import { latestPosts } from "../../_sections/latest-posts";
 import {
   DirectPaymentBand,
   LiveMapBand,
@@ -20,6 +19,15 @@ export const metadata: Metadata = {
   description:
     "DTRACKER gives waste collectors verified standing, pickups on their own schedule, earnings they can track, and same-day mobile money payment with no middleman.",
 };
+
+/*
+ * ISR, because of the "Latest blogs" band: it fetches during the render, so
+ * without this the page is baked at build time and the band shows whatever had
+ * been published at deploy until the next one. Sixty seconds is the window a
+ * new post can take to appear here; the band's own React Query cache refreshes
+ * it in the browser sooner than that on a client-side navigation.
+ */
+export const revalidate = 60;
 
 /**
  * DTRACKER product page (Figma 3049:5210, 3049:5238, 3049:35466, 3049:35465,
@@ -41,7 +49,7 @@ export default function DtrackerPage() {
       <TrackEarningsBand />
       <DirectPaymentBand />
       <DownloadCta />
-      <LatestBlogs posts={latestPosts} />
+      <LatestBlogsBand />
       <NewsletterSignup action={subscribeToNewsletter} />
     </>
   );

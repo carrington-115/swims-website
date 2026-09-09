@@ -50,8 +50,8 @@
     "semantic_hash": "d2a0e47b54adbfa89a435e563fb8a60d"
   },
   "apps/blogs-api/src/models/Blog.ts": {
-    "mtime": 1788820520.230334,
-    "ast_hash": "4a7eb9057a3e6f2195ab2108009248e3",
+    "mtime": 1788941374.2247002,
+    "ast_hash": "dd144fb34d7207f16acb7bcc89f59e9b",
     "semantic_hash": ""
   },
   "apps/blogs-api/src/models/Section.ts": {
@@ -70,13 +70,13 @@
     "semantic_hash": ""
   },
   "apps/blogs-api/src/types/index.ts": {
-    "mtime": 1788820622.438986,
-    "ast_hash": "3b093725ea35f310acb794ac82882840",
+    "mtime": 1788941374.2196784,
+    "ast_hash": "f641f1feb776b9b24e35fc30d347247d",
     "semantic_hash": ""
   },
   "apps/blogs-api/src/types/supabase.ts": {
-    "mtime": 1788820451.9553204,
-    "ast_hash": "4660c4c59cc7ceee4d864dcb08280ad6",
+    "mtime": 1788941374.2206955,
+    "ast_hash": "bcabd3a8954b410ad0842fa95911fc50",
     "semantic_hash": ""
   },
   "apps/blogs-api/src/utils/validators.ts": {
@@ -90,8 +90,8 @@
     "semantic_hash": "4ef27bde5ad4b92f4e6fc5c5df1144c4"
   },
   "apps/blogs-api/supabase/schema.sql": {
-    "mtime": 1788820408.8712697,
-    "ast_hash": "745e25324ce3c650e00bef1720b37b56",
+    "mtime": 1788941393.2510464,
+    "ast_hash": "7c7ead55b6ee4a691e68b1a5aab51252",
     "semantic_hash": ""
   },
   "apps/blogs-api/tsconfig.json": {
@@ -100,8 +100,8 @@
     "semantic_hash": "a5423157531a88970f98148e62974824"
   },
   "apps/dashboard/app/layout.tsx": {
-    "mtime": 1788835797.427645,
-    "ast_hash": "1284be2117500ba9356642c604396f4c",
+    "mtime": 1788943813.8501873,
+    "ast_hash": "74ff9f265e7d9b1099e2ecc0e55e2516",
     "semantic_hash": ""
   },
   "apps/dashboard/eslint.config.mjs": {
@@ -115,8 +115,8 @@
     "semantic_hash": "9b77af189a21a7a64e4bd7a426f64176"
   },
   "apps/dashboard/package.json": {
-    "mtime": 1788837129.2472272,
-    "ast_hash": "4d0159bd450ccd1bbbfb69abc032daa4",
+    "mtime": 1788943344.7412648,
+    "ast_hash": "4db43bb6780efc943a2bfd72d5dc2eca",
     "semantic_hash": ""
   },
   "apps/dashboard/postcss.config.mjs": {
@@ -174,25 +174,20 @@
     "ast_hash": "722fb053b2be0befe399e9814111a57b",
     "semantic_hash": ""
   },
-  "apps/website/app/_sections/latest-posts.ts": {
-    "mtime": 1788670267.5899448,
-    "ast_hash": "03268ef6245366f86d61c0cb44d46f5d",
-    "semantic_hash": "03268ef6245366f86d61c0cb44d46f5d"
-  },
   "apps/website/app/_sections/waste-crisis.tsx": {
     "mtime": 1788672049.9491022,
     "ast_hash": "a9df77bc2f468d96df23e131fa4f51ee",
     "semantic_hash": "a9df77bc2f468d96df23e131fa4f51ee"
   },
   "apps/website/app/layout.tsx": {
-    "mtime": 1788670267.6882117,
-    "ast_hash": "38473a626ed5e1cf88325b6d18d69906",
-    "semantic_hash": "38473a626ed5e1cf88325b6d18d69906"
+    "mtime": 1788943537.8582294,
+    "ast_hash": "c8bf4b5008e7bf385bd596642b11a0da",
+    "semantic_hash": ""
   },
   "apps/website/app/page.tsx": {
-    "mtime": 1788672116.3213518,
-    "ast_hash": "78eb648745f5ec93c0b5d611f95c3e6e",
-    "semantic_hash": "78eb648745f5ec93c0b5d611f95c3e6e"
+    "mtime": 1788944130.398678,
+    "ast_hash": "d45b1069c1b7d31469b837d87ae90500",
+    "semantic_hash": ""
   },
   "apps/website/assets/images.ts": {
     "mtime": 1788779617.9862027,
@@ -245,9 +240,9 @@
     "semantic_hash": ""
   },
   "apps/website/components/sections/latest-blogs.tsx": {
-    "mtime": 1788669999.8142974,
-    "ast_hash": "b99648e19581748a717faa2fe3204db8",
-    "semantic_hash": "b99648e19581748a717faa2fe3204db8"
+    "mtime": 1788943513.9942214,
+    "ast_hash": "9319f1f7d16e9f35ac0125de937dc5f1",
+    "semantic_hash": ""
   },
   "apps/website/components/sections/newsletter-form.tsx": {
     "mtime": 1788670089.3468914,
@@ -265,8 +260,8 @@
     "semantic_hash": ""
   },
   "apps/website/components/ui/blog-card.tsx": {
-    "mtime": 1788815638.166014,
-    "ast_hash": "8ee26998a851031617cd118a3a09717e",
+    "mtime": 1788943472.7008379,
+    "ast_hash": "0a69cbe239671f3b8f8721e1f62ac4b8",
     "semantic_hash": ""
   },
   "apps/website/components/ui/button.tsx": {
@@ -310,13 +305,13 @@
     "semantic_hash": ""
   },
   "apps/website/next.config.ts": {
-    "mtime": 1767617822.6303897,
-    "ast_hash": "9b77af189a21a7a64e4bd7a426f64176",
-    "semantic_hash": "9b77af189a21a7a64e4bd7a426f64176"
+    "mtime": 1788944395.3860717,
+    "ast_hash": "afdd4ad8685947d4aaf01bcacfcb2c22",
+    "semantic_hash": ""
   },
   "apps/website/package.json": {
-    "mtime": 1788837129.245721,
-    "ast_hash": "337e327eedb4d14db6f09feb1622d20f",
+    "mtime": 1788943337.8194878,
+    "ast_hash": "fa8a348214701dc5713b624d6641ca98",
     "semantic_hash": ""
   },
   "apps/website/postcss.config.mjs": {
@@ -325,9 +320,9 @@
     "semantic_hash": "239f3ebf717465dc636818a1a619398d"
   },
   "apps/website/tsconfig.json": {
-    "mtime": 1788516101.8203397,
-    "ast_hash": "02fc19ad21338c2ab820a70136310db4",
-    "semantic_hash": "02fc19ad21338c2ab820a70136310db4"
+    "mtime": 1788944311.364143,
+    "ast_hash": "e5c243d62b866d283bab1168d1c468a1",
+    "semantic_hash": ""
   },
   "package.json": {
     "mtime": 1788839127.7126,
@@ -405,13 +400,13 @@
     "semantic_hash": ""
   },
   "packages/schemas/src/blog.ts": {
-    "mtime": 1788820295.9095862,
-    "ast_hash": "64e5e8b41f0a1904278bc0378035852d",
+    "mtime": 1788941359.1693525,
+    "ast_hash": "7527ccbeb6e406f2d9eed658c5b81f79",
     "semantic_hash": ""
   },
   "packages/schemas/src/index.ts": {
-    "mtime": 1788820296.0692518,
-    "ast_hash": "63161e0dd7c64cf8c5984a588216bb25",
+    "mtime": 1788941342.723542,
+    "ast_hash": "5ec86999c269fe49026d4af4692f1b00",
     "semantic_hash": ""
   },
   "packages/schemas/src/params.ts": {
@@ -480,8 +475,8 @@
     "semantic_hash": ""
   },
   "apps/website/app/products/dtracker/page.tsx": {
-    "mtime": 1788747360.820321,
-    "ast_hash": "545e940c1d389a7b5755ddbde3295880",
+    "mtime": 1788944130.399936,
+    "ast_hash": "4f24d0a1c57a50195c09f1ba29e9acc0",
     "semantic_hash": ""
   },
   "apps/website/app/why-us/_content.ts": {
@@ -490,8 +485,8 @@
     "semantic_hash": ""
   },
   "apps/website/app/why-us/page.tsx": {
-    "mtime": 1788747931.6457133,
-    "ast_hash": "b3d6ebc1e1012402ee8aa9151d4d2cff",
+    "mtime": 1788944130.4023921,
+    "ast_hash": "b2a171711d530f58f1d3bcd3eec082e2",
     "semantic_hash": ""
   },
   "apps/website/components/sections/backed-by.tsx": {
@@ -575,8 +570,8 @@
     "semantic_hash": ""
   },
   "apps/blogs-api/README.md": {
-    "mtime": 1788834980.3698938,
-    "ast_hash": "5c71b3ece4f8a52d1c59ea41063ae1bb",
+    "mtime": 1788941630.8848524,
+    "ast_hash": "77d7cf6b283d799612bfabb715d18601",
     "semantic_hash": ""
   },
   "apps/dashboard/AGENTS.md": {
@@ -635,8 +630,8 @@
     "semantic_hash": ""
   },
   "apps/website/docs/COMPONENTS.md": {
-    "mtime": 1788817687.6083794,
-    "ast_hash": "7466631e14e8e08694287a89143875f8",
+    "mtime": 1788944170.6255445,
+    "ast_hash": "6fa7aa6599edb2a79fe8fd38a70977b9",
     "semantic_hash": ""
   },
   "apps/website/docs/FIGMA.md": {
@@ -645,8 +640,8 @@
     "semantic_hash": ""
   },
   "apps/website/docs/IMAGES.md": {
-    "mtime": 1788817687.6095226,
-    "ast_hash": "b013541d77cd04b379b2d5c101e74ddd",
+    "mtime": 1788944170.6245463,
+    "ast_hash": "1152287bb80eb5142fc48dbf53a70878",
     "semantic_hash": ""
   },
   "pnpm-workspace.yaml": {
@@ -890,8 +885,8 @@
     "semantic_hash": ""
   },
   "apps/website/app/products/platform/page.tsx": {
-    "mtime": 1788748964.263176,
-    "ast_hash": "767f45d7dc5bb1a90cff76f935b4fc54",
+    "mtime": 1788944130.4013045,
+    "ast_hash": "6a1755b23c9a5c5f1cc6dfd0f60353b7",
     "semantic_hash": ""
   },
   "apps/website/components/sections/cta-band.tsx": {
@@ -930,8 +925,8 @@
     "semantic_hash": ""
   },
   "apps/website/app/people/page.tsx": {
-    "mtime": 1788763741.5433283,
-    "ast_hash": "2963bb6e29ba21129671fc5f6539486a",
+    "mtime": 1788944130.399936,
+    "ast_hash": "4dbcfa60a01751e9a9f22291dcb1eb0f",
     "semantic_hash": ""
   },
   "apps/website/lib/team.ts": {
@@ -969,24 +964,19 @@
     "ast_hash": "055c53f58b1524c9e81cb8db7f4e0f6e",
     "semantic_hash": ""
   },
-  "apps/website/app/blog/_content.ts": {
-    "mtime": 1788817836.6403828,
-    "ast_hash": "1b1e99e610fbbbc05846b645ae2d5a97",
-    "semantic_hash": ""
-  },
   "apps/website/app/blog/_sections/blog-index.tsx": {
-    "mtime": 1788837850.7685752,
-    "ast_hash": "3666d96e889260859df5850b119c4cbd",
+    "mtime": 1788943597.2164392,
+    "ast_hash": "c9e9ceb41e80ea3e3210eadf8ef7c518",
     "semantic_hash": ""
   },
   "apps/website/app/blog/page.tsx": {
-    "mtime": 1788815623.0910423,
-    "ast_hash": "a6450a81893a81f4490fcc86f9d692a1",
+    "mtime": 1788943620.8750684,
+    "ast_hash": "dfd4d4ce341cbaf86d46e3352dd9ca6b",
     "semantic_hash": ""
   },
   "apps/website/app/blog/[slug]/page.tsx": {
-    "mtime": 1788818016.1770413,
-    "ast_hash": "2619b59c6428900dfd0b32c5ba5ece88",
+    "mtime": 1788943722.8230903,
+    "ast_hash": "f79c265efb02c4418d3c93d652a0880e",
     "semantic_hash": ""
   },
   "apps/website/app/blog/_sections/agent-promo-card.tsx": {
@@ -995,8 +985,8 @@
     "semantic_hash": ""
   },
   "apps/website/app/blog/_sections/blog-article.tsx": {
-    "mtime": 1788818032.5047536,
-    "ast_hash": "5bc3055ecb82eee6f65354fda3fd2b26",
+    "mtime": 1788943650.0937824,
+    "ast_hash": "0e24de8f99ee7f362d08beea5565b7ad",
     "semantic_hash": ""
   },
   "apps/website/app/blog/_sections/table-of-contents.tsx": {
@@ -1030,8 +1020,8 @@
     "semantic_hash": ""
   },
   "apps/blogs-api/src/scripts/check-supabase.ts": {
-    "mtime": 1788826388.5008502,
-    "ast_hash": "4829353b3018b1ab2ff66088d804885b",
+    "mtime": 1788941563.5483363,
+    "ast_hash": "d235c672bfb5b5d6778662463b54f760",
     "semantic_hash": ""
   },
   "apps/blogs-api/src/scripts/apply-schema.ts": {
@@ -1045,13 +1035,13 @@
     "semantic_hash": ""
   },
   "apps/dashboard/app/(app)/actions.ts": {
-    "mtime": 1788838495.5949757,
-    "ast_hash": "4cbf45f3e62afabf370a1069f22ece39",
+    "mtime": 1788944019.7077818,
+    "ast_hash": "aba2859fca62715b3229c7f32b00ae27",
     "semantic_hash": ""
   },
   "apps/dashboard/app/(app)/blogs/new/blog-form.tsx": {
-    "mtime": 1788838495.5964837,
-    "ast_hash": "ea51eb7231b9a8e8e1c7e6a36a0c0d15",
+    "mtime": 1788941441.2814648,
+    "ast_hash": "fcc9021abd56865229b031488ce973aa",
     "semantic_hash": ""
   },
   "apps/dashboard/app/(app)/blogs/new/page.tsx": {
@@ -1065,8 +1055,8 @@
     "semantic_hash": ""
   },
   "apps/dashboard/app/(app)/page.tsx": {
-    "mtime": 1788835761.2937984,
-    "ast_hash": "42151a6ebbcfda28794639e709e8a17b",
+    "mtime": 1788944003.162201,
+    "ast_hash": "55851f2e10735cc2b4320d50591e098b",
     "semantic_hash": ""
   },
   "apps/dashboard/app/(app)/sign-out-button.tsx": {
@@ -1135,13 +1125,13 @@
     "semantic_hash": ""
   },
   "apps/dashboard/proxy.ts": {
-    "mtime": 1788835598.952733,
-    "ast_hash": "8d7bc102728fc8f42c15d89693220770",
+    "mtime": 1788943886.4260478,
+    "ast_hash": "e173b147cb538aa8bb70fa6e9369edca",
     "semantic_hash": ""
   },
   "apps/website/app/blog/_sections/category-filter.tsx": {
-    "mtime": 1788837834.8289785,
-    "ast_hash": "c0bbf9aa4b9bba692fd1d45e6c4ea7f8",
+    "mtime": 1788943597.2178316,
+    "ast_hash": "a7058c46cd1482fc9bd3025899332f09",
     "semantic_hash": ""
   },
   "apps/blogs-api/supabase/storage.sql": {
@@ -1177,6 +1167,126 @@
   "scripts/check-ports.mjs": {
     "mtime": 1788839546.796957,
     "ast_hash": "dbc8f96a285f218a4842e4355a53bf4a",
+    "semantic_hash": ""
+  },
+  "apps/blogs-api/supabase/migrations/0003_blog_category_check.sql": {
+    "mtime": 1788941393.1149824,
+    "ast_hash": "4155cbeafec6e27a71723e0deb00b7e0",
+    "semantic_hash": ""
+  },
+  "packages/schemas/src/category.ts": {
+    "mtime": 1788941334.645398,
+    "ast_hash": "3d886fbcd917b148af1e5a62b11caf8b",
+    "semantic_hash": ""
+  },
+  "apps/dashboard/app/(app)/blogs-list.tsx": {
+    "mtime": 1788943993.7259657,
+    "ast_hash": "217388d7b4e9d08416f28683d1dd9058",
+    "semantic_hash": ""
+  },
+  "apps/dashboard/app/api/blogs/[id]/route.ts": {
+    "mtime": 1788943886.6677163,
+    "ast_hash": "01fb51e18500884dfd73be23ddc25541",
+    "semantic_hash": ""
+  },
+  "apps/dashboard/app/api/blogs/route.ts": {
+    "mtime": 1788943886.6133451,
+    "ast_hash": "28d30bcdea33c49ed4b18d3088459ce6",
+    "semantic_hash": ""
+  },
+  "apps/dashboard/components/query-provider.tsx": {
+    "mtime": 1788943813.7050261,
+    "ast_hash": "fcaf20b3bde1fafd6dc0cc8b26a157ab",
+    "semantic_hash": ""
+  },
+  "apps/dashboard/components/skeleton.tsx": {
+    "mtime": 1788943813.7553234,
+    "ast_hash": "9988d269a16798baf1cd63422790c487",
+    "semantic_hash": ""
+  },
+  "apps/dashboard/lib/api-route.ts": {
+    "mtime": 1788943886.5593219,
+    "ast_hash": "9fce7f4aa98d819ab201cc33bd75d89e",
+    "semantic_hash": ""
+  },
+  "apps/dashboard/lib/blog-queries.ts": {
+    "mtime": 1788943923.7801168,
+    "ast_hash": "f16440fbb598ad86d8a133e7a5c8ae0e",
+    "semantic_hash": ""
+  },
+  "apps/dashboard/lib/query-client.ts": {
+    "mtime": 1788943923.711443,
+    "ast_hash": "03407338b3fb54f60467fd7f91848e4b",
+    "semantic_hash": ""
+  },
+  "apps/website/app/blog/_sections/blog-article-skeleton.tsx": {
+    "mtime": 1788943675.607205,
+    "ast_hash": "b993681ed3e1ffd5e57cd5706d87e6d4",
+    "semantic_hash": ""
+  },
+  "apps/website/app/blog/_sections/blog-article-view.tsx": {
+    "mtime": 1788943675.6665368,
+    "ast_hash": "5ec8d30484f4ff11261c2681de7ff30b",
+    "semantic_hash": ""
+  },
+  "apps/website/app/blog/_sections/blog-list.tsx": {
+    "mtime": 1788943620.8245516,
+    "ast_hash": "27de57cb517732604a8d1153b66aadfd",
+    "semantic_hash": ""
+  },
+  "apps/website/components/media/cover-image.tsx": {
+    "mtime": 1788943458.3429012,
+    "ast_hash": "4a65b00b75c8c9b97a53e21e0c4d8880",
+    "semantic_hash": ""
+  },
+  "apps/website/components/query-provider.tsx": {
+    "mtime": 1788943366.4286375,
+    "ast_hash": "1a7c714e284e02f00cc10d710360991a",
+    "semantic_hash": ""
+  },
+  "apps/website/components/sections/latest-blogs-band.tsx": {
+    "mtime": 1788943760.9725208,
+    "ast_hash": "a1203f03d70d2c862ea0a72f157099ac",
+    "semantic_hash": ""
+  },
+  "apps/website/components/sections/latest-blogs-feed.tsx": {
+    "mtime": 1788943760.9250474,
+    "ast_hash": "9411ed56a7bd4c7dd53171bd55accbee",
+    "semantic_hash": ""
+  },
+  "apps/website/components/ui/blog-card-skeleton.tsx": {
+    "mtime": 1788943489.1031735,
+    "ast_hash": "7ec0a0919dde52d8913193ac9c5d5151",
+    "semantic_hash": ""
+  },
+  "apps/website/components/ui/skeleton.tsx": {
+    "mtime": 1788943489.0470052,
+    "ast_hash": "703bb5f1d964853efaa5b8573bca388f",
+    "semantic_hash": ""
+  },
+  "apps/website/lib/blog-queries.ts": {
+    "mtime": 1788943537.8569384,
+    "ast_hash": "07ea44fb55f27890944c80ce7b62358e",
+    "semantic_hash": ""
+  },
+  "apps/website/lib/blog-view.ts": {
+    "mtime": 1788943675.5207622,
+    "ast_hash": "f1e926a012c9340d7e54a2b7e1eec1e2",
+    "semantic_hash": ""
+  },
+  "apps/website/lib/blogs-api.ts": {
+    "mtime": 1788943366.5341768,
+    "ast_hash": "57573377b2c42033061ebe2fbf92a95d",
+    "semantic_hash": ""
+  },
+  "apps/website/lib/env.ts": {
+    "mtime": 1788943366.484179,
+    "ast_hash": "0ee7f17a789e0b7f041fad0477949b93",
+    "semantic_hash": ""
+  },
+  "apps/website/lib/query-client.ts": {
+    "mtime": 1788943366.3774636,
+    "ast_hash": "427d8df51e01eff101c3eb8175dfb760",
     "semantic_hash": ""
   }
 }

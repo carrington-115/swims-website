@@ -40,6 +40,18 @@ export function getPort(): number {
 /**
  * Comma-separated allowlist. The website and the dashboard are separate
  * origins, so a single FRONTEND_ORIGIN string could never admit both.
+ *
+ * In production this is the two real origins, written out:
+ *
+ *   CORS_ORIGINS=https://swims.example,https://dashboard.swims.example
+ *
+ * An entry may carry a `*` in one label -- `https://*.vercel.app` -- which is
+ * there for Vercel **preview** deployments, whose hostname contains the commit
+ * and so is different on every push. Set that in the Preview environment only:
+ * in production it would admit every site anyone has ever deployed to Vercel.
+ * The token check on writes is unaffected either way (a bearer token is not a
+ * cookie, so a third-party page cannot borrow one), but the read surface is
+ * not something to widen for no reason.
  */
 export function getCorsOrigins(): string[] {
   return (process.env.CORS_ORIGINS ?? DEFAULT_CORS_ORIGINS)
@@ -50,6 +62,18 @@ export function getCorsOrigins(): string[] {
 
 export function isProduction(): boolean {
   return process.env.NODE_ENV === 'production';
+}
+
+/**
+ * True when the app is running as a function rather than as a process it owns.
+ *
+ * `VERCEL` is set by the platform in every environment it builds and runs --
+ * production, preview and `vercel dev` alike -- so this is a question about the
+ * host, not about the deployment being live. `app.ts` uses it to decide whether
+ * there is a proxy in front whose forwarded address should be trusted.
+ */
+export function isServerless(): boolean {
+  return Boolean(process.env.VERCEL);
 }
 
 /**

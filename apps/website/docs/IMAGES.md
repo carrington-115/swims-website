@@ -1,8 +1,12 @@
 # Images
 
-Every image the website ships lives under `apps/website/assets/` and is reached
-through the registry at `assets/images.ts`. Nothing renders `next/image`
-directly except `components/media/site-image.tsx`.
+Every image the website **ships** lives under `apps/website/assets/` and is
+reached through the registry at `assets/images.ts`. Nothing renders `next/image`
+directly except `components/media/site-image.tsx` and
+`components/media/cover-image.tsx`.
+
+The second of those is the one exception, and it is narrow — see
+[Uploaded covers](#uploaded-covers).
 
 ```
 apps/website/
@@ -56,6 +60,43 @@ Rules:
   viewport, otherwise Next.js ships the 100vw candidate.
 - Full-bleed art needs a `relative` parent with an explicit height, because
   `cover` renders as `fill`.
+
+## Uploaded covers
+
+Blog post covers and author avatars are the only images the site renders from a
+URL rather than the registry. They are uploaded from the dashboard into Supabase
+Storage, so they do not exist at build time: there is no static import, and
+therefore no intrinsic size and no blur placeholder.
+
+`components/media/cover-image.tsx` takes either source:
+
+```tsx
+import { CoverImage, type CoverSource } from "@/components/media/cover-image";
+
+// A registry entry, or a URL -- the component decides how to render it.
+<CoverImage cover={post.cover} sizes="(min-width: 1024px) 270px, 100vw" />
+```
+
+Rules for it:
+
+- **Always `fill`.** An uploaded image has no intrinsic size to lay out from, so
+  the caller supplies an aspect-ratio box for it to fill. That is what the
+  frames draw anyway.
+- **Always pass `sizes`.** Without it `next/image` requests the largest
+  candidate for every viewport.
+- **Fall back to the registry.** `lib/blog-view.ts` substitutes
+  `images.home.blogPlaceholderCover` for a post with no cover, so a card is
+  never a blank box.
+- **Decorative by default.** A cover sits directly beside the title it belongs
+  to, so `alt=""` is correct — the title already names it, and repeating it
+  makes a screen reader say it twice.
+- **Hosts are allowlisted.** `next.config.ts` permits only
+  `https://*.supabase.co/storage/v1/object/public/**`. `next/image` will
+  optimise any URL matching a `remotePatterns` entry, whoever asks, so that
+  pattern stays as narrow as the storage layout allows.
+
+Everything else on the site — every image in the repo — goes through the
+registry and `SiteImage`.
 
 ## Registry entry shape
 

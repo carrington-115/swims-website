@@ -114,37 +114,20 @@ export async function createBlog(
 
   // Outside the try: `redirect` works by throwing, so catching around it would
   // swallow the navigation and report it as a failure.
+  //
+  // The revalidate still matters with the listing on React Query: it forces the
+  // server render of `/` that the redirect lands on to re-read the API, and the
+  // fresher data hydrates over whatever the browser had cached -- so the blog
+  // just created cannot be missing from the list it arrives at.
   revalidatePath('/');
   redirect(`/?created=${encodeURIComponent(slug)}`);
 }
 
-/** Flips a blog between draft and published. */
-export async function setBlogStatus(formData: FormData): Promise<void> {
-  await requireUser();
-
-  const id = String(formData.get('id') ?? '');
-  const status = formData.get('status') === 'published' ? 'published' : 'draft';
-
-  try {
-    await blogsApi().blogs.update(id, { status });
-  } catch {
-    // The list re-reads from the API on revalidate, so a failure here shows up
-    // as the row simply not having changed.
-  }
-
-  revalidatePath('/');
-}
-
-export async function deleteBlog(formData: FormData): Promise<void> {
-  await requireUser();
-
-  const id = String(formData.get('id') ?? '');
-
-  try {
-    await blogsApi().blogs.remove(id);
-  } catch {
-    // As above.
-  }
-
-  revalidatePath('/');
-}
+/*
+ * Publish, unpublish and delete are not here. They are React Query mutations in
+ * `blogs-list.tsx`, going through the `/api/blogs/:id` handler, so a row can
+ * show its own progress and report its own failure -- a server action can do
+ * neither without re-rendering the whole page. Creating a blog stays an action:
+ * it is a form submission that ends in a redirect, which is what actions are
+ * good at.
+ */

@@ -4,7 +4,7 @@ import { images } from "@/assets/images";
 import { BackedBy } from "@/components/sections/backed-by";
 import { CollectorPitch } from "@/components/sections/collector-pitch";
 import { FounderMessage } from "@/components/sections/founder-message";
-import { LatestBlogs } from "@/components/sections/latest-blogs";
+import { LatestBlogsBand } from "@/components/sections/latest-blogs-band";
 import { NewsletterSignup } from "@/components/sections/newsletter-signup";
 import { PageHero } from "@/components/sections/page-hero";
 import { ProductHighlights } from "@/components/sections/product-highlights";
@@ -13,7 +13,6 @@ import { Button } from "@/components/ui/button";
 import { ArrowDownIcon } from "@/components/ui/icons";
 
 import { subscribeToNewsletter } from "../_actions/newsletter";
-import { latestPosts } from "../_sections/latest-posts";
 import {
   backers,
   collectorBenefits,
@@ -28,6 +27,15 @@ export const metadata: Metadata = {
   description:
     "Informal waste systems are not a problem to replace, they are infrastructure to formalize. The team, the products and the case behind SWIMS.",
 };
+
+/*
+ * ISR, because of the "Latest blogs" band: it fetches during the render, so
+ * without this the page is baked at build time and the band shows whatever had
+ * been published at deploy until the next one. Sixty seconds is the window a
+ * new post can take to appear here; the band's own React Query cache refreshes
+ * it in the browser sooner than that on a client-side navigation.
+ */
+export const revalidate = 60;
 
 /**
  * Why Us (Figma 3025:4695 desktop, 3076:37272 mobile).
@@ -70,7 +78,7 @@ export default function WhyUs() {
 
       <ProductHighlights />
 
-      <LatestBlogs posts={latestPosts} />
+      <LatestBlogsBand />
 
       <NewsletterSignup action={subscribeToNewsletter} />
     </>

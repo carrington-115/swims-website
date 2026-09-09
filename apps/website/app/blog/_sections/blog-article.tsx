@@ -1,20 +1,19 @@
 import Link from "next/link";
 import type { ComponentPropsWithoutRef } from "react";
+import { findBlogCategory } from "@swims/schemas";
 
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
-import { SiteImage } from "@/components/media/site-image";
+import { CoverImage } from "@/components/media/cover-image";
 import { ChevronDownIcon } from "@/components/ui/icons";
 import { cn } from "@/lib/cn";
+import type { ArticlePost } from "@/lib/blog-view";
 
-import type { BlogCategory, BlogPost } from "../_content";
 import { AgentPromoCard } from "./agent-promo-card";
 import { TableOfContents } from "./table-of-contents";
 
 type BlogArticleProps = ComponentPropsWithoutRef<"section"> & {
-  post: BlogPost;
-  /** The post's category, for the middle crumb. Omitted if it is unknown. */
-  category?: BlogCategory;
+  post: ArticlePost;
 };
 
 /** A pill chip from the head: hairline border, fully round, 12px of padding. */
@@ -39,13 +38,12 @@ const chip =
  * own column and can be ordered independently -- the contents above the prose,
  * where it is a useful jump list, and the promo card below it, out of the way.
  */
-export function BlogArticle({
-  post,
-  category,
-  className,
-  ...props
-}: BlogArticleProps) {
+export function BlogArticle({ post, className, ...props }: BlogArticleProps) {
   const items = post.sections.map(({ id, title }) => ({ id, title }));
+
+  // The middle crumb. A post whose category is not one the site knows simply
+  // has no crumb, rather than a link to a listing that would come back empty.
+  const category = findBlogCategory(post.category);
 
   return (
     <Section spacing="md" className={cn(className)} {...props}>
@@ -90,22 +88,17 @@ export function BlogArticle({
             </h1>
 
             <div className="flex flex-wrap items-center gap-2.5 lg:gap-5">
-              {post.author ? (
-                <p className={chip}>
+              <p className={chip}>
+                {post.author.avatar ? (
                   <span className="relative size-7.5 shrink-0 overflow-hidden rounded-full">
-                    <SiteImage
-                      image={post.author.avatar}
-                      alt=""
-                      cover
-                      sizes="30px"
-                    />
+                    <CoverImage cover={post.author.avatar} sizes="30px" />
                   </span>
-                  {post.author.name}
-                </p>
-              ) : null}
-              {post.date ? (
+                ) : null}
+                {post.author.name}
+              </p>
+              {post.publishedDateTime ? (
                 <p className={chip}>
-                  <time dateTime={post.date.dateTime}>
+                  <time dateTime={post.publishedDateTime}>
                     {post.publishedLabel}
                   </time>
                 </p>
@@ -115,7 +108,7 @@ export function BlogArticle({
           </div>
 
           <div className="relative aspect-[1237/732] w-full overflow-hidden">
-            <SiteImage image={post.cover} priority cover sizes="100vw" />
+            <CoverImage cover={post.cover} priority sizes="100vw" />
           </div>
         </header>
 

@@ -1,18 +1,26 @@
 import type { Metadata } from "next";
 
-import { LatestBlogs } from "@/components/sections/latest-blogs";
+import { LatestBlogsBand } from "@/components/sections/latest-blogs-band";
 import { NewsletterSignup } from "@/components/sections/newsletter-signup";
 import { TeamGrid } from "@/components/sections/team-grid";
 import { team } from "@/lib/team";
 
 import { subscribeToNewsletter } from "../_actions/newsletter";
-import { latestPosts } from "../_sections/latest-posts";
 
 export const metadata: Metadata = {
   title: "Our people",
   description:
     "The people building SWIMS: the founders and directors behind DTRACKER and the platform that makes Africa's waste visible.",
 };
+
+/*
+ * ISR, because of the "Latest blogs" band: it fetches during the render, so
+ * without this the page is baked at build time and the band shows whatever had
+ * been published at deploy until the next one. Sixty seconds is the window a
+ * new post can take to appear here; the band's own React Query cache refreshes
+ * it in the browser sooner than that on a client-side navigation.
+ */
+export const revalidate = 60;
 
 /**
  * People (Figma 3040:4780 team, 3046:5002 blogs, 3046:5026 newsletter,
@@ -28,7 +36,7 @@ export default function People() {
     <>
       <TeamGrid people={team} headingLevel={1} />
 
-      <LatestBlogs posts={latestPosts} />
+      <LatestBlogsBand />
 
       <NewsletterSignup action={subscribeToNewsletter} />
     </>

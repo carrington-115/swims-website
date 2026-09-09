@@ -1,0 +1,153 @@
+# Checks, then Vercel.
+#
+# The repo holds three deployable apps and Vercel holds three projects, one per
+# app. Rather than let Vercel's Git integration build each of them on its own
+# schedule, this workflow gates every deployment behind one `pnpm check` of the
+# whole workspace: the apps share `packages/schemas` and `packages/api-client`,
+# so a change to either can only be judged by typechecking all of them together.
+#
+# Builds happen here (`vercel build`) and only the finished output is uploaded
+# (`vercel deploy --prebuilt`). Secrets stay where they belong: environment
+# variables come from the Vercel project itself, pulled by `vercel pull`, so
+# apart from the deploy token this workflow needs none of them.
+#
+# Required repository secrets -- see docs/DEPLOYMENT.md:
+#   VERCEL_TOKEN                 account token, Vercel -> Settings -> Tokens
+#   VERCEL_ORG_ID                from .vercel/project.json after `vercel link`
+#   VERCEL_PROJECT_ID_WEBSITE
+#   VERCEL_PROJECT_ID_DASHBOARD
+#   VERCEL_PROJECT_ID_BLOGS_API
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# A second push to the same branch makes the first one's deployment obsolete
+# before it lands. Production is left alone: cancelling a half-finished release
+# is worse than finishing it.
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+permissions:
+  contents: read
+
+env:
+  TURBO_TELEMETRY_DISABLED: 1
+  DO_NOT_TRACK: 1
+
+jobs:
+  check:
+    name: Typecheck, lint, build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # No `version:` -- it reads `packageManager` from the root package.json,
+      # so pnpm cannot drift from what the lockfile was written by.
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Restore the turbo cache
+        uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: turbo-${{ runner.os }}-${{ github.sha }}
+          restore-keys: turbo-${{ runner.os }}-
+
+      - name: pnpm check
+        run: pnpm check
+        # Stand-ins, and only stand-ins. Nothing built in this job is ever
+        # shipped -- the deploy job builds again with what `vercel pull`
+        # fetches from the project. These exist so that a page which reads a
+        # public variable while prerendering fails on its own merits rather
+        # than on configuration this runner was never going to have.
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: sb_publishable_ci_placeholder
+          NEXT_PUBLIC_BLOGS_API_URL: http://localhost:3002
+          BLOGS_API_URL: http://localhost:3002
+
+  deploy:
+    name: Deploy ${{ matrix.app }}
+    needs: check
+    runs-on: ubuntu-latest
+    # A pull request from a fork gets no secrets, so the Vercel steps would fail
+    # on an empty token and report it as a broken build. Checks still run.
+    if: >-
+      github.event_name != 'pull_request' ||
+      github.event.pull_request.head.repo.full_name == github.repository
+    strategy:
+      # One app failing is no reason to leave the other two undeployed.
+      fail-fast: false
+      matrix:
+        include:
+          - app: website
+            project_id_secret: VERCEL_PROJECT_ID_WEBSITE
+          - app: dashboard
+            project_id_secret: VERCEL_PROJECT_ID_DASHBOARD
+          - app: blogs-api
+            project_id_secret: VERCEL_PROJECT_ID_BLOGS_API
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      # The CLI reads this to know which of the three projects it is acting on;
+      # everything else about the project, including its Root Directory and its
+      # environment variables, comes down with `vercel pull`.
+      VERCEL_PROJECT_ID: ${{ secrets[matrix.project_id_secret] }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      # npm, not pnpm: a global pnpm install needs PNPM_HOME set up first, and
+      # this is a one-off tool rather than a workspace dependency.
+      - name: Install the Vercel CLI
+        run: npm install --global vercel@latest
+
+      # `main` releases; every other ref previews. Not named VERCEL_ENV -- the
+      # CLI and the function runtime both use that name for their own purposes.
+      - name: Choose the target environment
+        run: |
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            echo "TARGET_ENV=production" >> "$GITHUB_ENV"
+            echo "PROD_FLAG=--prod" >> "$GITHUB_ENV"
+          else
+            echo "TARGET_ENV=preview" >> "$GITHUB_ENV"
+            echo "PROD_FLAG=" >> "$GITHUB_ENV"
+          fi
+
+      - name: Pull the project settings and environment
+        run: vercel pull --yes --environment="$TARGET_ENV" --token="$VERCEL_TOKEN"
+
+      - name: Build
+        run: vercel build $PROD_FLAG --token="$VERCEL_TOKEN"
+
+      - name: Deploy
+        id: deploy
+        run: |
+          url=$(vercel deploy --prebuilt $PROD_FLAG --token="$VERCEL_TOKEN")
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+
+      - name: Report
+        run: |
+          {
+            echo "### ${{ matrix.app }} -> $TARGET_ENV"
+            echo ""
+            echo "${{ steps.deploy.outputs.url }}"
+          } >> "$GITHUB_STEP_SUMMARY"

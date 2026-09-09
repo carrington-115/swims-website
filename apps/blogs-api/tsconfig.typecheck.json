@@ -1,0 +1,20 @@
+{
+  /*
+   * Type checking covers one more file than the build does: `api/index.ts`,
+   * the Vercel entry point. It sits outside `src/` because Vercel discovers
+   * functions by directory, and `tsc -p tsconfig.json` cannot reach it without
+   * moving `rootDir` and reshaping `dist/` -- which would change where
+   * `pnpm start` looks on every other host. So the build keeps its layout and
+   * this project, which emits nothing, widens `rootDir` instead.
+   *
+   * Vercel compiles that entry itself with esbuild and type-checks nothing, so
+   * without this a broken import there would only surface as a 500 in
+   * production.
+   */
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "noEmit": true
+  },
+  "include": ["src/**/*.ts", "api/**/*.ts"]
+}

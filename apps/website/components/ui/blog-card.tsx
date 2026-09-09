@@ -1,8 +1,7 @@
 import Link from "next/link";
 import type { ComponentPropsWithoutRef } from "react";
 
-import type { SiteImage as SiteImageAsset } from "@/assets/images";
-import { SiteImage } from "@/components/media/site-image";
+import { CoverImage, type CoverSource } from "@/components/media/cover-image";
 import { cn } from "@/lib/cn";
 
 /** One post as a card needs it. Whatever fetches posts maps onto this. */
@@ -11,12 +10,16 @@ export type BlogCardPost = {
   title: string;
   excerpt: string;
   href: string;
-  cover: SiteImageAsset;
+  /** A registry entry, or the URL of a cover uploaded from the dashboard. */
+  cover: CoverSource;
   /**
    * Byline drawn above the title. Only the listing frame carries one -- the
    * "Latest blogs" band leaves both this and `date` unset.
+   *
+   * `avatar` is optional on its own: an author who has set no picture still has
+   * a name to print, and the circle is simply not drawn.
    */
-  author?: { name: string; avatar: SiteImageAsset };
+  author?: { name: string; avatar?: CoverSource };
   /**
    * Already formatted for display, with the machine-readable value beside it.
    * The card neither parses nor localises a date.
@@ -82,21 +85,18 @@ export function BlogCard({
       {...props}
     >
       <div className="relative aspect-[297/179] w-full overflow-hidden">
-        <SiteImage image={post.cover} alt="" cover sizes={sizes} />
+        <CoverImage cover={post.cover} sizes={sizes} />
       </div>
 
       {post.author || post.date ? (
         <div className="flex items-center justify-between gap-2 text-base text-ink-strong">
           {post.author ? (
             <span className="flex min-w-0 items-center gap-1.25">
-              <span className="relative size-7.5 shrink-0 overflow-hidden rounded-full">
-                <SiteImage
-                  image={post.author.avatar}
-                  alt=""
-                  cover
-                  sizes="30px"
-                />
-              </span>
+              {post.author.avatar ? (
+                <span className="relative size-7.5 shrink-0 overflow-hidden rounded-full">
+                  <CoverImage cover={post.author.avatar} sizes="30px" />
+                </span>
+              ) : null}
               <span className="truncate">{post.author.name}</span>
             </span>
           ) : null}
