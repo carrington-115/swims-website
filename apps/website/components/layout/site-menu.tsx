@@ -216,11 +216,6 @@ export function SiteMenu({ className }: { className?: string }) {
                                   <span className="block text-lg font-medium text-ink-strong lg:text-2xl">
                                     {child.label}
                                   </span>
-                                  {child.description ? (
-                                    <span className="mt-0.5 block text-sm text-ink-muted lg:text-base">
-                                      {child.description}
-                                    </span>
-                                  ) : null}
                                 </Link>
                               </li>
                             ))}

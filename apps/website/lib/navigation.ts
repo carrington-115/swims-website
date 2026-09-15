@@ -10,8 +10,6 @@
 export type NavLink = {
   label: string;
   href: string;
-  /** Shown under the label when the item is expanded in the collapse menu. */
-  description?: string;
 };
 
 export type NavItem = NavLink & {
@@ -26,21 +24,9 @@ export const mainNav: readonly NavItem[] = [
     label: "Products",
     href: "/products",
     children: [
-      {
-        label: "DTRACKER",
-        href: "/products/dtracker",
-        description: "The app that connects collectors, households and businesses",
-      },
-      {
-        label: "SWIMS Platform",
-        href: "/products/platform",
-        description: "Live waste data for municipalities and partners",
-      },
-      {
-        label: "Design challenge",
-        href: "/products/design-challenge",
-        description: "Our open call for waste innovation",
-      },
+      { label: "DTRACKER", href: "/products/dtracker" },
+      { label: "SWIMS Platform", href: "/products/platform" },
+      { label: "Design challenge", href: "/products/design-challenge" },
     ],
   },
   { label: "Our Partners", href: "/partners" },

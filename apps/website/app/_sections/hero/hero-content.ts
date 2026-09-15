@@ -41,7 +41,7 @@ export const heroSlides: readonly HeroSlideContent[] = [
     image: images.home.heroPlatform,
     heading: "SWIMS Platform for Advanced waste tracking",
     body: "The data layer that turns invisible waste networks into formal infrastructure, and gives institutions the tools to plan, fund, and scale them.",
-    cta: { label: "Read the article", href: "/products/platform" },
+    cta: { label: "Learn more", href: "/products/platform" },
     label: "The SWIMS platform",
   },
 ];
